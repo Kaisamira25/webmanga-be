@@ -19,7 +19,7 @@ import java.security.spec.X509EncodedKeySpec;
 public class ReadKeys {
     public static final String FILE_PRIVATE_KEY = "privatekey.der";
 
-    public static final String FILE_PUBLIC_KEY = "publickey.pem";
+    public static final String FILE_PUBLIC_KEY = "publickey.der";
 
     public static RSAPrivateKey PRIVATE_KEY;
 
@@ -45,6 +45,7 @@ public class ReadKeys {
             PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(keyByte);
             PRIVATE_KEY = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(privateKeySpec);
         }catch (Exception e){
+            log.error("Cannot decode private key");
             e.printStackTrace();
         }
     }
@@ -65,7 +66,7 @@ public class ReadKeys {
             X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(keyByte);
             PUBLIC_KEY = KeyFactory.getInstance("RSA").generatePublic(publicKeySpec);
         }catch (Exception e){
-            log.error("Cannot read public key");
+            log.error("Cannot decode public key");
             e.printStackTrace();
         }
     }
