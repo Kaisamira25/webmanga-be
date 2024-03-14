@@ -27,7 +27,7 @@ public class User {
     @Column(name = "user_password",columnDefinition = "varchar(100)",nullable = false)
     private String password;
     @JsonIgnore
-    @Column(name = "user_token",columnDefinition = "nvarchar(1000)",nullable = false)
+    @Column(name = "user_token",columnDefinition = "nvarchar(1000)")
     private String userToken;
     @JsonIgnore
     @Column(name = "user_verify_code",columnDefinition = "varchar(255)", nullable = false)
