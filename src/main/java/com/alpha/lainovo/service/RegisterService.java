@@ -21,10 +21,12 @@ public class RegisterService implements SendMail<User> {
     private final UserService userService;
     private final CreateAndUpdateInterface<Integer, User> createUser;
     private final EmailInterface emailInterface;
+
     @Qualifier("CheckPassword")
     private final CheckStringInterface checkPasswordFormat;
     @Qualifier("CheckEmail")
     private final CheckStringInterface checkEmailFormat;
+
     @Qualifier("EmailVerifyCode")
     private final VerificationCodeManager verificationCodeManager;
     @Value("${email_root}")
