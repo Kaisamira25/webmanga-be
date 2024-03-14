@@ -31,6 +31,7 @@ public class RegisterService implements SendMail<User> {
     private final VerificationCodeManager verificationCodeManager;
     @Value("${email_root}")
     private String email_root;
+
     private final SendMailTemplateService sendMailTemplateService;
     private static final String template_verify_code_register = "templateVerifyCodeRegister";
     private static String message_notification = "Use the code to verify this email: ";

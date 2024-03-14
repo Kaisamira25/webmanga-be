@@ -10,11 +10,11 @@ import java.util.regex.Pattern;
 @Service("CheckEmail")
 @Slf4j
 public class CheckEmail implements CheckStringInterface {
-    private static final String regex_email = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
-
+    private static final String regex_email = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
     @Override
     public boolean isStringValid(String rawEmail) {
-        Pattern pattern = Pattern.compile(regex_email);
+        // alternative to Pattern.CASE_INSENSITIVE is to include a-z interval in your regex
+        Pattern pattern = Pattern.compile(regex_email, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(rawEmail);
         log.info("CheckEmail: {}",rawEmail);
         return matcher.matches();
