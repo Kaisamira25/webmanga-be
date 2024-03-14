@@ -8,13 +8,11 @@ import com.alpha.lainovo.service.ServiceInterface.CreateAndUpdateInterface;
 import com.alpha.lainovo.service.ServiceInterface.EmailInterface;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -29,8 +27,8 @@ public class RegisterController {
             @ApiResponse(description = "Password or email format is not correct", responseCode = "400")
     })
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO){
-        int status = registerService.register(registerDTO);
+    public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO, HttpServletRequest request){
+        int status = registerService.register(registerDTO, request);
         if (status == 0){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new Message(0, "Email or password format is incorrect"));
@@ -40,5 +38,21 @@ public class RegisterController {
         }
         return ResponseEntity.status(HttpStatus.FOUND)
                 .body(new Message(2, "Email already exists"));
+    }
+    @Operation(description = "Verify Account by code",summary = "Verify", responses = {
+            @ApiResponse(description = "Success verify", responseCode = "200"),
+            @ApiResponse(description = "Verification failed", responseCode = "400")
+    })
+    @PostMapping("/verify")
+    public ResponseEntity<?> verify(@RequestParam String otp, HttpServletRequest request){
+        String email = (String) request.getSession().getAttribute("email");
+        boolean isVerified = registerService.verify(email, otp);
+        if (isVerified) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new Message(1, "Verification successfull"));
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new Message(0, "Verification failed"));
+        }
     }
 }

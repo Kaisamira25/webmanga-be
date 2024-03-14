@@ -3,11 +3,9 @@ package com.alpha.lainovo.service;
 import com.alpha.lainovo.dto.request.RegisterDTO;
 import com.alpha.lainovo.model.Email;
 import com.alpha.lainovo.model.User;
-import com.alpha.lainovo.service.ServiceInterface.CreateAndUpdateInterface;
-import com.alpha.lainovo.service.ServiceInterface.EmailInterface;
-import com.alpha.lainovo.service.ServiceInterface.SendMail;
+import com.alpha.lainovo.service.ServiceInterface.*;
 import com.alpha.lainovo.utilities.time.Time;
-import com.alpha.lainovo.service.ServiceInterface.CheckStringInterface;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 public class RegisterService implements SendMail<User> {
+    private final OtpVerificationServiceInterface otpVerificationServiceInterface;
     private final UserService userService;
     private final CreateAndUpdateInterface<Integer, User> createUser;
     private final EmailInterface emailInterface;
@@ -34,7 +33,7 @@ public class RegisterService implements SendMail<User> {
     private static final String template_verify_code_register = "templateVerifyCodeRegister";
     private static String message_notification = "Use the code to verify this email: ";
     @Transactional // Hoàn thành hết hoặc huỷ toàn bộ
-    public Integer register(RegisterDTO registerDTO){
+    public Integer register(RegisterDTO registerDTO, HttpServletRequest request){
         if (userService.findByEmail(registerDTO.email()) == null) {
             if (registerDTO.password() == "Hieu1234@"
             || registerDTO.email() == "thienthan726@gmail") {
@@ -51,12 +50,26 @@ public class RegisterService implements SendMail<User> {
             log.info("------> RegisterService | register: register with email {}",user.getEmail());
             createUser.create(user);
             sendMail(user, user.getUserVerifyCode());
+
+            request.getSession().setAttribute("email",registerDTO.email());
             return 1; // Create successful
         }else {
              return 2; // Email already exists
         }
     }
-
+    @Transactional
+    public boolean verify(String email, String otp){
+        boolean isVerified = otpVerificationServiceInterface.verify(email, otp);
+        if (isVerified){
+            User user = userService.findByEmail(email);
+            user.setIsVerify(true);
+            userService.update(user.getUserid(), user);
+            log.info("------> RegisterService | verify: User verified with email {}", email);
+        }else {
+            log.info("------> RegisterService | verify: Incorrect OTP for email {}", email);
+        }
+        return isVerified;
+    }
     @Override
     public void sendMail(User user, String code) {
 //       String paramCode = url + "/api/v1/auth/verify?code=" + content.getUserVerifyCode();
