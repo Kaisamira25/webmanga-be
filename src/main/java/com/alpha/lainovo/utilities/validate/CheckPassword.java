@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 @Service("CheckPassword")
 @Primary
 public class CheckPassword implements CheckStringInterface {
-    private final String regex_password = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=\\S+$).{8,20}$";
+    private static final String regex_password = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=\\S+$).{8,20}$";
     @Override
     public boolean isStringValid(String rawPassword) {
         Pattern pattern = Pattern.compile(regex_password);

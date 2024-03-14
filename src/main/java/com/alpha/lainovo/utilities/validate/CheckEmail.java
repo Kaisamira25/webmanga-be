@@ -8,11 +8,12 @@ import java.util.regex.Pattern;
 
 @Service("CheckEmail")
 public class CheckEmail implements CheckStringInterface {
-    private static final String email_regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    private static final String regex_email = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+
     @Override
-    public boolean isStringValid(String rawEmail) {
-        Pattern pattern = Pattern.compile(email_regex);
-        Matcher matcher = pattern.matcher(rawEmail);
+    public boolean isStringValid(String rawPassword) {
+        Pattern pattern = Pattern.compile(regex_email);
+        Matcher matcher = pattern.matcher(rawPassword);
         return matcher.matches();
     }
 }

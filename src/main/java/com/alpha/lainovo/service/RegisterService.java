@@ -32,12 +32,13 @@ public class RegisterService implements SendMail<User> {
     private final SendMailTemplateService sendMailTemplateService;
     private static final String template_verify_code_register = "templateVerifyCodeRegister";
     private static String message_notification = "Use the code to verify this email: ";
-    @Transactional // Hoàn thành hết hoặc huỷ toàn bộ
+    @Transactional
     public Integer register(RegisterDTO registerDTO, HttpServletRequest request){
         if (userService.findByEmail(registerDTO.email()) == null) {
-            if (checkPasswordFormat.isStringValid(registerDTO.password()) == false
-            || checkEmailFormat.isStringValid(registerDTO.email()) == false) {
-                log.info("Wrong Format");
+            if (!checkPasswordFormat.isStringValid(registerDTO.password())
+            || !checkEmailFormat.isStringValid(registerDTO.email())) {
+                log.info("Wrong Format {}", checkPasswordFormat.isStringValid(registerDTO.password()));
+                log.info("Wrong Format {}", checkEmailFormat.isStringValid(registerDTO.email()));
                return 0; // Wrong format email or password
             }
             User user = new User();
