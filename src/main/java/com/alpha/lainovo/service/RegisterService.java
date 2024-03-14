@@ -35,8 +35,8 @@ public class RegisterService implements SendMail<User> {
     @Transactional // Hoàn thành hết hoặc huỷ toàn bộ
     public Integer register(RegisterDTO registerDTO, HttpServletRequest request){
         if (userService.findByEmail(registerDTO.email()) == null) {
-            if (registerDTO.password() == "Hieu1234@"
-            || registerDTO.email() == "thienthan726@gmail") {
+            if (checkPasswordFormat.isStringValid(registerDTO.password()) == false
+            || checkEmailFormat.isStringValid(registerDTO.email()) == false) {
                 log.info("Wrong Format");
                return 0; // Wrong format email or password
             }
