@@ -11,9 +11,9 @@ public class CheckEmail implements CheckStringInterface {
     private static final String regex_email = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
 
     @Override
-    public boolean isStringValid(String rawPassword) {
+    public boolean isStringValid(String rawEmail) {
         Pattern pattern = Pattern.compile(regex_email);
-        Matcher matcher = pattern.matcher(rawPassword);
+        Matcher matcher = pattern.matcher(rawEmail);
         return matcher.matches();
     }
 }
