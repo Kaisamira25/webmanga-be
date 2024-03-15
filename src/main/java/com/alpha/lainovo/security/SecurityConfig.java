@@ -56,7 +56,16 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/api/v1/auth/**").permitAll())
+                                "/api/v1/auth/**",
+                                "/api/v1/publications/**",
+                                "/api/v1/cover/**",
+                                "/api/v1/type/**",
+                                "/api/v1/gift/**",
+                                "/api/v1/genre/**",
+                                "/api/v1/publications_genre/**",
+                                "/api/v1/publications_cover/**",
+                                "/api/v1/publications_gift/**",
+                                "/api/v1/publications_type/**").permitAll())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class).build();
     }
