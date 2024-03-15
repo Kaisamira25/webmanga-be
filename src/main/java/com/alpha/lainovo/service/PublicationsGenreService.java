@@ -49,6 +49,8 @@ public class PublicationsGenreService {
             } else {
                 return false;
             }
+
+
         } else {
             log.error(">>>>>>> PublicationsServiceImp:removeGenreFromPublications | No Publications found with id: {} or no Genre found with id: {}", publicationsId, genreId);
         }

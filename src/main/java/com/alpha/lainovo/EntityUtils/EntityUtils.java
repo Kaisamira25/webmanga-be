@@ -21,6 +21,19 @@ public class EntityUtils {
         return Objects.hash(genre.getGenreID());
     }
 
+    /**
+     * Phương thức equals(Genre genre1, Genre genre2): Phương thức này kiểm tra xem hai đối tượng Genre có bằng nhau hay không dựa trên GenreID của chúng.
+     *
+     *  Nếu genre1 và genre2 cùng trỏ đến cùng một đối tượng (cùng một tham chiếu), phương thức sẽ trả về true.
+     *
+     *  Nếu genre1 hoặc genre2 là null, phương thức sẽ trả về false.
+     *
+     *  Cuối cùng, nếu GenreID của genre1 và genre2 bằng nhau, phương thức sẽ trả về true. Nếu không, nó sẽ trả về false.
+     *
+     * Phương thức hashCode(Genre genre): Phương thức này trả về giá trị hash của một đối tượng Genre, được tính toán dựa trên GenreID của nó.
+     * Giá trị hash này được sử dụng khi đối tượng Genre được sử dụng như một khóa trong một HashMap hoặc một phần tử trong một HashSet.
+     */
+
     // For Cover
     public static boolean equals(Cover cover1, Cover cover2) {
         if (cover1 == cover2) return true;
