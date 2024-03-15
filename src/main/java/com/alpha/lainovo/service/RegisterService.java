@@ -8,6 +8,7 @@ import com.alpha.lainovo.utilities.time.Time;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,10 @@ public class RegisterService implements SendMail<User> {
     private final CreateAndUpdateInterface<Integer, User> createUser;
     private final EmailInterface emailInterface;
 
+    @Autowired
     @Qualifier("CheckPassword")
     private final CheckStringInterface checkPasswordFormat;
+    @Autowired
     @Qualifier("CheckEmail")
     private final CheckStringInterface checkEmailFormat;
 
