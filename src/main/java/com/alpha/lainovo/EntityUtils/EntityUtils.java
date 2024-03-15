@@ -31,6 +31,7 @@ public class EntityUtils {
      *  Cuối cùng, nếu GenreID của genre1 và genre2 bằng nhau, phương thức sẽ trả về true. Nếu không, nó sẽ trả về false.
      *
      * Phương thức hashCode(Genre genre): Phương thức này trả về giá trị hash của một đối tượng Genre, được tính toán dựa trên GenreID của nó.
+     *
      * Giá trị hash này được sử dụng khi đối tượng Genre được sử dụng như một khóa trong một HashMap hoặc một phần tử trong một HashSet.
      */
 
