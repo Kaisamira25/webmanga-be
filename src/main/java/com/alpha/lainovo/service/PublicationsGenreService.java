@@ -24,34 +24,30 @@ public class PublicationsGenreService {
 
     @Transactional
     public void addGenreToPublications(Integer publicationsId, Integer genreId) {
-        Publications publications = publicationsRepo.findById(publicationsId).get();
-        Genre genre = genreRepo.findById(genreId).get();
-        publications.getGenres().add(genre);
-        publicationsRepo.save(publications);
+        Optional<Publications> publications = publicationsRepo.findByPublicationsID(publicationsId);
+        Genre genre = genreRepo.findByGenreID(genreId).get();
+        publications.get().getGenres().add(genre);
+        publicationsRepo.save(publications.get());
         log.info(">>>>>> PublicationsGenreServiceImp:addGenreToPublications | Added Genre with id:{} to Publications with id:{} ", genreId, publicationsId);
     }
 
     @Transactional
     public boolean removeGenreFromPublications(Integer publicationsId, Integer genreId) {
-        Optional<Publications> optionalPublications = publicationsRepo.findById(publicationsId);
-        Optional<Genre> optionalGenre = genreRepo.findById(genreId);
+        Optional<Publications> optionalPublications = publicationsRepo.findByPublicationsID(publicationsId);
+        Optional<Genre> optionalGenre = genreRepo.findByGenreID(genreId);
 
         if (optionalPublications.isPresent() && optionalGenre.isPresent()) {
             Publications publications = optionalPublications.get();
             Genre genre = optionalGenre.get();
-
-            Genre genreToRemove = publications.getGenres().stream()
-                    .filter(g -> Objects.equals(g.getGenreID(), genre.getGenreID()))
-                    .findFirst()
-                    .orElse(null);
-
-            if (genreToRemove != null) {
-                publications.getGenres().remove(genreToRemove);
+//            publications.getGenres().forEach(g -> {
+//                System.out.println("Genre ID: " + g.getGenreID());
+//            });
+            if (publications.getGenres().stream().anyMatch(g -> EntityUtils.equals(g, genre))) {
+                publications.getGenres().removeIf(g -> EntityUtils.equals(g, genre));
                 publicationsRepo.save(publications);
-                log.info(">>>>>> PublicationsServiceImp:removeGenreFromPublications | Successfully removed genre with id: {} from publications with id: {}", genreId, publicationsId);
                 return true;
             } else {
-                log.error(">>>>>>> PublicationsServiceImp:removeGenreFromPublications | Failed to remove genre with id: {} from publications with id: {}. Genre not found in the publication's genres.", genreId, publicationsId);
+                return false;
             }
         } else {
             log.error(">>>>>>> PublicationsServiceImp:removeGenreFromPublications | No Publications found with id: {} or no Genre found with id: {}", publicationsId, genreId);

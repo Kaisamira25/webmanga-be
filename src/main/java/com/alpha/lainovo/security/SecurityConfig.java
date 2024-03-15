@@ -65,7 +65,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/publications_genre/**",
                                 "/api/v1/publications_cover/**",
                                 "/api/v1/publications_gift/**",
-                                "/api/v1/publications_type/**").permitAll())
+                                "/api/v1/publications_type/**",
+                                "/api/v1/images/**").permitAll())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class).build();
     }

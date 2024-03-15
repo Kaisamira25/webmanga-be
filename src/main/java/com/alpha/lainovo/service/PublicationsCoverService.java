@@ -1,6 +1,8 @@
 package com.alpha.lainovo.service;
 
+import com.alpha.lainovo.EntityUtils.EntityUtils;
 import com.alpha.lainovo.model.Cover;
+import com.alpha.lainovo.model.Genre;
 import com.alpha.lainovo.model.Publications;
 import com.alpha.lainovo.repository.CoverRepository;
 import com.alpha.lainovo.repository.PublicationsRepository;
@@ -23,41 +25,36 @@ public class PublicationsCoverService {
 
     @Transactional
     public void addCoverToPublications(Integer publicationsId, Integer coverId) {
-        Publications publications = publicationsRepo.findById(publicationsId).get();
-        Cover cover = coverRepo.findById(coverId).get();
+        Publications publications = publicationsRepo.findByPublicationsID(publicationsId).get();
+        Cover cover = coverRepo.findByCoverID(coverId).get();
         publications.getCovers().add(cover);
         publicationsRepo.save(publications);
         log.info(">>>>>> PublicationsCoverServiceImp:addCoverToPublications | Added Cover with id:{} to Publications with id:{} ", coverId, publicationsId);
     }
 
-//    @Transactional
-//    public boolean removeGenreFromPublications(Integer publicationsId, Integer genreId) {
-//        Optional<Publications> optionalPublications = publicationsRepo.findById(publicationsId);
-//        Optional<Genre> optionalGenre = genreRepo.findById(genreId);
-//
-//        if (optionalPublications.isPresent() && optionalGenre.isPresent()) {
-//            Publications publications = optionalPublications.get();
-//            Genre genre = optionalGenre.get();
-//
-//            Genre genreToRemove = publications.getGenres().stream()
-//                    .filter(g -> Objects.equals(g.getGenreID(), genre.getGenreID()))
-//                    .findFirst()
-//                    .orElse(null);
-//
-//            if (genreToRemove != null) {
-//                publications.getGenres().remove(genreToRemove);
-//                publicationsRepo.save(publications);
-//                log.info(">>>>>> PublicationsServiceImp:removeGenreFromPublications | Successfully removed genre with id: {} from publications with id: {}", genreId, publicationsId);
-//                return true;
-//            } else {
-//                log.error(">>>>>>> PublicationsServiceImp:removeGenreFromPublications | Failed to remove genre with id: {} from publications with id: {}. Genre not found in the publication's genres.", genreId, publicationsId);
-//            }
-//        } else {
-//            log.error(">>>>>>> PublicationsServiceImp:removeGenreFromPublications | No Publications found with id: {} or no Genre found with id: {}", publicationsId, genreId);
-//        }
-//        return false;
-//    }
-//
+    @Transactional
+    public boolean removeCoverFromPublications(Integer publicationsId, Integer coverId) {
+        Optional<Publications> optionalPublications = publicationsRepo.findByPublicationsID(publicationsId);
+        Optional<Cover> optionalCover = coverRepo.findByCoverID(coverId);
+
+        if (optionalPublications.isPresent() && optionalCover.isPresent()) {
+            Publications publications = optionalPublications.get();
+            Cover cover = optionalCover.get();
+//            publications.getGenres().forEach(g -> {
+//                System.out.println("Genre ID: " + g.getGenreID());
+//            });
+            if (publications.getCovers().stream().anyMatch(c -> EntityUtils.equals(c, cover))) {
+                publications.getCovers().removeIf(c -> EntityUtils.equals(c, cover));
+                publicationsRepo.save(publications);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            log.error(">>>>>>> PublicationsCoverServiceImp:removeGenreFromPublications | No Publications found with id: {} or no Cover found with id: {}", publicationsId, coverId);
+        }
+        return false;
+    }
 
 
 }

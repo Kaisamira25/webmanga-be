@@ -30,20 +30,20 @@ public class PublicationsCoverController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new Message(1, "Successful", null));
     }
 
-//    @Operation(summary = "Remove a Genre from a Publication", responses = {
-//            @ApiResponse(description = "success", responseCode = "200"),
-//            @ApiResponse(description = "Publication or Genre not found", responseCode = "400")})
-//    @DeleteMapping("/{publicationsId}/genres/{genreId}")
-//    public ResponseEntity<Message> removeGenreFromPublications(@PathVariable Integer publicationsId, @PathVariable Integer genreId) {
-//        boolean status = publicationsGenreService.removeGenreFromPublications(publicationsId, genreId);
-//        if (status) {
-//            log.info(">>>>>> PublicationsController:removeGenreFromPublications | Successfully removed genre with id: {} from publications with id: {}", genreId, publicationsId);
-//            return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Genre removed successfully from the publication"));
-//        } else {
-//            log.error(">>>>>>> PublicationsController:removeGenreFromPublications | Failed to remove genre with id: {} from publications with id: {}. Genre not found in the publication's genres.", genreId, publicationsId);
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "Failed to remove genre, Genre does not exist in the publication"));
-//        }
-//    }
+    @Operation(summary = "Remove a Cover from a Publication", responses = {
+            @ApiResponse(description = "success", responseCode = "200"),
+            @ApiResponse(description = "Publication or Cover not found", responseCode = "400")})
+    @DeleteMapping("/{publicationsId}/covers/{coverId}")
+    public ResponseEntity<Message> removeCoverFromPublications(@PathVariable Integer publicationsId, @PathVariable Integer coverId) {
+        boolean status = publicationsCoverService.removeCoverFromPublications(publicationsId, coverId);
+        if (status) {
+            log.info(">>>>>> PublicationsCoverController:removeCoverFromPublications | Successfully removed Cover with id: {} from Publications with id: {}", coverId, publicationsId);
+            return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Genre removed successfully from the publication"));
+        } else {
+            log.error(">>>>>>> PublicationsCoverController:removeCoverFromPublications | Failed to remove Cover with id: {} from Publications with id: {}. Cover not found in the publication's genres.", coverId, publicationsId);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "Failed to remove Cover, Cover does not exist in the Publication"));
+        }
+    }
 
 
 }

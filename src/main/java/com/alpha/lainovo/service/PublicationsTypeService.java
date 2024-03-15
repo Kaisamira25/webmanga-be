@@ -1,5 +1,6 @@
 package com.alpha.lainovo.service;
 
+import com.alpha.lainovo.EntityUtils.EntityUtils;
 import com.alpha.lainovo.model.Genre;
 import com.alpha.lainovo.model.Publications;
 import com.alpha.lainovo.model.Type;
@@ -25,40 +26,37 @@ public class PublicationsTypeService {
 
     @Transactional
     public void addTypeToPublications(Integer publicationsId, Integer typeId) {
-        Publications publications = publicationsRepo.findById(publicationsId).get();
-        Type type = typeRepo.findById(typeId).get();
+        Publications publications = publicationsRepo.findByPublicationsID(publicationsId).get();
+        Type type = typeRepo.findByTypeID(typeId).get();
         publications.getTypes().add(type);
         publicationsRepo.save(publications);
         log.info(">>>>>> PublicationsTypeServiceImp:addTypeToPublications | Added Type with id:{} to Publications with id:{} ", typeId, publicationsId);
     }
 
-//    @Transactional
-//    public boolean removeGenreFromPublications(Integer publicationsId, Integer genreId) {
-//        Optional<Publications> optionalPublications = publicationsRepo.findById(publicationsId);
-//        Optional<Genre> optionalGenre = genreRepo.findById(genreId);
-//
-//        if (optionalPublications.isPresent() && optionalGenre.isPresent()) {
-//            Publications publications = optionalPublications.get();
-//            Genre genre = optionalGenre.get();
-//
-//            Genre genreToRemove = publications.getGenres().stream()
-//                    .filter(g -> Objects.equals(g.getGenreID(), genre.getGenreID()))
-//                    .findFirst()
-//                    .orElse(null);
-//
-//            if (genreToRemove != null) {
-//                publications.getGenres().remove(genreToRemove);
-//                publicationsRepo.save(publications);
-//                log.info(">>>>>> PublicationsServiceImp:removeGenreFromPublications | Successfully removed genre with id: {} from publications with id: {}", genreId, publicationsId);
-//                return true;
-//            } else {
-//                log.error(">>>>>>> PublicationsServiceImp:removeGenreFromPublications | Failed to remove genre with id: {} from publications with id: {}. Genre not found in the publication's genres.", genreId, publicationsId);
-//            }
-//        } else {
-//            log.error(">>>>>>> PublicationsServiceImp:removeGenreFromPublications | No Publications found with id: {} or no Genre found with id: {}", publicationsId, genreId);
-//        }
-//        return false;
-//    }
+    @Transactional
+    public boolean removeTypeFromPublications(Integer publicationsId, Integer typeId) {
+        Optional<Publications> optionalPublications = publicationsRepo.findByPublicationsID(publicationsId);
+        Optional<Type> optionalType = typeRepo.findByTypeID(typeId);
+
+        if (optionalPublications.isPresent() && optionalType.isPresent()) {
+            Publications publications = optionalPublications.get();
+            Type type = optionalType.get();
+//            publications.getGenres().forEach(g -> {
+//                System.out.println("Genre ID: " + g.getGenreID());
+//            });
+            if (publications.getTypes().stream().anyMatch(t -> EntityUtils.equals(t, type))) {
+                publications.getTypes().removeIf(t -> EntityUtils.equals(t, type));
+                publicationsRepo.save(publications);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            log.error(">>>>>>> PublicationsTypeServiceImp:removeTypeFromPublications | No Publications found with id: {} or no Type found with id: {}", publicationsId, typeId);
+        }
+        return false;
+    }
+
 
 
 

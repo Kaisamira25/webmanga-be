@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface PublicationsRepository extends JpaRepository<Publications, Integer> {
 
     Optional<Publications> findByPublicationsName(String name);
+    Optional <Publications> findByPublicationsID(Integer id);
+
 
 //    List<Publications> findByGenresID(Integer genreID);
 

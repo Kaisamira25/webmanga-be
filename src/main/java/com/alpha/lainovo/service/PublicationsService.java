@@ -22,7 +22,6 @@ public class PublicationsService implements PublicationsInterface {
 
     private final PublicationsRepository publicationsRepo;
 
-    private final GenreRepository genreRepo;
 
     @Override
     @Cacheable(cacheNames = "Publications", key = "'#id'")
@@ -92,5 +91,6 @@ public class PublicationsService implements PublicationsInterface {
         }
         return false;
     }
+
 
 }

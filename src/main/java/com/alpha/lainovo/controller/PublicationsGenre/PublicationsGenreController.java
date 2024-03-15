@@ -37,11 +37,11 @@ public class PublicationsGenreController {
     public ResponseEntity<Message> removeGenreFromPublications(@PathVariable Integer publicationsId, @PathVariable Integer genreId) {
         boolean status = publicationsGenreService.removeGenreFromPublications(publicationsId, genreId);
         if (status) {
-            log.info(">>>>>> PublicationsController:removeGenreFromPublications | Successfully removed genre with id: {} from publications with id: {}", genreId, publicationsId);
-            return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Genre removed successfully from the publication"));
+            log.info(">>>>>> PublicationsController:removeGenreFromPublications | Successfully removed genre with id: {} from Publications with id: {}", genreId, publicationsId);
+            return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Genre removed successfully from the Publication"));
         } else {
-            log.error(">>>>>>> PublicationsController:removeGenreFromPublications | Failed to remove genre with id: {} from publications with id: {}. Genre not found in the publication's genres.", genreId, publicationsId);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "Failed to remove genre, Genre does not exist in the publication"));
+            log.error(">>>>>>> PublicationsController:removeGenreFromPublications | Failed to remove genre with id: {} from Publications with id: {}. Genre not found in the publication's genres.", genreId, publicationsId);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "Failed to remove genre, Genre does not exist in the Publication"));
         }
     }
 
