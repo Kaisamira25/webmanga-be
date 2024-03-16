@@ -55,7 +55,7 @@ public class GenerateToken {
         }catch (Exception e){
             log.error("RefresToken Fail");
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }

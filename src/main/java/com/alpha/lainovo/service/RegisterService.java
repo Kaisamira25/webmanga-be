@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,15 +22,14 @@ public class RegisterService implements SendMail<User> {
     private final OtpVerificationServiceInterface otpVerificationServiceInterface;
     private final UserService userService;
     private final CreateAndUpdateInterface<Integer, User> createUser;
+    private final PasswordEncoder passwordEncoder;
     private final EmailInterface emailInterface;
-
     @Autowired
     @Qualifier("CheckPassword")
     private final CheckStringInterface checkPasswordFormat;
     @Autowired
     @Qualifier("CheckEmail")
     private final CheckStringInterface checkEmailFormat;
-
     @Qualifier("EmailVerifyCode")
     private final VerificationCodeManager verificationCodeManager;
     @Value("${email_root}")
@@ -50,14 +50,13 @@ public class RegisterService implements SendMail<User> {
             User user = new User();
             user.setEmail(registerDTO.email());
             user.setFullName(registerDTO.fullName());
-            user.setPassword(registerDTO.password());
+            user.setPassword(passwordEncoder.encode(registerDTO.password()));
             user.setCreatedAt(Time.getTheTimeRightNow());
             user.setUserVerifyCode(verificationCodeManager.generateCode());
             user.setUserVerifyCodeExpirationTime(verificationCodeManager.codeExpiration());
             log.info("------> RegisterService | register: register with email {}",user.getEmail());
             createUser.create(user);
             sendMail(user, user.getUserVerifyCode());
-
             request.getSession().setAttribute("email",registerDTO.email());
             return 1; // Create successful
         }else {
