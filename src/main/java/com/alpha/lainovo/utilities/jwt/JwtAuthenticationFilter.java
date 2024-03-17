@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,11 +23,15 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private GetUserInfo getUserInfo;
+    @Autowired
     private ValidateToken validateToken;
+    @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
     public static String getAccessTokenFromRequestAuthorization(HttpServletRequest request){
@@ -55,7 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 log.info("Validate token: {}",validateToken.validateToken(jwt));
                 Integer userId = getUserInfo.getUserId(jwt);
                 Optional<User> user = userRepository.findById(userId);
-                if (user != null){
+                if (user.isPresent()){
                     UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.get().getEmail());
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class RegisterController {
     private final RegisterService registerService;
-    private final EmailInterface email;
-    private final CreateAndUpdateInterface<Integer, User> createUser;
+//    private final EmailInterface email;
+//    private final CreateAndUpdateInterface<Integer, User> createUser;
     @Operation(description = "Register account for new user",summary = "Register",responses = {
             @ApiResponse(description = "Success", responseCode = "200"),
             @ApiResponse(description = "Email already exist", responseCode = "302"),

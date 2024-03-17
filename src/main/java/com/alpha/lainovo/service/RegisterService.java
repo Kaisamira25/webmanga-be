@@ -43,8 +43,6 @@ public class RegisterService implements SendMail<User> {
         if (userService.findByEmail(registerDTO.email()) == null) {
             if (!checkPasswordFormat.isStringValid(registerDTO.password())
             || !checkEmailFormat.isStringValid(registerDTO.email())) {
-                log.info("Wrong Format {}", checkPasswordFormat.isStringValid(registerDTO.password()));
-                log.info("Wrong Format {}", checkEmailFormat.isStringValid(registerDTO.email()));
                return 0; // Wrong format email or password
             }
             User user = new User();
@@ -58,6 +56,7 @@ public class RegisterService implements SendMail<User> {
             createUser.create(user);
             sendMail(user, user.getUserVerifyCode());
             request.getSession().setAttribute("email",registerDTO.email());
+            log.info("Save email into session: {}",registerDTO.email());
             return 1; // Create successful
         }else {
              return 2; // Email already exists

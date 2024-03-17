@@ -27,13 +27,13 @@ public class LoginController {
             @ApiResponse(description = "Invalid for the case", responseCode = "400")
     })
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO){
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO, HttpServletRequest request){
         int checkUserLogin = authService.validate(loginDTO);
         if (checkUserLogin == 0){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new Message(0, "User not found, Error login"));
         }else if (checkUserLogin == 1){
-            return ResponseEntity.ok(new Message(1, "Login successfully", authService.login(loginDTO)));
+            return ResponseEntity.ok(new Message(1, "Login successfully", authService.login(loginDTO, request)));
         }else if (checkUserLogin == 2){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new Message(0, "Your email hasn't verify yet"));

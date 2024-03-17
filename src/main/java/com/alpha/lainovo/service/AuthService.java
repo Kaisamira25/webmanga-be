@@ -42,7 +42,7 @@ public class AuthService {
 
     private final CookieService cookieService;
 
-    public Object login(LoginDTO loginDTO){
+    public Object login(LoginDTO loginDTO, HttpServletRequest request){
         log.info("------> Login start working");
 
         Authentication authentication = authenticationManager
@@ -55,7 +55,7 @@ public class AuthService {
             user.setUserToken(generateToken.generateRefreshToken(customUserDetails));
             update.update(user.getUserid(),user);
             String jwt = generateToken.generateAccessToken(customUserDetails);
-
+            request.getSession().setAttribute("email",loginDTO.email());
             Map<String, String> list = new HashMap<>();
             list.put("accessToken", jwt);
             list.put("refreshToken", user.getUserToken());
