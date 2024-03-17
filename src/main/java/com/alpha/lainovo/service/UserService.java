@@ -7,6 +7,8 @@ import com.alpha.lainovo.service.ServiceInterface.UserInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserInterface,CreateAndUpdateInterface<Integer, User> {
@@ -28,6 +30,7 @@ public class UserService implements UserInterface,CreateAndUpdateInterface<Integ
 
     @Override
     public User findById(Integer userId) {
-        return null;
+        Optional<User> user = userRepository.findById(userId);
+        return user.get();
     }
 }

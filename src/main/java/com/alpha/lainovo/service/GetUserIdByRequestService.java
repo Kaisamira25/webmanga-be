@@ -14,7 +14,6 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 @Service
 public class GetUserIdByRequestService {
-//    private final GenerateToken generateToken;
     private final ValidateToken validateToken;
     private final GetUserInfo getUserInfo;
     public Integer getUserIdByRequest(HttpServletRequest request){
@@ -24,7 +23,7 @@ public class GetUserIdByRequestService {
                 return getUserInfo.getUserId(jwt);
             }
         }catch (Exception e){
-            log.error("-------> GetUserIdByRequest: erre fetching userId from JWT token in request: {}",e.getMessage());
+            log.error("-------> GetUserIdByRequest: error fetching userId from JWT token in request: {}",e.getMessage());
             throw new RuntimeException(e);
         }
         return null;

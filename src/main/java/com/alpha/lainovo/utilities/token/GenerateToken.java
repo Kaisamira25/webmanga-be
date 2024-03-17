@@ -28,6 +28,7 @@ public class GenerateToken {
                     .setHeaderParam("typ","JWT")
                     .setHeaderParam("alg","RS256")
                     .claim("role",customUserDetails.getAuthorities())
+                    .claim("userId",customUserDetails.getUserId())
                     .setIssuedAt(now)
                     .setExpiration(dateExpiration)
                     .signWith(SignatureAlgorithm.RS256, ReadKeys.PRIVATE_KEY)

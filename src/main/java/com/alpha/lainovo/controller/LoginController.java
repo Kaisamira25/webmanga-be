@@ -4,6 +4,9 @@ import com.alpha.lainovo.dto.request.LoginDTO;
 import com.alpha.lainovo.dto.response.Message;
 import com.alpha.lainovo.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +43,13 @@ public class LoginController {
     }
     @Operation(description = "Successful logout set refresh_toke to null",
     summary = "Logout",
+    parameters = {
+            @Parameter(in = ParameterIn.HEADER,
+            name = "Authorization",
+            description = "JWT Token",
+            required = true,
+            schema = @Schema(type = "string"))
+    },
     responses = {
             @ApiResponse(description = "Success", responseCode = "200")
     })

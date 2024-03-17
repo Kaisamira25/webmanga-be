@@ -85,7 +85,9 @@ public class AuthService {
     }
     public void logout(HttpServletRequest request){
         Integer userId = getUserIdByRequestService.getUserIdByRequest(request);
+        log.info("UserId: {}",userId);
         User user = userInterface.findById(userId);
+        log.info("User: {}",userInterface.findById(userId));
         user.setUserToken("");
         update.update(userId,user);
     }

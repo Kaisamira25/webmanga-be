@@ -51,8 +51,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         log.info("JwtAuthenticationFilter: doFilterInternal | Start");
         try {
             String jwt = getAccessTokenFromRequestAuthorization(request);
-
             if (StringUtils.hasText(jwt) && validateToken.validateToken(jwt)){
+                log.info("Validate token: {}",validateToken.validateToken(jwt));
                 Integer userId = getUserInfo.getUserId(jwt);
                 Optional<User> user = userRepository.findById(userId);
                 if (user != null){
