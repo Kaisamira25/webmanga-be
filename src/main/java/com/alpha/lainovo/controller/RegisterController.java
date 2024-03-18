@@ -2,10 +2,7 @@ package com.alpha.lainovo.controller;
 
 import com.alpha.lainovo.dto.request.RegisterDTO;
 import com.alpha.lainovo.dto.response.Message;
-import com.alpha.lainovo.model.User;
 import com.alpha.lainovo.service.RegisterService;
-import com.alpha.lainovo.service.ServiceInterface.CreateAndUpdateInterface;
-import com.alpha.lainovo.service.ServiceInterface.EmailInterface;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;

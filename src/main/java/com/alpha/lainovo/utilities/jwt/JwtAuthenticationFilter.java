@@ -1,7 +1,7 @@
 package com.alpha.lainovo.utilities.jwt;
 
-import com.alpha.lainovo.model.User;
-import com.alpha.lainovo.repository.UserRepository;
+import com.alpha.lainovo.model.Customer;
+import com.alpha.lainovo.repository.CustomerRepository;
 import com.alpha.lainovo.utilities.customUserDetails.CustomUserDetailsService;
 import com.alpha.lainovo.utilities.customUserDetails.GetUserInfo;
 import com.alpha.lainovo.utilities.token.ValidateToken;
@@ -9,7 +9,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +25,7 @@ import java.util.Optional;
 //@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
-    private UserRepository userRepository;
+    private CustomerRepository customerRepository;
     @Autowired
     private GetUserInfo getUserInfo;
     @Autowired
@@ -59,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (StringUtils.hasText(jwt) && validateToken.validateToken(jwt)){
                 log.info("Validate token: {}",validateToken.validateToken(jwt));
                 Integer userId = getUserInfo.getUserId(jwt);
-                Optional<User> user = userRepository.findById(userId);
+                Optional<Customer> user = customerRepository.findById(userId);
                 if (user.isPresent()){
                     UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.get().getEmail());
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

@@ -13,6 +13,9 @@ public class ValidateToken {
             Jwts.parser()
                     .setSigningKey(ReadKeys.PUBLIC_KEY)
                     .parseClaimsJws(token);
+            log.info("JWT PARSE: {}",Jwts.parser()
+                    .setSigningKey(ReadKeys.PUBLIC_KEY)
+                    .parseClaimsJws(token));
             return true;
         }catch (Exception e){
             log.error("ValidateToken: validateToken | error: {}", e.getMessage());
