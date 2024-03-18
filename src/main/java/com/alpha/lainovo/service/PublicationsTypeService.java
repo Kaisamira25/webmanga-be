@@ -1,10 +1,8 @@
 package com.alpha.lainovo.service;
 
-import com.alpha.lainovo.EntityUtils.EntityUtils;
-import com.alpha.lainovo.model.Genre;
+import com.alpha.lainovo.entityutils.EntityUtils;
 import com.alpha.lainovo.model.Publications;
 import com.alpha.lainovo.model.Type;
-import com.alpha.lainovo.repository.GenreRepository;
 import com.alpha.lainovo.repository.PublicationsRepository;
 import com.alpha.lainovo.repository.TypeRepository;
 import jakarta.transaction.Transactional;
@@ -12,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service

@@ -1,10 +1,9 @@
-package com.alpha.lainovo.EntityUtils;
+package com.alpha.lainovo.entityutils;
 
 import com.alpha.lainovo.model.Cover;
 import com.alpha.lainovo.model.Genre;
 import com.alpha.lainovo.model.PromotionalGift;
 import com.alpha.lainovo.model.Type;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
