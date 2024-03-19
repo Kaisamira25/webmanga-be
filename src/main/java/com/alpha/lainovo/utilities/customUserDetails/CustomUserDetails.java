@@ -1,6 +1,6 @@
 package com.alpha.lainovo.utilities.customUserDetails;
 
-import com.alpha.lainovo.model.User;
+import com.alpha.lainovo.model.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,13 +23,12 @@ public class CustomUserDetails implements UserDetails {
     private boolean isVerify;
     private List<GrantedAuthority> authorities;
 
-    public CustomUserDetails(User user) {
-        this.email = user.getEmail();
-        this.password = user.getPassword();
-        this.isVerify = user.getIsVerify();
-        this.authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
-                .collect(Collectors.toList());
+    public CustomUserDetails(Customer customer) {
+        this.email = customer.getEmail();
+        this.password = customer.getPassword();
+        this.isVerify = customer.getIsVerify();
+        this.authorities = Arrays.stream(customer.getRole().name().split(","))
+                .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
