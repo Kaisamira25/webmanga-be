@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,7 @@ public class GetPublicationsController {
         List<Publications> list = iPublications.getAllPublications();
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", list));
     }
+
 
     @GetMapping("/{id}")
     @Operation(summary = "Find a Publications with the ID",responses = {
@@ -61,26 +63,33 @@ public class GetPublicationsController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(0, "Publications dose not exist"));
     }
 
-//    @Operation(summary = "Find All PublicationsGenres.",responses = {
-//            @ApiResponse(description = "success", responseCode = "200"),
-//            @ApiResponse(description = "PublicationsGenres not found", responseCode = "404")})
-//    @GetMapping("/genres")
-//    public ResponseEntity<List<PublicationsGenreDTO>> getAllPublicationsGenres() {
-//        List<PublicationsGenreDTO> list = publicationsService.getAllPublicationsGenres();
-//        return ResponseEntity.ok(list);
-//    }
-//
-//    @Operation(summary = "Find all Publications that belong to a Genre .",responses = {
-//            @ApiResponse(description = "success", responseCode = "200"),
-//            @ApiResponse(description = "Genre not found", responseCode = "404")})
-//    @GetMapping("/genres")
-//    public ResponseEntity<?> getPublicationsByGenre(@RequestBody Map<String, Integer> body) {
-//        Integer genreId = body.get("genreId");
-//        try {
-//            List<Publications> list = publicationsService.getPublicationsByGenre(genreId);
-//            return ResponseEntity.ok(list);
-//        } catch (ResponseStatusException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(0, "failed: genre not found", null));
-//        }
-//    }
+    @Operation(summary = "get publications", description = "Get All Pagination Publications ", responses = {
+            @ApiResponse(description = "success", responseCode = "200"), })
+    @GetMapping()
+    public ResponseEntity<Message> getAllPagePublications(
+            @RequestParam(defaultValue = "0", value = "page", required = false) int page,
+            @RequestParam(defaultValue = "9", value = "size", required = false) int size,
+            @RequestParam(defaultValue = "arrivalDay", value = "sortField", required = false) String sortField,
+            @RequestParam(defaultValue = "desc", value = "sortBy", required = false) String sortBy) {
+
+        Page<Publications> pagePublications = publicationsService.getAllPagePublications(page, size, sortField, sortBy);
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", pagePublications));
+    }
+
+    @GetMapping("/best-sellers")
+    @Operation(summary = "Get TOP 9 Best Selling Publications",responses = {
+            @ApiResponse(description = "success", responseCode = "200")})
+    public ResponseEntity<Message> getBestSellerPublications() {
+        List<Publications> bestSellers = publicationsService.getBestSellerPublications();
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", bestSellers));
+    }
+
+    @GetMapping("/new-arrivals")
+    @Operation(summary = "Get TOP 6 New Publications",responses = {
+            @ApiResponse(description = "success", responseCode = "200")})
+    public ResponseEntity<Message> getNewArrivalPublications() {
+        List<Publications> newArrivals = publicationsService.getNewArrivalPublications();
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", newArrivals));
+    }
+
 }

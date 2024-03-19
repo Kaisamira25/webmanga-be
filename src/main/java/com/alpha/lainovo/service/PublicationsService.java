@@ -1,7 +1,6 @@
 package com.alpha.lainovo.service;
 
 import com.alpha.lainovo.model.Publications;
-import com.alpha.lainovo.repository.GenreRepository;
 import com.alpha.lainovo.repository.PublicationsRepository;
 import com.alpha.lainovo.service.ServiceInterface.PublicationsInterface;
 import com.alpha.lainovo.utilities.time.Time;
@@ -9,6 +8,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +24,24 @@ import java.util.Optional;
 public class PublicationsService implements PublicationsInterface {
 
     private final PublicationsRepository publicationsRepo;
+    private final SortService sortService;
 
+    @Override
+    public List<Publications> getBestSellerPublications() {
+        return publicationsRepo.getBestSellerPublications(PageRequest.of(0, 9));
+    }
+
+    @Override
+    public List<Publications> getNewArrivalPublications() {
+        return publicationsRepo.getNewArrivalPublications(PageRequest.of(0, 6));
+    }
+
+    @Override
+    public Page<Publications> getAllPagePublications(int page, int size, String sortField, String sortBy) {
+        Sort sort = sortService.sortBy(sortBy, sortField);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return publicationsRepo.getPagePublications(pageable);
+    }
 
     @Override
     @Cacheable(cacheNames = "Publications", key = "'#id'")
@@ -32,7 +52,7 @@ public class PublicationsService implements PublicationsInterface {
     @Override
     @Cacheable(cacheNames = "Publications", key = "'#publicationsList'")
     public List<Publications> getAllPublications() {
-        return publicationsRepo.findAll();
+        return publicationsRepo.findAll(Sort.by(Sort.Direction.DESC, "arrivalDay"));
     }
 
     @Cacheable(cacheNames = "Publications", key = "'#title'")
