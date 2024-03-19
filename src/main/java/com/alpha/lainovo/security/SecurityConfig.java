@@ -70,7 +70,14 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/api/v1/auth/**").permitAll())
+                                "/api/v1/**")
+                        .permitAll()
+                        .requestMatchers(
+                                "/api/v1/auth/**",
+                                "/api/v1/customer/passwordReset",
+                                "/api/v1/customer/forgotPassword",
+                                "/api/v1/customer/change-password"
+                        ).permitAll())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class).build();
     }

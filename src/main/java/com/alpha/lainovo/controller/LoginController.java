@@ -46,13 +46,6 @@ public class LoginController {
     }
     @Operation(description = "Successful logout set refresh_toke to null",
     summary = "Logout",
-    parameters = {
-            @Parameter(in = ParameterIn.HEADER,
-            name = "Authorization",
-            description = "JWT Token",
-            required = true,
-            schema = @Schema(type = "string"))
-    },
     responses = {
             @ApiResponse(description = "Success", responseCode = "200")
     })
