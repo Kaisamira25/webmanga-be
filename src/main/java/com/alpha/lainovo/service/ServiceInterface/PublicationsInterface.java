@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 import java.util.Optional;
 
-public interface PublicationsInterface extends CreateAndUpdateInterface<Integer, Publications>{
+public interface PublicationsInterface extends ICreateAndUpdateV2<Integer, Publications>{
 
     boolean delete(Integer id);
 

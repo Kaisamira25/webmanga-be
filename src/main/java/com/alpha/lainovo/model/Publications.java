@@ -48,7 +48,7 @@ public class Publications implements Serializable {
     private Date arrivalDay;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "publications")
+    @OneToMany(mappedBy = "publications", cascade = CascadeType.ALL)
     private List<Image> images;
 
     @JsonIgnore
@@ -86,6 +86,5 @@ public class Publications implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "promotional_gift_id")
     )
     private Set<PromotionalGift> gifts = new HashSet<>();
-
 
 }

@@ -7,7 +7,7 @@ import com.alpha.lainovo.model.PromotionalGift;
 import java.util.List;
 import java.util.Optional;
 
-public interface PromotionalGiftInterface extends CreateAndUpdateInterface<Integer, PromotionalGift> {
+public interface PromotionalGiftInterface extends ICreateAndUpdateV2<Integer, PromotionalGift> {
 
     boolean delete(Integer id);
 

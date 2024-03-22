@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +30,19 @@ public class ImageService implements ImageInterface {
 
     @Value("${nameFolder.save.images}")
     private String NAME_FOLDER_TO_SAVE_IMAGE;
+
+
+    @Override
+    @CacheEvict(cacheNames = "image", key = "'#id'", allEntries = true)
+    public Image findById(Integer id) {
+        return imageRepo.findById(id).orElse(null);
+    }
+    @Override
+    @Cacheable(cacheNames = "image", key = "'all'")
+    public List<Image> findAll() {
+        return imageRepo.findAll();
+    }
+
     @Override
     @CachePut(cacheNames = "image", key = "'#id'")
     public Image saveImage(Integer id, RImageDTO imageDTO) {
@@ -98,9 +112,4 @@ public class ImageService implements ImageInterface {
         return false;
     }
 
-    @Override
-    @CacheEvict(cacheNames = "image", key = "'#id'", allEntries = true)
-    public Image findById(Integer id) {
-        return imageRepo.findById(id).orElse(null);
-    }
 }

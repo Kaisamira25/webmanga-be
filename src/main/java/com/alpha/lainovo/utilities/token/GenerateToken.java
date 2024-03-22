@@ -28,6 +28,7 @@ public class GenerateToken {
                     .setHeaderParam("typ","JWT")
                     .setHeaderParam("alg","RS256")
                     .claim("role",customUserDetails.getAuthorities())
+                    .claim("userId",customUserDetails.getUserId())
                     .setIssuedAt(now)
                     .setExpiration(dateExpiration)
                     .signWith(SignatureAlgorithm.RS256, ReadKeys.PRIVATE_KEY)
@@ -55,7 +56,7 @@ public class GenerateToken {
         }catch (Exception e){
             log.error("RefresToken Fail");
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }
