@@ -1,6 +1,7 @@
 package com.alpha.lainovo.repository;
 
 import com.alpha.lainovo.dto.request.PublicationsImageDTO;
+import com.alpha.lainovo.model.Cover;
 import com.alpha.lainovo.model.Publications;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

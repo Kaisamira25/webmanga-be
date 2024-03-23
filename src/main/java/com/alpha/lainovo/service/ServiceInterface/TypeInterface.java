@@ -3,6 +3,7 @@ package com.alpha.lainovo.service.ServiceInterface;
 
 
 import com.alpha.lainovo.dto.request.TypeDTO;
+import com.alpha.lainovo.model.Cover;
 import com.alpha.lainovo.model.Type;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface TypeInterface extends ICreateAndUpdateV2<Integer, Type> {
     List<Type> getAllType();
 
     Optional<Type> findByTypeName(String typeName);
+    List<Type> getTypeListbyType(String type);
 }
