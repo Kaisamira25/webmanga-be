@@ -18,4 +18,5 @@ public interface PromotionalGiftRepository extends JpaRepository<PromotionalGift
 
     List<PromotionalGift> findPromotionalGiftsByPromotionalGiftNameContaining(String string);
 
+
 }
