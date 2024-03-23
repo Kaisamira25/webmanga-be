@@ -6,11 +6,13 @@ import com.alpha.lainovo.service.RegisterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -45,6 +47,7 @@ public class RegisterController {
         String email = (String) request.getSession().getAttribute("email");
         boolean isVerified = registerService.verify(email, otp);
         if (isVerified) {
+            email = "";
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Message(1, "Verification successfull"));
         }else {
