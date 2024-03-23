@@ -59,7 +59,6 @@ public class PromotionalGiftController {
         boolean status = iGift.delete(id);
         if (status) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "deleted successfully"));
-
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "deleted fail, Genres dose not exist"));
 

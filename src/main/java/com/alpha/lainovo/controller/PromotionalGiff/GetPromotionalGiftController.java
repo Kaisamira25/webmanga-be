@@ -45,16 +45,13 @@ public class GetPromotionalGiftController {
 
     }
 
-    @Operation(summary = "Find a PromotionalGift with the given name.",responses = {
+    @Operation(summary = "Find a PromotionalGift with the given name and type.",responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "PromotionalGift not found", responseCode = "404")})
     @GetMapping("/search/{name}")
     public ResponseEntity<Message> getByGiftName(@PathVariable("name") String giftName) {
 
-        PromotionalGift gift = iGift.findByPromotionalGiftName(giftName).orElse(null);
-        if (gift != null) {
+       List<PromotionalGift> gift = iGift.getGiftListbyNameAndType(giftName);
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, " successfully", gift));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(0, "PromotionalGift dose not exist"));
     }
 }

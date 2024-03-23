@@ -1,5 +1,6 @@
 package com.alpha.lainovo.service;
 
+import com.alpha.lainovo.model.Cover;
 import com.alpha.lainovo.model.PromotionalGift;
 import com.alpha.lainovo.repository.PromotionalGiftRepository;
 import com.alpha.lainovo.service.ServiceInterface.PromotionalGiftInterface;
@@ -26,6 +27,11 @@ public class PromotionalGiftService implements PromotionalGiftInterface {
     @Cacheable(cacheNames = "Gift", key = "'#giftList'")
     public List<PromotionalGift> getAllGift() {
         return giftRepo.findAll();
+    }
+
+    @Override
+    public List<PromotionalGift> getGiftListbyNameAndType(String string) {
+        return giftRepo.findPromotionalGiftsByPromotionalGiftNameContaining(string);
     }
 
     @Cacheable(cacheNames = "Gift", key = "'#gift'")
@@ -72,5 +78,6 @@ public class PromotionalGiftService implements PromotionalGiftInterface {
         }
         return false;
     }
+
 
 }

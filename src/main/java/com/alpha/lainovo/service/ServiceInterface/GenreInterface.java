@@ -12,4 +12,6 @@ public interface GenreInterface extends CreateAndUpdateInterface<Integer, Genre>
     Optional<Genre> findByGenre(String genreName);
     Genre getByGenreId(Integer id);
     List<Genre> getAllGenre();
+
+    List<Genre> getGenreListbyGenre(String genre);
 }

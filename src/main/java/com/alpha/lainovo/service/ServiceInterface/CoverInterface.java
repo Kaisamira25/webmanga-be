@@ -1,6 +1,7 @@
 package com.alpha.lainovo.service.ServiceInterface;
 
 import com.alpha.lainovo.model.Cover;
+import com.alpha.lainovo.model.Genre;
 
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface CoverInterface extends CreateAndUpdateInterface<Integer, Cover>
     Cover getByCoverId(Integer id);
     Optional<Cover> findByCoverType(String coverType);
     List<Cover> getAllCover();
+
+    List<Cover> getCoverListbyCover(String cover);
 }

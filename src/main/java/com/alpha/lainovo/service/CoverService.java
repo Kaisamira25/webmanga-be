@@ -1,6 +1,7 @@
 package com.alpha.lainovo.service;
 
 import com.alpha.lainovo.model.Cover;
+import com.alpha.lainovo.model.Genre;
 import com.alpha.lainovo.repository.CoverRepository;
 import com.alpha.lainovo.service.ServiceInterface.CoverInterface;
 import lombok.RequiredArgsConstructor;
@@ -72,7 +73,10 @@ public class CoverService implements CoverInterface {
         }
         return false;
     }
-
+    @Override
+    public List<Cover> getCoverListbyCover(String cover) {
+        return coverRepo.findCoversByCoverTypeContains(cover);
+    }
 
 
 }

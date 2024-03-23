@@ -54,11 +54,9 @@ public class CoverController {
             @ApiResponse(description = "Cover not found", responseCode = "400")})
     @DeleteMapping("/{id}")
     public ResponseEntity<Message> deleteCover(@PathVariable("id") Integer id) {
-
         boolean status = iCover.delete(id);
         if (status) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "deleted successfully"));
-
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "deleted fail, Cover dose not exist"));
 

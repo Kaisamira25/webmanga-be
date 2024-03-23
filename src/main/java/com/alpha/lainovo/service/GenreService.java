@@ -31,6 +31,11 @@ public class GenreService implements GenreInterface {
         return genreRepo.findAll();
     }
 
+    @Override
+    public List<Genre> getGenreListbyGenre(String genre) {
+        return genreRepo.findGenresByGenreContains(genre);
+    }
+
     @Cacheable(cacheNames = "Genre", key = "'#genre'")
     @Override
     public Optional<Genre> findByGenre(String genre) {

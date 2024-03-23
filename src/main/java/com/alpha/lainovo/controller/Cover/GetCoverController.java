@@ -49,10 +49,8 @@ public class GetCoverController {
     @GetMapping("/search/{name}")
     public ResponseEntity<Message> getByCoverType(@PathVariable("name") String coverType) {
 
-        Cover cover = iCover.findByCoverType(coverType).orElse(null);
-        if (cover != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(new Message(1, " successfully", cover));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(0, "Cover dose not exist"));
+        List<Cover> cover = iCover.getCoverListbyCover(coverType);
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, " successfully", cover));
+
     }
 }
