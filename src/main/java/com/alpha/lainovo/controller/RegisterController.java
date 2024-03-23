@@ -8,11 +8,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -45,6 +47,8 @@ public class RegisterController {
     @PostMapping("/verify")
     public ResponseEntity<?> verify(@RequestParam String otp, HttpServletRequest request){
         String email = (String) request.getSession().getAttribute("email");
+        log.info("email: {}",email);
+        request.getSession().removeAttribute("email");
         boolean isVerified = registerService.verify(email, otp);
         if (isVerified) {
             email = "";
@@ -54,5 +58,6 @@ public class RegisterController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new Message(0, "Verification failed"));
         }
+
     }
 }
