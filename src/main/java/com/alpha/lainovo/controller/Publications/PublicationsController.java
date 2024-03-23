@@ -35,7 +35,6 @@ public class PublicationsController {
     public ResponseEntity<Message> createPublications(@RequestBody PublicationsDTO publicationsDTO) {
         Publications publications = modelMapper.map(publicationsDTO, Publications.class);
         publications = (Publications) iPublications.create(publications);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(new Message(1, "successful", publications));
     }
 
