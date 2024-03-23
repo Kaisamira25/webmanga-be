@@ -3,6 +3,8 @@ package com.alpha.lainovo.controller.Images;
 import com.alpha.lainovo.dto.request.RImageDTO;
 import com.alpha.lainovo.dto.response.Message;
 import com.alpha.lainovo.model.Image;
+import com.alpha.lainovo.repository.ImageRepository;
+import com.alpha.lainovo.service.ImageService;
 import com.alpha.lainovo.service.ServiceInterface.ImageInterface;
 import io.swagger.v3.oas.annotations.Operation;
 //import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -16,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/v1/images")
@@ -24,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageController {
 
     private final ImageInterface imageInterface;
+    private final ImageService imageService;
 
     @Operation(summary = "Create Images for Publications", responses = {
             @ApiResponse(description = "success", responseCode = "200")})
@@ -68,5 +73,28 @@ public class ImageController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "Delete fail"));
 
     }
+
+    @GetMapping("/all")
+    @Operation(summary = "Find All Images", responses = {
+            @ApiResponse(description = "success", responseCode = "200")})
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<Message> getAllImages() {
+        List<Image> list = imageService.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", list));
+    }
+
+    @GetMapping("/{imageId}")
+    @Operation(summary = "Find an Image with the ID", responses = {
+            @ApiResponse(description = "success", responseCode = "200"),
+            @ApiResponse(description = "Image not found", responseCode = "404")})
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<Message> getImageById(@PathVariable("imageId") Integer id) {
+        Image image = imageService.findById(id);
+        if (image != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", image));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "Image does not exist"));
+    }
+
 }
 

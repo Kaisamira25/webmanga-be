@@ -1,6 +1,6 @@
 package com.alpha.lainovo.service;
 
-import com.alpha.lainovo.model.User;
+import com.alpha.lainovo.model.Customer;
 import com.alpha.lainovo.service.ServiceInterface.OtpVerificationServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class OtpVerificationService implements OtpVerificationServiceInterface {
-    private final UserService userService;
+    private final CustomerService customerService;
 
     @Override
     public boolean verify(String email, String otp) {
-        User user = userService.findByEmail(email);
-        if (user == null){
+        Customer customer = customerService.findByEmail(email);
+        if (customer == null){
             return false;
         }
-        return user.getUserVerifyCode().equals(otp);
+        return customer.getCustomerEmailVerifyCode().equals(otp);
     }
 }

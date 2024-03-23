@@ -1,17 +1,21 @@
 package com.alpha.lainovo.service;
 
+import com.alpha.lainovo.dto.request.PublicationsImageDTO;
 import com.alpha.lainovo.model.Publications;
-import com.alpha.lainovo.repository.GenreRepository;
 import com.alpha.lainovo.repository.PublicationsRepository;
 import com.alpha.lainovo.service.ServiceInterface.PublicationsInterface;
 import com.alpha.lainovo.utilities.time.Time;
+import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +25,29 @@ import java.util.Optional;
 public class PublicationsService implements PublicationsInterface {
 
     private final PublicationsRepository publicationsRepo;
+    private final SortService sortService;
 
+    @Transactional
+    public List<PublicationsImageDTO> getAllPublicationsWithImage() {
+        return publicationsRepo.getAllPublicationsWithImage();
+    }
+
+    @Override
+    public List<Publications> getBestSellerPublications() {
+        return publicationsRepo.getBestSellerPublications(PageRequest.of(0, 9));
+    }
+
+    @Override
+    public List<Publications> getNewArrivalPublications() {
+        return publicationsRepo.getNewArrivalPublications(PageRequest.of(0, 6));
+    }
+
+    @Override
+    public Page<Publications> getAllPagePublications(int page, int size, String sortField, String sortBy) {
+        Sort sort = sortService.sortBy(sortBy, sortField);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return publicationsRepo.getPagePublications(pageable);
+    }
 
     @Override
     @Cacheable(cacheNames = "Publications", key = "'#id'")
@@ -32,7 +58,7 @@ public class PublicationsService implements PublicationsInterface {
     @Override
     @Cacheable(cacheNames = "Publications", key = "'#publicationsList'")
     public List<Publications> getAllPublications() {
-        return publicationsRepo.findAll();
+        return publicationsRepo.findAll(Sort.by(Sort.Direction.DESC, "arrivalDay"));
     }
 
     @Cacheable(cacheNames = "Publications", key = "'#title'")
@@ -40,6 +66,7 @@ public class PublicationsService implements PublicationsInterface {
     public Optional<Publications> findByName(String name) {
         return publicationsRepo.findByPublicationsName(name);
     }
+
 
     @Override
     public Object create(Publications publicationsDTO) {
