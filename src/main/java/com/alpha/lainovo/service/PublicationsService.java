@@ -27,68 +27,10 @@ public class PublicationsService implements PublicationsInterface {
     private final PublicationsRepository publicationsRepo;
     private final SortService sortService;
 
-//    @Transactional
-//    public List<PublicationsImageDTO> getAllPublicationsWithImage() {
-//        log.info(": {}", publicationsRepo.selectAllPublicationsWithImage());
-//        return publicationsRepo.selectAllPublicationsWithImage();
-//    }
-@PersistenceContext
-private EntityManager entityManager;
-
-    public List<Publications> getAllPublicationsWithImage() {
-        Query query = entityManager.createNativeQuery(
-                "CALL selectPublicationsWithImage()", Publications.class);
-        return query.getResultList();
+    @Transactional
+    public List<PublicationsImageDTO> getAllPublicationsWithImage() {
+        return publicationsRepo.getAllPublicationsWithImage();
     }
-
-//        @PersistenceContext
-//        private EntityManager entityManager;
-//
-//        public List<Object[]> getAllPublicationsWithImage() {
-//            Query query = entityManager.createNativeQuery(
-//                    "SELECT p.*, i.image_url " +
-//                            "FROM Publications p " +
-//                            "INNER JOIN Images i ON p.publications_id = i.publications_id"
-//            );
-//            return query.getResultList();
-//        }
-
-
-//    public Page<Object[]> getAllPagePublicationsWithImage(int page, int size, String sortField, String sortBy) {
-//        Sort sort = sortService.sortBy(sortBy, sortField);
-//        Pageable pageable = PageRequest.of(page, size, sort);
-//        Page<Publications> pagePublications = publicationsRepo.getPagePublications(pageable);
-//        List<Object[]> publicationsWithImage = new ArrayList<>();
-//
-//        for (Publications publication : pagePublications) {
-//            Query query = entityManager.createNativeQuery(
-//                    "SELECT p.*, i.image_url " +
-//                            "FROM Publications p " +
-//                            "INNER JOIN Images i ON p.publications_id = i.publications_id " +
-//                            "WHERE p.publications_id = :publicationsId"
-//            );
-//            query.setParameter("publicationsId", publication.getPublicationsID());
-//            List<Object[]> result = query.getResultList();
-//            publicationsWithImage.addAll(result);
-//        }
-//
-//        return new PageImpl<>(publicationsWithImage, pageable, publicationsWithImage.size());
-//    }
-
-
-//    public List<Object[]> getAllPublicationsWithImage(Integer PublicationsId) {
-//        Query query = entityManager.createNativeQuery(
-//                "SELECT p.*, i.image_url " +
-//                        "FROM Publications p " +
-//                        "INNER JOIN Images i ON p.publications_id = i.publications_id " +
-//                        "WHERE p.publications_id = :PublicationsId"
-//        );
-//        query.setParameter("PublicationsId", PublicationsId);
-//        return query.getResultList();
-//    }
-
-
-
 
     @Override
     public List<Publications> getBestSellerPublications() {

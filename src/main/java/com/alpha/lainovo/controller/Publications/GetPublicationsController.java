@@ -29,15 +29,6 @@ public class GetPublicationsController {
     private final PublicationsInterface iPublications;
     private final PublicationsService publicationsService;
 
-    @GetMapping("/all")
-    @Operation(summary = "Find All Publications With Image",responses = {
-            @ApiResponse(description = "success", responseCode = "200")})
-    public ResponseEntity<?> getAllPublicationsWithImage() {
-        List<Publications> publicationsWithImage = publicationsService.getAllPublicationsWithImage();
-
-        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publicationsWithImage));
-    }
-
 //    @GetMapping("/all")
 //    @Operation(summary = "Find All Publications",responses = {
 //            @ApiResponse(description = "success", responseCode = "200")})
@@ -47,14 +38,14 @@ public class GetPublicationsController {
 //        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", list));
 //    }
 
-//    @GetMapping("/all")
-//    @Operation(summary = "Find All Publications With Image",responses = {
-//            @ApiResponse(description = "success", responseCode = "200")})
-//    public ResponseEntity<List<Object[]>> getAllPublicationsWithImage() {
-//        List<Object[]> publicationsWithImage = publicationsService.getAllPublicationsWithImage();
-//        return new ResponseEntity<>(publicationsWithImage, HttpStatus.OK);
-//
-//    }
+    @GetMapping("/all")
+    @Operation(summary = "Find All Publications With Image",responses = {
+            @ApiResponse(description = "success", responseCode = "200")})
+    public ResponseEntity<?> getAllPublicationsWithImage() {
+        List<PublicationsImageDTO> publicationsWithImage = publicationsService.getAllPublicationsWithImage();
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publicationsWithImage));
+
+    }
 
 
     @GetMapping("/{publicationsId}")

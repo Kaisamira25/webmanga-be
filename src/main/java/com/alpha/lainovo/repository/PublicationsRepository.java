@@ -28,12 +28,9 @@ import java.util.Optional;
         @Query("SELECT p FROM Publications p ORDER BY p.arrivalDay DESC")
         List<Publications> getNewArrivalPublications(Pageable pageable);
 
-//        @Transactional
-//        @Procedure(procedureName = "selectAllPublicationsWithImage")
-//        List<PublicationsImageDTO> selectAllPublicationsWithImage();
-//        @Transactional
-//        @Procedure(name = "selectAllPublicationsWithImage")
-////        @Query(value = "CALL selectAllPublicationsWithImage();", nativeQuery = true)
-//        List<Object[]> selectAllPublicationsWithImage();
+        @Query("SELECT new com.alpha.lainovo.dto.request.PublicationsImageDTO" +
+                "(p.publicationsName,p.unitPrice,p.stock,p.author,p.publisher,p.publicationYear,p.summary,p.arrivalDay, i.imageURL) " +
+                "FROM Publications p JOIN p.images i")
+        List<PublicationsImageDTO> getAllPublicationsWithImage();
 
     }
