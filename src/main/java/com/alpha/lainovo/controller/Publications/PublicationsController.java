@@ -13,7 +13,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -37,7 +40,6 @@ public class PublicationsController {
         publications = (Publications) iPublications.create(publications);
         return ResponseEntity.status(HttpStatus.CREATED).body(new Message(1, "successful", publications));
     }
-
     @Operation(summary = "Update a Publications", description = "When the Publications is successfully updated, the response status code is 200; otherwise, it is 400, accompanied by a corresponding message.", responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Publications not found", responseCode = "400")})
@@ -62,7 +64,6 @@ public class PublicationsController {
         boolean status = iPublications.delete(id);
         if (status) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "deleted successfully"));
-
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "deleted fail, Publications dose not exist"));
 
