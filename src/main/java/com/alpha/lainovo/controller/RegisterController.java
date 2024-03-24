@@ -29,6 +29,7 @@ public class RegisterController {
     })
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO, HttpServletRequest request){
+        request.getSession().setAttribute("email",registerDTO.email());
         int status = registerService.register(registerDTO, request);
         if (status == 0){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -48,12 +49,12 @@ public class RegisterController {
     public ResponseEntity<?> verify(@RequestParam String otp, HttpServletRequest request){
         String email = (String) request.getSession().getAttribute("email");
         log.info("email: {}",email);
-        request.getSession().removeAttribute("email");
+
         boolean isVerified = registerService.verify(email, otp);
         if (isVerified) {
-            email = "";
+            request.getSession().removeAttribute("email");
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new Message(1, "Verification successfull"));
+                    .body(new Message(1, "Verification successful"));
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new Message(0, "Verification failed"));

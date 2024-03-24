@@ -55,7 +55,6 @@ public class RegisterService implements SendMail<Customer> {
             log.info("------> RegisterService | register: register with email {}", customer.getEmail());
             createUser.create(customer);
             sendMail(customer, customer.getCustomerEmailVerifyCode());
-            request.getSession().setAttribute("email",registerDTO.email());
             return 1; // Create successful
         }else {
              return 2; // Email already exists
