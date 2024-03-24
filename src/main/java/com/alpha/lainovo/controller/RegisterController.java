@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class RegisterController {
     private final RegisterService registerService;
+    private final HttpServletRequest request;
 //    private final EmailInterface email;
 //    private final CreateAndUpdateInterface<Integer, User> createUser;
     @Operation(description = "Register account for new user",summary = "Register",responses = {
@@ -29,7 +30,8 @@ public class RegisterController {
     })
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO, HttpServletRequest request){
-        request.getSession().setAttribute("email",registerDTO.email());
+//        request.getSession().setAttribute("email",registerDTO.email());
+
         int status = registerService.register(registerDTO, request);
         if (status == 0){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -46,9 +48,9 @@ public class RegisterController {
             @ApiResponse(description = "Verification failed", responseCode = "400")
     })
     @PostMapping("/verify")
-    public ResponseEntity<?> verify(@RequestParam String otp, HttpServletRequest request){
-        String email = (String) request.getSession().getAttribute("email");
-        log.info("email: {}",email);
+    public ResponseEntity<?> verify(@RequestParam String otp,@RequestParam String email){
+
+        log.info("Email for verify: {}",email);
 
         boolean isVerified = registerService.verify(email, otp);
         if (isVerified) {
