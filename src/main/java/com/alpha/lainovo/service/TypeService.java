@@ -1,6 +1,7 @@
 package com.alpha.lainovo.service;
 
 
+import com.alpha.lainovo.model.Cover;
 import com.alpha.lainovo.model.Type;
 import com.alpha.lainovo.repository.TypeRepository;
 import com.alpha.lainovo.service.ServiceInterface.TypeInterface;
@@ -32,11 +33,6 @@ public class TypeService implements TypeInterface {
         return typeRepo.findAll();
     }
 
-    @Cacheable(cacheNames = "Type", key = "'#type'")
-    @Override
-    public Optional<Type> findByTypeName(String typeName) {
-        return typeRepo.findByTypeName(typeName);
-    }
 
     @Override
     public Object create(Type typeDTO) {
@@ -72,6 +68,9 @@ public class TypeService implements TypeInterface {
         return false;
     }
 
-
+    @Override
+    public List<Type> getTypeListbyType(String type) {
+        return typeRepo.findTypesByTypeNameContains(type);
+    }
 
 }

@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Repository
 public interface PromotionalGiftRepository extends JpaRepository<PromotionalGift, Integer> {
-    Optional<PromotionalGift> findByPromotionalGiftName(String giftName);
 
     Optional<PromotionalGift> findByPromotionalGiftID(Integer id);
 

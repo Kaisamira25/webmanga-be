@@ -12,7 +12,6 @@ public interface PromotionalGiftInterface extends ICreateAndUpdateV2<Integer, Pr
 
     boolean delete(Integer id);
 
-    Optional<PromotionalGift> findByPromotionalGiftName(String giftName);
     PromotionalGift getByGiftId(Integer id);
     List<PromotionalGift> getAllGift();
 //    Optional<PromotionalGift> findById(Integer id);

@@ -49,10 +49,10 @@ public class GetTypeController {
     @GetMapping("/search/{name}")
     public ResponseEntity<Message> getType(@PathVariable("name") String typeName) {
 
-        Type type = iType.findByTypeName(typeName).orElse(null);
-        if (type != null) {
+        List<Type> type = iType.getTypeListbyType(typeName);
+        if (type != null && !type.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, " successfully", type));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(0, "category dose not exist"));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(0, "Type dose not exist"));
     }
 }

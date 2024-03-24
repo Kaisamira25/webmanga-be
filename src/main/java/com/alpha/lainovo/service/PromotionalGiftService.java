@@ -34,11 +34,6 @@ public class PromotionalGiftService implements PromotionalGiftInterface {
         return giftRepo.findPromotionalGiftsByPromotionalGiftNameContaining(string);
     }
 
-    @Cacheable(cacheNames = "Gift", key = "'#gift'")
-    @Override
-    public Optional<PromotionalGift> findByPromotionalGiftName(String gift) {
-        return giftRepo.findByPromotionalGiftName(gift);
-    }
 
 
     private final PromotionalGiftRepository giftRepo;
