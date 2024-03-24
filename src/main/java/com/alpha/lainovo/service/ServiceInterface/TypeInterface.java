@@ -16,6 +16,5 @@ public interface TypeInterface extends ICreateAndUpdateV2<Integer, Type> {
     Type getByTypeId(Integer id);
     List<Type> getAllType();
 
-    Optional<Type> findByTypeName(String typeName);
     List<Type> getTypeListbyType(String type);
 }

@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface CoverRepository extends JpaRepository<Cover, Integer> {
-    Optional<Cover> findByCoverType(String coverType);
 
     Optional<Cover> findByCoverID (Integer id);
 

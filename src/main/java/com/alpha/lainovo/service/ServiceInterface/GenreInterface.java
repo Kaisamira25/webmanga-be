@@ -9,7 +9,6 @@ public interface GenreInterface extends ICreateAndUpdateV2<Integer, Genre> {
 
     boolean delete(Integer id);
 
-    Optional<Genre> findByGenre(String genreName);
     Genre getByGenreId(Integer id);
     List<Genre> getAllGenre();
 

@@ -1,6 +1,7 @@
 package com.alpha.lainovo.service;
 
 import com.alpha.lainovo.model.Genre;
+import com.alpha.lainovo.model.Type;
 import com.alpha.lainovo.repository.GenreRepository;
 import com.alpha.lainovo.service.ServiceInterface.GenreInterface;
 import lombok.RequiredArgsConstructor;
@@ -36,11 +37,7 @@ public class GenreService implements GenreInterface {
         return genreRepo.findGenresByGenreContains(genre);
     }
 
-    @Cacheable(cacheNames = "Genre", key = "'#genre'")
-    @Override
-    public Optional<Genre> findByGenre(String genre) {
-        return genreRepo.findByGenre(genre);
-    }
+
 
     @Override
     public Object create(Genre genreDTO) {

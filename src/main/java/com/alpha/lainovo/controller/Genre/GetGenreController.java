@@ -49,10 +49,9 @@ public class GetGenreController {
             @ApiResponse(description = "Genre not found", responseCode = "404")})
     @GetMapping("/search/{name}")
     public ResponseEntity<Message> getGenreByName(@PathVariable("name") String genresName) {
-        List<Genre> list=iGenre.getGenreListbyGenre(genresName);
-        System.out.println(list.size());
-        if (list != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(new Message(1, " successfully", list));
+        List<Genre> genres=iGenre.getGenreListbyGenre(genresName);
+        if (genres != null && !genres.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(new Message(1, " successfully", genres));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(0, "Genre dose not exist"));
     }

@@ -33,11 +33,6 @@ public class TypeService implements TypeInterface {
         return typeRepo.findAll();
     }
 
-    @Cacheable(cacheNames = "Type", key = "'#type'")
-    @Override
-    public Optional<Type> findByTypeName(String typeName) {
-        return typeRepo.findByTypeName(typeName);
-    }
 
     @Override
     public Object create(Type typeDTO) {

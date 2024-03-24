@@ -50,7 +50,7 @@ public class GetCoverController {
     public ResponseEntity<Message> getByCoverType(@PathVariable("name") String coverType) {
 
         List<Cover> cover = iCover.getCoverListbyCover(coverType);
-        if (cover != null) {
+        if (cover != null && !cover.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, " successfully", cover));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(0, "Cover dose not exist"));

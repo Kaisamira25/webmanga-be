@@ -52,7 +52,7 @@ public class GetPromotionalGiftController {
     public ResponseEntity<Message> getByGiftName(@PathVariable("name") String giftName) {
 
        List<PromotionalGift> gift = iGift.getGiftListbyNameAndType(giftName);
-        if (gift != null) {
+        if (gift != null && !gift.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", gift));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, " PromotionalGift dose not exist"));

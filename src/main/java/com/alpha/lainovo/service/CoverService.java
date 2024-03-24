@@ -33,11 +33,6 @@ public class CoverService implements CoverInterface {
         return coverRepo.findAll();
     }
 
-    @Cacheable(cacheNames = "Cover", key = "'#cover'")
-    @Override
-    public Optional<Cover> findByCoverType(String coverType) {
-        return coverRepo.findByCoverType(coverType);
-    }
 
     @Override
     public Object create(Cover coverDTO) {

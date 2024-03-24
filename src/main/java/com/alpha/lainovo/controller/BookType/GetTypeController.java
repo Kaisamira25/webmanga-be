@@ -50,7 +50,7 @@ public class GetTypeController {
     public ResponseEntity<Message> getType(@PathVariable("name") String typeName) {
 
         List<Type> type = iType.getTypeListbyType(typeName);
-        if (type != null) {
+        if (type != null && !type.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, " successfully", type));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(0, "Type dose not exist"));
