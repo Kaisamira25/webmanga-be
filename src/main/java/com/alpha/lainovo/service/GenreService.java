@@ -1,22 +1,26 @@
 package com.alpha.lainovo.service;
 
 import com.alpha.lainovo.model.Genre;
+import com.alpha.lainovo.model.Publications;
 import com.alpha.lainovo.model.Type;
 import com.alpha.lainovo.repository.GenreRepository;
+import com.alpha.lainovo.repository.PublicationsRepository;
 import com.alpha.lainovo.service.ServiceInterface.GenreInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class GenreService implements GenreInterface {
+    @Autowired
+    private PublicationsRepository publicationsRepository;
 
     private final GenreRepository genreRepo;
 
@@ -71,6 +75,16 @@ public class GenreService implements GenreInterface {
             return true;
         }
         return false;
+    }
+    public Set<Genre> getGenresByPublicationId(Integer publicationId) {
+        Set<Genre> genres = new HashSet<>();
+        Optional<Publications> optionalPublication = publicationsRepository.findById(publicationId);
+
+        if (optionalPublication.isPresent()) {
+            Publications publication = optionalPublication.get();
+            genres = publication.getGenres();
+        }
+        return genres;
     }
 
 }

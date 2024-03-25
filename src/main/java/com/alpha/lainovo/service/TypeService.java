@@ -2,7 +2,9 @@ package com.alpha.lainovo.service;
 
 
 import com.alpha.lainovo.model.Cover;
+import com.alpha.lainovo.model.Publications;
 import com.alpha.lainovo.model.Type;
+import com.alpha.lainovo.repository.PublicationsRepository;
 import com.alpha.lainovo.repository.TypeRepository;
 import com.alpha.lainovo.service.ServiceInterface.TypeInterface;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +13,10 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -20,6 +24,8 @@ import java.util.Optional;
 public class TypeService implements TypeInterface {
 
     private final TypeRepository typeRepo;
+
+    private final PublicationsRepository publicationsRepository;
 
     @Override
     @Cacheable(cacheNames = "Type", key = "'#id'")
@@ -73,4 +79,13 @@ public class TypeService implements TypeInterface {
         return typeRepo.findTypesByTypeNameContains(type);
     }
 
+    public Set<Type> getTypesByPublicationId(Integer publicationId) {
+        Set<Type> types = new HashSet<>();
+        Optional<Publications> optionalPublication = publicationsRepository.findById(publicationId);
+        if (optionalPublication.isPresent()) {
+            Publications publication = optionalPublication.get();
+            types = publication.getTypes();
+        }
+        return types;
+    }
 }

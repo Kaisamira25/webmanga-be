@@ -42,7 +42,7 @@ public class GetPublicationsController {
     @Operation(summary = "Find All Publications With Image",responses = {
             @ApiResponse(description = "success", responseCode = "200")})
     public ResponseEntity<?> getAllPublicationsWithImage() {
-        List<PublicationsImageDTO> publicationsWithImage = publicationsService.getAllPublicationsWithImage();
+        List<Publications> publicationsWithImage = publicationsService.getAllPublications();
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publicationsWithImage));
 
     }

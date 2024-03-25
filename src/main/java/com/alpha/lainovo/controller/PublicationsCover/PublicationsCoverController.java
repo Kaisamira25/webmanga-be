@@ -1,6 +1,10 @@
 package com.alpha.lainovo.controller.PublicationsCover;
 
 import com.alpha.lainovo.dto.response.Message;
+import com.alpha.lainovo.model.Cover;
+import com.alpha.lainovo.model.Genre;
+import com.alpha.lainovo.service.CoverService;
+import com.alpha.lainovo.service.GenreService;
 import com.alpha.lainovo.service.PublicationsCoverService;
 import com.alpha.lainovo.service.PublicationsGenreService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Set;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @Slf4j
@@ -21,12 +28,15 @@ import org.springframework.web.bind.annotation.*;
 public class PublicationsCoverController {
 
     private final PublicationsCoverService publicationsCoverService;
+    private final CoverService coverSer;
 
     @Operation(summary = "Add a Cover from a Publication", responses = {
             @ApiResponse(description = "success", responseCode = "200")})
-    @PostMapping("/{publicationsId}/covers/{coverId}")
-    public ResponseEntity<Message> addCoverToPublications(@PathVariable Integer publicationsId, @PathVariable Integer coverId) {
-        publicationsCoverService.addCoverToPublications(publicationsId, coverId);
+    @PostMapping("/{publicationsId}")
+    public ResponseEntity<Message> addCoverToPublications(@PathVariable Integer publicationsId,  @RequestBody List<Integer> covers) {
+        for(Integer cover:covers){
+            publicationsCoverService.addCoverToPublications(publicationsId,cover);
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(new Message(1, "Successful", null));
     }
 
@@ -44,7 +54,15 @@ public class PublicationsCoverController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "Failed to remove Cover, Cover does not exist in the Publication"));
         }
     }
+    @Operation(summary = "Remove a Genre from a Publication", responses = {
+            @ApiResponse(description = "success", responseCode = "200"),
+            @ApiResponse(description = "Publication or Genre not found", responseCode = "400")})
+    @GetMapping("/{publicationsId}")
+    public ResponseEntity<Message> getAllCoverByID(@PathVariable Integer publicationsId) {
+        Set<Cover> covers = coverSer.getCoverByPublicationId(publicationsId);
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(0, "Successfully",covers ));
 
+    }
 
 }
 

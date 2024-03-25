@@ -2,7 +2,9 @@ package com.alpha.lainovo.service;
 
 import com.alpha.lainovo.model.Cover;
 import com.alpha.lainovo.model.Genre;
+import com.alpha.lainovo.model.Publications;
 import com.alpha.lainovo.repository.CoverRepository;
+import com.alpha.lainovo.repository.PublicationsRepository;
 import com.alpha.lainovo.service.ServiceInterface.CoverInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +13,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -20,6 +24,8 @@ import java.util.Optional;
 public class CoverService implements CoverInterface {
 
     private final CoverRepository coverRepo;
+
+    private final PublicationsRepository publicationsRepository;
 
     @Override
     @Cacheable(cacheNames = "Cover", key = "'#id'")
@@ -73,5 +79,14 @@ public class CoverService implements CoverInterface {
         return coverRepo.findCoversByCoverTypeContains(cover);
     }
 
+    public Set<Cover> getCoverByPublicationId(Integer publicationId) {
+        Set<Cover> covers = new HashSet<>();
+        Optional<Publications> optionalPublication = publicationsRepository.findById(publicationId);
+        if (optionalPublication.isPresent()) {
+            Publications publication = optionalPublication.get();
+            covers = publication.getCovers();
+        }
+        return covers;
+    }
 
 }

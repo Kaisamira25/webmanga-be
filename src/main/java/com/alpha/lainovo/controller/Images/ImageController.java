@@ -67,7 +67,30 @@ public class ImageController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "successful"));
     }
-
+    @Operation(summary = "Create Images for Publications", responses = {
+            @ApiResponse(description = "success", responseCode = "200")})
+//    @PostMapping("/{id}/publications", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @GetMapping("getAll/{id}")
+    public ResponseEntity<Message> createImageForPublications(@PathVariable("id") Integer id){
+        List<Image> list =imageService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "successful",list.get(0)));
+    }
+    @GetMapping("getAllImage/{id}")
+    public ResponseEntity<Message> getImageAll(@PathVariable("id") Integer id){
+        List<Image> list =imageService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "successful",list));
+    }
+    @DeleteMapping("delImage/{id}")
+    public ResponseEntity<Message> delImageAll(@PathVariable Integer id){
+        System.out.println(id);
+//        imageService.delImagebyPublication(id);
+        try {
+          cloud.deleteImage("Lainovo/123/123_0.png");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "successful",imageService.findById(id).size()));
+    }
 
         /**
          * Đây là một phương thức trong một lớp Controller của Spring Boot, được sử dụng để xử lý yêu cầu POST tới đường dẫn `/{id}/publications`, với `id` là một biến động. Phương thức này nhận dữ liệu dưới dạng `MediaType.MULTIPART_FORM_DATA_VALUE`, tức là nó có thể nhận các tệp tin được tải lên.

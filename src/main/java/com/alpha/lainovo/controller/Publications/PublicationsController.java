@@ -49,7 +49,6 @@ public class PublicationsController {
         publications = iPublications.update(id, publications);
         if (publications != null) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "updated successfully", publications));
-
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "updated fail, MangaAndLightNovels dose not exist"));
 

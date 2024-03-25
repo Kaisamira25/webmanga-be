@@ -17,8 +17,11 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -28,8 +31,8 @@ public class ImageService implements ImageInterface {
     private final ImageRepository imageRepo;
 
     @Override
-    public Image findById(Integer id) {
-        return null;
+    public List<Image> findById(Integer id) {
+        return imageRepo.findAllByPublications(repoPublic.findByPublicationsID(id).get());
     }
 
     @Override
@@ -45,6 +48,23 @@ public class ImageService implements ImageInterface {
         System.out.println(image);
         return image;
     }
+    @Transactional
+    public Boolean delImagebyPublication(Integer id){
+        Optional<Publications> optionalPublications = repoPublic.findByPublicationsID(id);
+        if (optionalPublications.isPresent()) {
+            Publications publications = optionalPublications.get();
+            List<Image> images = publications.getImages();
+            System.out.println(images.toString());
+            images.removeIf(image -> {
+                imageRepo.deleteImageByImageID(image.getImageID());
+                return true;
+            });
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     @Override
     public Object create(Image entity) {

@@ -31,27 +31,15 @@ public class PublicationsGenreService {
     }
 
     @Transactional
-    public boolean removeGenreFromPublications(Integer publicationsId, Integer genreId) {
+    public boolean removeGenreFromPublications(Integer publicationsId) {
         Optional<Publications> optionalPublications = publicationsRepo.findByPublicationsID(publicationsId);
-        Optional<Genre> optionalGenre = genreRepo.findByGenreID(genreId);
-
-        if (optionalPublications.isPresent() && optionalGenre.isPresent()) {
+        if (optionalPublications.isPresent() ) {
             Publications publications = optionalPublications.get();
-            Genre genre = optionalGenre.get();
-//            publications.getGenres().forEach(g -> {
-//                System.out.println("Genre ID: " + g.getGenreID());
-//            });
-            if (publications.getGenres().stream().anyMatch(g -> EntityUtils.equals(g, genre))) {
-                publications.getGenres().removeIf(g -> EntityUtils.equals(g, genre));
+                publications.setGenres(null);
                 publicationsRepo.save(publications);
                 return true;
-            } else {
-                return false;
-            }
-
-
         } else {
-            log.error(">>>>>>> PublicationsServiceImp:removeGenreFromPublications | No Publications found with id: {} or no Genre found with id: {}", publicationsId, genreId);
+            log.error(">>>>>>> PublicationsServiceImp:removeGenreFromPublications | No Publications found with id: {}", publicationsId);
         }
         return false;
     }

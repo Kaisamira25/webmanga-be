@@ -2,7 +2,9 @@ package com.alpha.lainovo.service;
 
 import com.alpha.lainovo.model.Cover;
 import com.alpha.lainovo.model.PromotionalGift;
+import com.alpha.lainovo.model.Publications;
 import com.alpha.lainovo.repository.PromotionalGiftRepository;
+import com.alpha.lainovo.repository.PublicationsRepository;
 import com.alpha.lainovo.service.ServiceInterface.PromotionalGiftInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,13 +12,17 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class PromotionalGiftService implements PromotionalGiftInterface {
+    private final PublicationsRepository publicationsRepository;
+
     @Override
     @Cacheable(cacheNames = "Genre", key = "'#id'")
     public PromotionalGift getByGiftId(Integer id) {
@@ -73,6 +79,14 @@ public class PromotionalGiftService implements PromotionalGiftInterface {
         }
         return false;
     }
-
+    public Set<PromotionalGift> getGiftByPublicationId(Integer publicationId) {
+        Set<PromotionalGift> gifts = new HashSet<>();
+        Optional<Publications> optionalPublication = publicationsRepository.findById(publicationId);
+        if (optionalPublication.isPresent()) {
+            Publications publication = optionalPublication.get();
+            gifts = publication.getGifts();
+        }
+        return gifts;
+    }
 
 }

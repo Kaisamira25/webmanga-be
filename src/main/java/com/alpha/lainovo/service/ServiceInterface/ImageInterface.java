@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface ImageInterface extends ICreateAndUpdateV2<Integer, Image>{
 
-    Image findById (Integer id);
+    List<Image> findById (Integer id);
     List<Image> findAll();
 
 
