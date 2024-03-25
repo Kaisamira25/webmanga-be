@@ -10,7 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class PublicationsDTO {
     private String publicationsName;
-    private Float unitPrice;
+    private Float unitPrice;    
     private Integer stock;
     private String author;
     private String publisher;
