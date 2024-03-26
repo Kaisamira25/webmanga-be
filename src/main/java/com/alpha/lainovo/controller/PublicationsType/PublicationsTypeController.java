@@ -43,14 +43,12 @@ public class PublicationsTypeController {
     @Operation(summary = "Remove a Type from a Publication", responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Publication or Type not found", responseCode = "400")})
-    @DeleteMapping("/{publicationsId}/types/{typeId}")
-    public ResponseEntity<Message> removeGenreFromPublications(@PathVariable Integer publicationsId, @PathVariable Integer typeId) {
-        boolean status = publicationsTypeService.removeTypeFromPublications(publicationsId, typeId);
+    @DeleteMapping("/{publicationsId}")
+    public ResponseEntity<Message> removeGenreFromPublications(@PathVariable Integer publicationsId) {
+        boolean status = publicationsTypeService.removeTypeFromPublications(publicationsId);
         if (status) {
-            log.info(">>>>>> PublicationsTypeController:removeTypeFromPublications | Successfully removed Type with id: {} from Publications with id: {}", typeId, publicationsId);
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Genre removed successfully from the publication"));
         } else {
-            log.error(">>>>>>> PublicationsTypeController:removeTypeFromPublications | Failed to remove Type with id: {} from Publications with id: {}. Genre not found in the publication's genres.", typeId, publicationsId);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "Failed to remove Type, Type does not exist in the Publication"));
         }
     }

@@ -42,7 +42,6 @@ public class TypeController {
         type = iType.update(id, type);
         if (type != null) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "updated successfully", type));
-
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "updated fail, Type dose not exist"));
 
@@ -53,11 +52,9 @@ public class TypeController {
             @ApiResponse(description = "Type not found", responseCode = "400")})
     @DeleteMapping("/{id}")
     public ResponseEntity<Message> deleteType(@PathVariable("id") Integer id) {
-
         boolean status = iType.delete(id);
         if (status) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "deleted successfully"));
-
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "deleted fail, Type dose not exist"));
 

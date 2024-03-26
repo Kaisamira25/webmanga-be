@@ -13,7 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-;
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/v1/gift")
@@ -54,13 +55,11 @@ public class PromotionalGiftController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "PromotionalGift not found", responseCode = "400")})
     @DeleteMapping("/{id}")
-    public ResponseEntity<Message> deleteGift(@PathVariable("id") Integer id) {
-
-        boolean status = iGift.delete(id);
-        if (status) {
-            return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "deleted successfully"));
+    public ResponseEntity<Message> deleteGift(@RequestBody List<Integer> id) {
+        for(Integer i:id){
+            boolean status = iGift.delete(i);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "deleted fail, Genres dose not exist"));
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(0, "delete sucessfull"));
 
     }
 }

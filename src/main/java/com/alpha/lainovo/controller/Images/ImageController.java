@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 
@@ -50,19 +54,30 @@ public class ImageController {
         Publications publications = iPublications.getByPublicationsId(id);
         for (int i = 0; i < images.size(); i++) {
             String base64String = images.get(i);
-            String fileName = publications.getPublicationsName()+"_" + i + ".png"; // Tên tệp hình ảnh, bạn có thể tùy chỉnh tên tệp theo nhu cầu
+            String fileName = publications.getPublicationsName().substring(0,20).trim()+"_" + i +".png"; // Tên tệp hình ảnh, bạn có thể tùy chỉnh tên tệp theo nhu cầu
+            String pubName=publications.getPublicationsName();
+            int lastDotIndex = pubName.length();
+
             // Giải mã dữ liệu base64
             byte[] decodedBytes = Base64.getDecoder().decode(base64String.split(",")[1]);
             // Lưu hình ảnh vào thư mục resources/static/images
             String filePath="src/main/resources/static/images/"+fileName;
             try (FileOutputStream fos = new FileOutputStream(filePath)) {
                 fos.write(decodedBytes);
-                String url=cloud.uploadImage(filePath,"public_id","Lainovo/"+publications.getPublicationsName()+"/"+fileName);
+                String url=cloud.uploadImage(filePath,"public_id","Lainovo/"+pubName.substring(0,20).trim()+pubName.substring(lastDotIndex-5)+"/"+fileName);
+                System.out.println(url);
                 RImageDTO image=new RImageDTO(url,id);
                 imageService.createImage(image);
             } catch (Exception e) {
                 e.printStackTrace();
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Message(-1, "Error saving images"));
+            }
+            String imagesDirectoryPath = "src/main/resources/static/images";
+            try {
+                FileUtils.cleanDirectory(new File(imagesDirectoryPath));
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Message(-1, "Error cleaning images directory"));
             }
         }
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "successful"));
@@ -81,15 +96,9 @@ public class ImageController {
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "successful",list));
     }
     @DeleteMapping("delImage/{id}")
-    public ResponseEntity<Message> delImageAll(@PathVariable Integer id){
-        System.out.println(id);
-//        imageService.delImagebyPublication(id);
-        try {
-          cloud.deleteImage("Lainovo/123/123_0.png");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "successful",imageService.findById(id).size()));
+    public ResponseEntity<Message> delImageAll(@PathVariable Integer id) throws Exception {
+        imageService.delImagebyPublication(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "successful"));
     }
 
         /**
