@@ -3,7 +3,7 @@ package com.alpha.lainovo.utilities.jwt;
 import com.alpha.lainovo.model.Customer;
 import com.alpha.lainovo.repository.CustomerRepository;
 import com.alpha.lainovo.utilities.customUserDetails.CustomUserDetailsService;
-import com.alpha.lainovo.utilities.customUserDetails.GetUserInfo;
+import com.alpha.lainovo.utilities.customUserDetails.GetCustomerInfo;
 import com.alpha.lainovo.utilities.token.ValidateToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
-    private GetUserInfo getUserInfo;
+    private GetCustomerInfo getCustomerInfo;
     @Autowired
     private ValidateToken validateToken;
     @Autowired
@@ -56,10 +56,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = getAccessTokenFromRequestAuthorization(request);
             if (StringUtils.hasText(jwt) && validateToken.validateToken(jwt)){
                 log.info("Validate token: {}",validateToken.validateToken(jwt));
-                Integer userId = getUserInfo.getUserId(jwt);
-                Optional<Customer> user = customerRepository.findById(userId);
-                if (user.isPresent()){
-                    UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.get().getEmail());
+                Integer customerId = getCustomerInfo.getCustomerId(jwt);
+                log.info("customerId: {}",customerId);
+                Optional<Customer> customer = customerRepository.findById(customerId);
+                if (customer.isPresent()){
+                    UserDetails userDetails = customUserDetailsService.loadUserByUsername(customer.get().getEmail());
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
