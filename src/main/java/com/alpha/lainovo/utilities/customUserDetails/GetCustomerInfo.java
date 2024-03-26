@@ -9,16 +9,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class GetUserInfo {
-    public Integer getUserId(String token){
+public class GetCustomerInfo {
+    public Integer getCustomerId(String token){
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey(ReadKeys.PUBLIC_KEY)
                     .parseClaimsJws(token)
                     .getBody();
-            return claims.get("userId", Integer.class);
+            return claims.get("customerId", Integer.class);
         }catch (Exception e) {
-            log.error("GetUserIno: getUserId | error: {}",e.getMessage());
+            log.error("GetCustomerIno: getCustomerId | error: {}",e.getMessage());
             e.printStackTrace();
         }
         return null;
