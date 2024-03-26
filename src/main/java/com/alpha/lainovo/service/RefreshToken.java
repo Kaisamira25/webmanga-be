@@ -37,12 +37,12 @@ public class RefreshToken {
         if (customer != null){
             if (!validateToken.validateToken(jwt)) {
                 customer.setRefreshToken(null);
-                update.update(customer.getCustomerid(), customer);
+                update.update(customer.getCustomerId(), customer);
                 log.error("RefreshToken: generateToken | Refresh Token expired");
                 return "1";
             }
 
-            CustomUserDetails customUserDetails = new CustomUserDetails(customer.getCustomerid(),
+            CustomUserDetails customUserDetails = new CustomUserDetails(customer.getCustomerId(),
                     customer.getEmail(),
                     customer.getPassword(),
                     true,

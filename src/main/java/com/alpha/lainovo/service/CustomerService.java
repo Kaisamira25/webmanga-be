@@ -70,7 +70,7 @@ public class CustomerService implements CustomerInterface,CreateAndUpdateInterfa
 
     @Override
     public int changePassword(ChangePasswordDTO changePasswordDTO, HttpServletRequest request) {
-        Integer id = getCustomerIdByRequestService.getUserIdByRequest(request);
+        Integer id = getCustomerIdByRequestService.getCustomerIdByRequest(request);
 
         Customer customer = customerRepository.findById(id).orElseThrow();
 
@@ -84,7 +84,7 @@ public class CustomerService implements CustomerInterface,CreateAndUpdateInterfa
                 return 1;
             }
             customer.setPassword(encoder.encode(changePasswordDTO.newPassword()));
-            update(customer.getCustomerid(), customer);
+            update(customer.getCustomerId(), customer);
             log.info("------> CustomerService: changePassword | change password successfully");
             return 2;
         }
@@ -95,7 +95,7 @@ public class CustomerService implements CustomerInterface,CreateAndUpdateInterfa
         Customer customer = findByEmail(emailCustomer);
         customer.setCustomerResetPasswordCode(code);
         customer.setCustomerResetPasswordCodeExpiration(verificationCodeManager.codeExpiration());
-        update(customer.getCustomerid(),customer);
+        update(customer.getCustomerId(),customer);
         Email email = new Email();
         email.setFrom(EMAIL_ROOT);
         email.setTo(customer.getEmail());

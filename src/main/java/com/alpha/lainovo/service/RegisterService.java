@@ -67,7 +67,7 @@ public class RegisterService implements SendMail<Customer> {
         if (isVerified){
             Customer customer = customerService.findByEmail(email);
             customer.setIsVerify(true);
-            customerService.update(customer.getCustomerid(), customer);
+            customerService.update(customer.getCustomerId(), customer);
             log.info("------> RegisterService | verify: User verified with email {}", email);
         }else {
             log.info("------> RegisterService | verify: Incorrect OTP for email {}", email);

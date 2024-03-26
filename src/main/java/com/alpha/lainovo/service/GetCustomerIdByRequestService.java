@@ -15,14 +15,14 @@ import org.springframework.util.StringUtils;
 public class GetCustomerIdByRequestService {
     private final ValidateToken validateToken;
     private final GetCustomerInfo getCustomerInfo;
-    public Integer getUserIdByRequest(HttpServletRequest request){
+    public Integer getCustomerIdByRequest(HttpServletRequest request){
         try {
             String jwt = JwtAuthenticationFilter.getAccessTokenFromRequestAuthorization(request);
             if (StringUtils.hasText(jwt) && validateToken.validateToken(jwt)) {
                 return getCustomerInfo.getCustomerId(jwt);
             }
         }catch (Exception e){
-            log.error("-------> GetUserIdByRequest: error fetching userId from JWT token in request: {}",e.getMessage());
+            log.error("-------> GetCustomerIdByRequest: error fetching customerId from JWT token in request: {}",e.getMessage());
             throw new RuntimeException(e);
         }
         return null;

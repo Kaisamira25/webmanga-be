@@ -50,9 +50,9 @@ public class AuthService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
             Customer customer = customerInterface.findByEmail(customUserDetails.getEmail());
-            customUserDetails.setUserId(customer.getCustomerid());
+            customUserDetails.setUserId(customer.getCustomerId());
             customer.setRefreshToken(generateToken.generateRefreshToken(customUserDetails));
-            update.update(customer.getCustomerid(), customer);
+            update.update(customer.getCustomerId(), customer);
             String jwt = generateToken.generateAccessToken(customUserDetails);
             request.getSession().setAttribute("email",loginDTO.email());
             Map<String, String> list = new HashMap<>();
@@ -86,7 +86,7 @@ public class AuthService {
         return 4;
     }
     public void logout(HttpServletRequest request){
-        Integer userId = getCustomerIdByRequestService.getUserIdByRequest(request);
+        Integer userId = getCustomerIdByRequestService.getCustomerIdByRequest(request);
         Customer customer = customerInterface.findById(userId);
         customer.setRefreshToken("");
         update.update(userId, customer);
