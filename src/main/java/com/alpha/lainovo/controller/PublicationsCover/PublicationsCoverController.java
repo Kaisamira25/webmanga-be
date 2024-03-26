@@ -43,14 +43,12 @@ public class PublicationsCoverController {
     @Operation(summary = "Remove a Cover from a Publication", responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Publication or Cover not found", responseCode = "400")})
-    @DeleteMapping("/{publicationsId}/covers/{coverId}")
-    public ResponseEntity<Message> removeCoverFromPublications(@PathVariable Integer publicationsId, @PathVariable Integer coverId) {
-        boolean status = publicationsCoverService.removeCoverFromPublications(publicationsId, coverId);
+    @DeleteMapping("/{publicationsId}")
+    public ResponseEntity<Message> removeCoverFromPublications(@PathVariable Integer publicationsId) {
+        boolean status = publicationsCoverService.removeCoverFromPublications(publicationsId);
         if (status) {
-            log.info(">>>>>> PublicationsCoverController:removeCoverFromPublications | Successfully removed Cover with id: {} from Publications with id: {}", coverId, publicationsId);
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Genre removed successfully from the publication"));
         } else {
-            log.error(">>>>>>> PublicationsCoverController:removeCoverFromPublications | Failed to remove Cover with id: {} from Publications with id: {}. Cover not found in the publication's genres.", coverId, publicationsId);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "Failed to remove Cover, Cover does not exist in the Publication"));
         }
     }

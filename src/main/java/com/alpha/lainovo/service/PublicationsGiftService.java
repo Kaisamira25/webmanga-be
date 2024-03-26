@@ -31,27 +31,16 @@ public class PublicationsGiftService {
     }
 
     @Transactional
-    public boolean removeGiftFromPublications(Integer publicationsId, Integer giftId) {
+    public boolean removeGiftFromPublications(Integer publicationsId) {
         Optional<Publications> optionalPublications = publicationsRepo.findByPublicationsID(publicationsId);
-        Optional<PromotionalGift> optionalGift = giftRepo.findByPromotionalGiftID(giftId);
-
-        if (optionalPublications.isPresent() && optionalGift.isPresent()) {
+        if (optionalPublications.isPresent()) {
             Publications publications = optionalPublications.get();
-            PromotionalGift gift = optionalGift.get();
-//            publications.getGenres().forEach(g -> {
-//                System.out.println("Genre ID: " + g.getGenreID());
-//            });
-            if (publications.getGifts().stream().anyMatch(t -> EntityUtils.equals(t, gift))) {
-                publications.getGifts().removeIf(t -> EntityUtils.equals(t, gift));
+                publications.setGifts(null);
                 publicationsRepo.save(publications);
                 return true;
-            } else {
-                return false;
-            }
         } else {
-            log.error(">>>>>>> PublicationsGiftServiceImp:removeGiftFromPublications | No Publications found with id: {} or no Gift found with id: {}", publicationsId, giftId);
+            return false;
         }
-        return false;
     }
 
 

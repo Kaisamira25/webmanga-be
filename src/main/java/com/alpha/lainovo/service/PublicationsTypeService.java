@@ -31,27 +31,17 @@ public class PublicationsTypeService {
     }
 
     @Transactional
-    public boolean removeTypeFromPublications(Integer publicationsId, Integer typeId) {
+    public boolean removeTypeFromPublications(Integer publicationsId) {
         Optional<Publications> optionalPublications = publicationsRepo.findByPublicationsID(publicationsId);
-        Optional<Type> optionalType = typeRepo.findByTypeID(typeId);
-
-        if (optionalPublications.isPresent() && optionalType.isPresent()) {
+        if (optionalPublications.isPresent() ) {
             Publications publications = optionalPublications.get();
-            Type type = optionalType.get();
-//            publications.getGenres().forEach(g -> {
-//                System.out.println("Genre ID: " + g.getGenreID());
-//            });
-            if (publications.getTypes().stream().anyMatch(t -> EntityUtils.equals(t, type))) {
-                publications.getTypes().removeIf(t -> EntityUtils.equals(t, type));
-                publicationsRepo.save(publications);
-                return true;
-            } else {
-                return false;
-            }
+            publications.setTypes(null);
+            publicationsRepo.save(publications);
+            return true;
         } else {
-            log.error(">>>>>>> PublicationsTypeServiceImp:removeTypeFromPublications | No Publications found with id: {} or no Type found with id: {}", publicationsId, typeId);
+            return false;
         }
-        return false;
+
     }
 
 

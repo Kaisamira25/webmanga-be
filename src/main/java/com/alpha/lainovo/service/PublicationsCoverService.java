@@ -31,25 +31,16 @@ public class PublicationsCoverService {
     }
 
     @Transactional
-    public boolean removeCoverFromPublications(Integer publicationsId, Integer coverId) {
+    public boolean removeCoverFromPublications(Integer publicationsId) {
         Optional<Publications> optionalPublications = publicationsRepo.findByPublicationsID(publicationsId);
-        Optional<Cover> optionalCover = coverRepo.findByCoverID(coverId);
 
-        if (optionalPublications.isPresent() && optionalCover.isPresent()) {
+        if (optionalPublications.isPresent() ) {
             Publications publications = optionalPublications.get();
-            Cover cover = optionalCover.get();
-//            publications.getGenres().forEach(g -> {
-//                System.out.println("Genre ID: " + g.getGenreID());
-//            });
-            if (publications.getCovers().stream().anyMatch(c -> EntityUtils.equals(c, cover))) {
-                publications.getCovers().removeIf(c -> EntityUtils.equals(c, cover));
+            publications.setCovers(null);
                 publicationsRepo.save(publications);
                 return true;
-            } else {
-                return false;
-            }
         } else {
-            log.error(">>>>>>> PublicationsCoverServiceImp:removeGenreFromPublications | No Publications found with id: {} or no Cover found with id: {}", publicationsId, coverId);
+            log.error(">>>>>>> PublicationsCoverServiceImp:removeGenreFromPublications | No Publications found with id: {}", publicationsId);
         }
         return false;
     }
