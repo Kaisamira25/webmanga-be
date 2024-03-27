@@ -29,22 +29,22 @@ public class GetPublicationsController {
     private final PublicationsInterface iPublications;
     private final PublicationsService publicationsService;
 
-//    @GetMapping("/all")
-//    @Operation(summary = "Find All Publications",responses = {
-//            @ApiResponse(description = "success", responseCode = "200")})
-//    @SecurityRequirement(name = "bearerAuth")
-//    public ResponseEntity<Message> getAllListPublications() {
-//        List<Publications> list = iPublications.getAllPublications();
-//        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", list));
-//    }
-
     @GetMapping("/all")
+    @Operation(summary = "Find All Publications",responses = {
+            @ApiResponse(description = "success", responseCode = "200")})
+    public ResponseEntity<?> getAllPublications() {
+        List<Publications> publications = publicationsService.getAllPublications();
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publications));
+    }
+
+    @GetMapping("/all/images")
     @Operation(summary = "Find All Publications With Image",responses = {
             @ApiResponse(description = "success", responseCode = "200")})
     public ResponseEntity<?> getAllPublicationsWithImage() {
-        List<Publications> publicationsWithImage = publicationsService.getAllPublications();
+        List<PublicationsImageDTO> publicationsWithImage = publicationsService.getAllPublicationsWithImage();
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publicationsWithImage));
     }
+
 
 
     @GetMapping("/{publicationsId}")
@@ -74,48 +74,33 @@ public class GetPublicationsController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(0, "Publications dose not exist"));
     }
 
-    @Operation(summary = "get publications", description = "Get All Pagination Publications ", responses = {
+    @GetMapping("/pagination")
+    @Operation(summary = "get publications", description = "Get All Pagination Publications with Images", responses = {
             @ApiResponse(description = "success", responseCode = "200"), })
-    @GetMapping()
-    public ResponseEntity<Message> getAllPagePublications(
+    public ResponseEntity<Message> getAllPagePublicationsWithImage(
             @RequestParam(defaultValue = "0", value = "page", required = false) int page,
             @RequestParam(defaultValue = "9", value = "size", required = false) int size,
             @RequestParam(defaultValue = "arrivalDay", value = "sortField", required = false) String sortField,
             @RequestParam(defaultValue = "desc", value = "sortBy", required = false) String sortBy) {
 
-        Page<Publications> pagePublications = publicationsService.getAllPagePublications(page, size, sortField, sortBy);
+        Page<PublicationsImageDTO> pagePublications = publicationsService.getAllPagePublicationsWithImage(page, size, sortField, sortBy);
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", pagePublications));
     }
 
     @GetMapping("/best-sellers")
-    @Operation(summary = "Get TOP 9 Best Selling Publications",responses = {
+    @Operation(summary = "Get TOP 4 Best Selling Publications with Images",responses = {
             @ApiResponse(description = "success", responseCode = "200")})
-    public ResponseEntity<Message> getBestSellerPublications() {
-        List<Publications> bestSellers = publicationsService.getBestSellerPublications();
+    public ResponseEntity<Message> getBestSellerPublicationsWithImage() {
+        List<PublicationsImageDTO> bestSellers = publicationsService.getBestSellerPublicationsWithImage();
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", bestSellers));
     }
 
     @GetMapping("/new-arrivals")
-    @Operation(summary = "Get TOP 6 New Publications",responses = {
+    @Operation(summary = "Get TOP 4 New Publications with Images",responses = {
             @ApiResponse(description = "success", responseCode = "200")})
-    public ResponseEntity<Message> getNewArrivalPublications() {
-        List<Publications> newArrivals = publicationsService.getNewArrivalPublications();
+    public ResponseEntity<Message> getNewArrivalPublicationsWithImage() {
+        List<PublicationsImageDTO> newArrivals = publicationsService.getNewArrivalPublicationsWithImage();
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", newArrivals));
     }
-
-//    @Operation(summary = "get all publications with images", description = "Get All Pagination Publications With Images", responses = {
-//            @ApiResponse(description = "success", responseCode = "200"),
-//    })
-//    @GetMapping("/with-image")
-//    public ResponseEntity<Message> getAllPagePublicationsWithImage(
-//            @RequestParam(defaultValue = "0", value = "page", required = false) int page,
-//            @RequestParam(defaultValue = "9", value = "size", required = false) int size,
-//            @RequestParam(defaultValue = "arrivalDay", value = "sortField", required = false) String sortField,
-//            @RequestParam(defaultValue = "desc", value = "sortBy", required = false) String sortBy) {
-//
-//        Page<Object[]> pagePublicationsWithImage = publicationsService.getAllPagePublicationsWithImage(page, size, sortField, sortBy);
-//        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", pagePublicationsWithImage));
-//    }
-
 
 }

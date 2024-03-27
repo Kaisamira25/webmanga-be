@@ -27,26 +27,30 @@ public class PublicationsService implements PublicationsInterface {
     private final PublicationsRepository publicationsRepo;
     private final SortService sortService;
 
+    // Get ALL Publications with Image
     @Transactional
     public List<PublicationsImageDTO> getAllPublicationsWithImage() {
         return publicationsRepo.getAllPublicationsWithImage();
     }
 
+    // Get ALL Publications BEST SELLER with Image
     @Override
-    public List<Publications> getBestSellerPublications() {
-        return publicationsRepo.getBestSellerPublications(PageRequest.of(0, 9));
+    public List<PublicationsImageDTO> getBestSellerPublicationsWithImage() {
+        return publicationsRepo.getBestSellerPublicationsWithImage(PageRequest.of(0, 4));
     }
 
+    // Get ALL Publications NEW ARRIVAL with Image
     @Override
-    public List<Publications> getNewArrivalPublications() {
-        return publicationsRepo.getNewArrivalPublications(PageRequest.of(0, 6));
+    public List<PublicationsImageDTO> getNewArrivalPublicationsWithImage() {
+        return publicationsRepo.getNewArrivalPublicationsWithImage(PageRequest.of(0, 4));
     }
 
+    // Get ALL Publications with Image and Paging
     @Override
-    public Page<Publications> getAllPagePublications(int page, int size, String sortField, String sortBy) {
+    public Page<PublicationsImageDTO> getAllPagePublicationsWithImage(int page, int size, String sortField, String sortBy) {
         Sort sort = sortService.sortBy(sortBy, sortField);
         Pageable pageable = PageRequest.of(page, size, sort);
-        return publicationsRepo.getPagePublications(pageable);
+        return publicationsRepo.getPagePublicationsWithImage(pageable);
     }
 
     @Override
