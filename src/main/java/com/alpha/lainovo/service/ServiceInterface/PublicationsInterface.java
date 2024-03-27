@@ -14,7 +14,7 @@ public interface PublicationsInterface extends ICreateAndUpdateV2<Integer, Publi
 
     Optional<Publications> findByName(String name);
 
-    Page<PublicationsImageDTO> getAllPagePublicationsWithImage(int page, int size, String sortField, String sortBy);
+    Page<Publications> getAllPagePublicationsWithImage(int page, int size, String sortField, String sortBy);
     List<PublicationsImageDTO> getBestSellerPublicationsWithImage();
     List<PublicationsImageDTO> getNewArrivalPublicationsWithImage();
 
