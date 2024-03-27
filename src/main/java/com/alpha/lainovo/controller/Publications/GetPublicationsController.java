@@ -44,7 +44,6 @@ public class GetPublicationsController {
     public ResponseEntity<?> getAllPublicationsWithImage() {
         List<Publications> publicationsWithImage = publicationsService.getAllPublications();
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publicationsWithImage));
-
     }
 
 

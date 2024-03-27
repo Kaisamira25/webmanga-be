@@ -47,7 +47,7 @@ public class Publications implements Serializable {
     @Column(name = "arrival_day",nullable = false)
     private Date arrivalDay;
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "publications", cascade = CascadeType.ALL)
     private List<Image> images;
 
