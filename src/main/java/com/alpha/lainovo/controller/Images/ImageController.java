@@ -54,7 +54,7 @@ public class ImageController {
         Publications publications = iPublications.getByPublicationsId(id);
         for (int i = 0; i < images.size(); i++) {
             String base64String = images.get(i);
-            String fileName = publications.getPublicationsName().substring(0,20).trim()+"_"+ i +".png"; // Tên tệp hình ảnh, bạn có thể tùy chỉnh tên tệp theo nhu cầu
+            String fileName = publications.getPublicationsName().substring(0,15).trim()+"_"+ i +".png"; // Tên tệp hình ảnh, bạn có thể tùy chỉnh tên tệp theo nhu cầu
             String pubName=publications.getPublicationsName();
             int lastDotIndex = pubName.length();
 
@@ -67,7 +67,7 @@ public class ImageController {
             String filePath="src/main/resources/static/images/"+fileName;
             try (FileOutputStream fos = new FileOutputStream(filePath)) {
                 fos.write(decodedBytes);
-                String url=cloud.uploadImage(filePath,"public_id","Lainovo/"+pubName.substring(0,20).trim()+pubName.substring(lastDotIndex-5)+"/"+fileName);
+                String url=cloud.uploadImage(filePath,"public_id","Lainovo/"+pubName.substring(0,15).trim()+"/"+fileName);
                 System.out.println(url);
                 RImageDTO image=new RImageDTO(url,id);
                 imageService.createImage(image);
