@@ -54,28 +54,16 @@ public class ImageController {
         Publications publications = iPublications.getByPublicationsId(id);
         for (int i = 0; i < images.size(); i++) {
             String base64String = images.get(i);
-            String fileName = publications.getPublicationsName().substring(0,20).trim()+"_" + i +".png"; // Tên tệp hình ảnh, bạn có thể tùy chỉnh tên tệp theo nhu cầu
+            String fileName = publications.getPublicationsName().substring(0,20).trim()+"_"+ i +".png"; // Tên tệp hình ảnh, bạn có thể tùy chỉnh tên tệp theo nhu cầu
             String pubName=publications.getPublicationsName();
             int lastDotIndex = pubName.length();
 
             // Giải mã dữ liệu base64
             byte[] decodedBytes = Base64.getDecoder().decode(base64String.split(",")[1]);
             // Lưu hình ảnh vào thư mục resources/static/images
-            String directoryPath = "src/main/resources/static/images/";
-
-            File directory = new File(directoryPath);
 
             // Kiểm tra xem thư mục đã tồn tại hay chưa
-            if (!directory.exists()) {
-                // Nếu không tồn tại, tạo thư mục mới
-                if (directory.mkdirs()) {
-                    System.out.println("Thư mục đã được tạo thành công.");
-                } else {
-                    System.out.println("Không thể tạo thư mục mới.");
-                }
-            } else {
-                System.out.println("Thư mục đã tồn tại.");
-            }
+            String imagesDirectoryPath = "src/main/resources/static/images/";
             String filePath="src/main/resources/static/images/"+fileName;
             try (FileOutputStream fos = new FileOutputStream(filePath)) {
                 fos.write(decodedBytes);
@@ -83,16 +71,15 @@ public class ImageController {
                 System.out.println(url);
                 RImageDTO image=new RImageDTO(url,id);
                 imageService.createImage(image);
+                File[] files = new File(imagesDirectoryPath).listFiles();
+                for (File file : files) {
+                    if (file.getName().toLowerCase().equals(fileName.toLowerCase())) { // Nếu tệp có đuôi là ".png"
+                        file.delete(); // Xoá tệp
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Message(-1, "Error saving images"));
-            }
-            String imagesDirectoryPath = "src/main/resources/static/images";
-            try {
-                FileUtils.cleanDirectory(new File(imagesDirectoryPath));
-            } catch (IOException e) {
-                e.printStackTrace();
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Message(-1, "Error cleaning images directory"));
             }
         }
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "successful"));
