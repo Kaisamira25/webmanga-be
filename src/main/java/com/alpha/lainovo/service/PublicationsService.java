@@ -47,7 +47,7 @@ public class PublicationsService implements PublicationsInterface {
 
     // Get ALL Publications with Image and Paging
     @Override
-    public Page<PublicationsImageDTO> getAllPagePublicationsWithImage(int page, int size, String sortField, String sortBy) {
+    public Page<Publications> getAllPagePublicationsWithImage(int page, int size, String sortField, String sortBy) {
         Sort sort = sortService.sortBy(sortBy, sortField);
         Pageable pageable = PageRequest.of(page, size, sort);
         return publicationsRepo.getPagePublicationsWithImage(pageable);

@@ -74,7 +74,7 @@ public class GetPublicationsController {
             @RequestParam(defaultValue = "arrivalDay", value = "sortField", required = false) String sortField,
             @RequestParam(defaultValue = "desc", value = "sortBy", required = false) String sortBy) {
 
-        Page<PublicationsImageDTO> pagePublications = publicationsService.getAllPagePublicationsWithImage(page, size, sortField, sortBy);
+        Page<Publications> pagePublications = publicationsService.getAllPagePublicationsWithImage(page, size, sortField, sortBy);
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", pagePublications));
     }
 

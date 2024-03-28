@@ -23,10 +23,8 @@ import java.util.Optional;
         Optional<Publications> findByPublicationsName(String name);
         Optional <Publications> findByPublicationsID(Integer id);
 
-        @Query("SELECT new com.alpha.lainovo.dto.request.PublicationsImageDTO" +
-                "(p.publicationsName,p.unitPrice,p.stock,p.author,p.publisher,p.publicationYear,p.summary,p.arrivalDay, i.imageURL) " +
-                "FROM Publications p JOIN p.images i ORDER BY p.arrivalDay DESC")
-        Page<PublicationsImageDTO> getPagePublicationsWithImage(Pageable pageable);
+        @Query("SELECT p FROM Publications p ORDER BY p.arrivalDay DESC")
+        Page<Publications> getPagePublicationsWithImage(Pageable pageable);
 
         @Query("SELECT new com.alpha.lainovo.dto.request.PublicationsImageDTO" +
                 "(p.publicationsName,p.unitPrice,p.stock,p.author,p.publisher,p.publicationYear,p.summary,p.arrivalDay, i.imageURL) " +
