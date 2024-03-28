@@ -12,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PublicationsImageDTO {
+    private Integer publicationsId;
     private String publicationsName;
     private Float unitPrice;
     private Integer stock;

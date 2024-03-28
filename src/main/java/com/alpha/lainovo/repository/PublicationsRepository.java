@@ -27,17 +27,17 @@ import java.util.Optional;
         Page<Publications> getPagePublicationsWithImage(Pageable pageable);
 
         @Query("SELECT new com.alpha.lainovo.dto.request.PublicationsImageDTO" +
-                "(p.publicationsName,p.unitPrice,p.stock,p.author,p.publisher,p.publicationYear,p.summary,p.arrivalDay, i.imageURL) " +
+                "(p.publicationsID ,p.publicationsName,p.unitPrice,p.stock,p.author,p.publisher,p.publicationYear,p.summary,p.arrivalDay, i.imageURL) " +
                 "FROM Publications p JOIN p.images i ORDER BY p.stock ASC")
         List<PublicationsImageDTO> getBestSellerPublicationsWithImage(Pageable pageable);
 
         @Query("SELECT new com.alpha.lainovo.dto.request.PublicationsImageDTO" +
-                "(p.publicationsName,p.unitPrice,p.stock,p.author,p.publisher,p.publicationYear,p.summary,p.arrivalDay, i.imageURL) " +
+                "(p.publicationsID ,p.publicationsName,p.unitPrice,p.stock,p.author,p.publisher,p.publicationYear,p.summary,p.arrivalDay, i.imageURL) " +
                 "FROM Publications p JOIN p.images i ORDER BY p.arrivalDay DESC")
         List<PublicationsImageDTO> getNewArrivalPublicationsWithImage(Pageable pageable);
 
         @Query("SELECT new com.alpha.lainovo.dto.request.PublicationsImageDTO" +
-                "(p.publicationsName,p.unitPrice,p.stock,p.author,p.publisher,p.publicationYear,p.summary,p.arrivalDay, i.imageURL) " +
+                "(p.publicationsID ,p.publicationsName,p.unitPrice,p.stock,p.author,p.publisher,p.publicationYear,p.summary,p.arrivalDay, i.imageURL) " +
                 "FROM Publications p JOIN p.images i")
         List<PublicationsImageDTO> getAllPublicationsWithImage();
 
