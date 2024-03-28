@@ -21,5 +21,5 @@ public interface PublicationsInterface extends ICreateAndUpdateV2<Integer, Publi
     Publications getByPublicationsId(Integer id);
     List<Publications> getAllPublications();
 
-
+    List<Publications> getPublicationsbyName(String name);
 }

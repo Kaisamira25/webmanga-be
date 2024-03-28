@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/v1/discount")
@@ -34,8 +36,9 @@ public class DiscountController {
     @PostMapping()
     public ResponseEntity<Message> createDiscounts(@RequestBody DiscountDTO discountDTO) {
         Discount discounts = modelMapper.map(discountDTO, Discount.class);
+        discounts.setCreatedAt(new Date());
+        discounts.setActive(true);
         discounts = (Discount) iDiscount.create(discounts);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(new Message(1, "successful", discounts));
     }
 
@@ -45,10 +48,14 @@ public class DiscountController {
     @PutMapping("/{id}")
     public ResponseEntity<Message> updateDiscount(@PathVariable("id") Integer id, @RequestBody DiscountDTO discountDTODTO) {
         Discount discounts = modelMapper.map(discountDTODTO, Discount.class);
+        if(discounts.getExpirationDate().before(new Date()) ) {
+            discounts.setActive(false);
+        }else{
+            discounts.setActive(true);
+        }
         discounts = iDiscount.update(id, discounts);
         if (discounts != null) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Discount updated successfully", discounts));
-
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "updated fail, Discount dose not exist"));
 
@@ -59,11 +66,9 @@ public class DiscountController {
             @ApiResponse(description = "Discount not found", responseCode = "400")})
     @DeleteMapping("/{id}")
     public ResponseEntity<Message> deleteDiscount(@PathVariable("id") Integer id) {
-
         boolean status = iDiscount.delete(id);
         if (status) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Discount deleted successfully"));
-
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "deleted fail, Discount dose not exist"));
 

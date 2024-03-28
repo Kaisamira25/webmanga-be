@@ -65,6 +65,11 @@ public class PublicationsService implements PublicationsInterface {
         return publicationsRepo.findAll(Sort.by(Sort.Direction.DESC, "arrivalDay"));
     }
 
+    @Override
+    public List<Publications> getPublicationsbyName(String name) {
+        return publicationsRepo.getPublicationsByPublicationsNameContaining(name);
+    }
+
     @Cacheable(cacheNames = "Publications", key = "'#title'")
     @Override
     public Optional<Publications> findByName(String name) {

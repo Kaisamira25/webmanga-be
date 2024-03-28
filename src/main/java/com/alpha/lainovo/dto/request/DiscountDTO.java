@@ -17,10 +17,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class DiscountDTO {
     private String discountName;
-    private String description;
     private BigDecimal discountPercent;
-    private Boolean active;
     private String discountCode;
-    private Date createdAt;
     private Date expirationDate;
+    private String description;
 }

@@ -44,7 +44,7 @@ public class Publications implements Serializable {
     @Column(name = "summary", columnDefinition = "nvarchar(1000)", nullable = false)
     private String summary;
 
-    @Column(name = "arrival_day",nullable = false)
+    @Column(name = "arrival_day",columnDefinition = "date",nullable = false)
     private Date arrivalDay;
 
 

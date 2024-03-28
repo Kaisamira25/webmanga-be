@@ -43,5 +43,6 @@ import java.util.Optional;
                 "FROM Publications p JOIN p.images i")
         List<PublicationsImageDTO> getAllPublicationsWithImage();
 
+        List<Publications> getPublicationsByPublicationsNameContaining(String publicationsName);
 
         }

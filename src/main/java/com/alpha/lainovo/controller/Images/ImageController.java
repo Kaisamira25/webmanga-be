@@ -61,6 +61,21 @@ public class ImageController {
             // Giải mã dữ liệu base64
             byte[] decodedBytes = Base64.getDecoder().decode(base64String.split(",")[1]);
             // Lưu hình ảnh vào thư mục resources/static/images
+            String directoryPath = "src/main/resources/static/images/";
+
+            File directory = new File(directoryPath);
+
+            // Kiểm tra xem thư mục đã tồn tại hay chưa
+            if (!directory.exists()) {
+                // Nếu không tồn tại, tạo thư mục mới
+                if (directory.mkdirs()) {
+                    System.out.println("Thư mục đã được tạo thành công.");
+                } else {
+                    System.out.println("Không thể tạo thư mục mới.");
+                }
+            } else {
+                System.out.println("Thư mục đã tồn tại.");
+            }
             String filePath="src/main/resources/static/images/"+fileName;
             try (FileOutputStream fos = new FileOutputStream(filePath)) {
                 fos.write(decodedBytes);

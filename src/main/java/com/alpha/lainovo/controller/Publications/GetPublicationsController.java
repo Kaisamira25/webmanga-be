@@ -58,7 +58,7 @@ public class GetPublicationsController {
     @GetMapping("/search/{name}")
     public ResponseEntity<Message> getByPublicationsTitle(@PathVariable("name") String name) {
 
-        Publications publications = iPublications.findByName(name).orElse(null);
+        List<Publications> publications = iPublications.getPublicationsbyName(name);
         if (publications != null) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, " successfully", publications));
         }
