@@ -2,6 +2,7 @@ package com.alpha.lainovo.repository;
 
 import com.alpha.lainovo.dto.request.PublicationGenreDTO;
 import com.alpha.lainovo.dto.request.PublicationsImageDTO;
+import com.alpha.lainovo.dto.request.PublicationsWithGenreTypeDTO;
 import com.alpha.lainovo.model.Cover;
 import com.alpha.lainovo.model.Genre;
 import com.alpha.lainovo.model.Publications;
@@ -40,6 +41,11 @@ import java.util.Optional;
                 "(p.publicationsID ,p.publicationsName,p.unitPrice,p.stock,p.author,p.publisher,p.publicationYear,p.summary,p.arrivalDay, i.imageURL) " +
                 "FROM Publications p JOIN p.images i")
         List<PublicationsImageDTO> getAllPublicationsWithImage();
+
+        @Query("SELECT new com.alpha.lainovo.dto.request.PublicationsWithGenreTypeDTO" +
+                "(p.publicationsID ,p.publicationsName,p.unitPrice,p.stock,p.author,p.publisher,p.publicationYear,p.summary,p.arrivalDay, g.genre, t.typeName, i.imageURL) " +
+                "FROM Publications p JOIN p.images i JOIN p.genres g JOIN p.types t")
+        List<PublicationsWithGenreTypeDTO> getAllPublicationsWithGenreType();
 
         List<Publications> getPublicationsByPublicationsNameContaining(String publicationsName);
 

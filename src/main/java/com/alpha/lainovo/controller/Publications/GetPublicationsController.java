@@ -1,6 +1,7 @@
 package com.alpha.lainovo.controller.Publications;
 
 import com.alpha.lainovo.dto.request.PublicationsImageDTO;
+import com.alpha.lainovo.dto.request.PublicationsWithGenreTypeDTO;
 import com.alpha.lainovo.dto.response.Message;
 import com.alpha.lainovo.model.Publications;
 import com.alpha.lainovo.service.PublicationsService;
@@ -37,6 +38,13 @@ public class GetPublicationsController {
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publications));
     }
 
+    @GetMapping("/all/genre_type")
+    @Operation(summary = "Find All Publications",responses = {
+            @ApiResponse(description = "success", responseCode = "200")})
+    public ResponseEntity<?> getAllPublicationsWithGenreType() {
+        List<PublicationsWithGenreTypeDTO> publications = publicationsService.getAllPublicationsWithGenreType();
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publications));
+    }
 
     @GetMapping("/{publicationsId}")
     @Operation(summary = "Find a Publications with the ID",responses = {

@@ -1,6 +1,7 @@
 package com.alpha.lainovo.service;
 
 import com.alpha.lainovo.dto.request.PublicationsImageDTO;
+import com.alpha.lainovo.dto.request.PublicationsWithGenreTypeDTO;
 import com.alpha.lainovo.model.Publications;
 import com.alpha.lainovo.repository.PublicationsRepository;
 import com.alpha.lainovo.service.ServiceInterface.PublicationsInterface;
@@ -31,6 +32,12 @@ public class PublicationsService implements PublicationsInterface {
     @Transactional
     public List<PublicationsImageDTO> getAllPublicationsWithImage() {
         return publicationsRepo.getAllPublicationsWithImage();
+    }
+
+    // Get ALL Publications with Genre and Type
+    @Transactional
+    public List<PublicationsWithGenreTypeDTO> getAllPublicationsWithGenreType() {
+        return publicationsRepo.getAllPublicationsWithGenreType();
     }
 
     // Get ALL Publications BEST SELLER with Image
