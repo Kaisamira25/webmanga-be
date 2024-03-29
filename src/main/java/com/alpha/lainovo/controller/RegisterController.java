@@ -1,6 +1,7 @@
 package com.alpha.lainovo.controller;
 
 import com.alpha.lainovo.dto.request.RegisterDTO;
+import com.alpha.lainovo.dto.request.VerifyAccountDTO;
 import com.alpha.lainovo.dto.response.Message;
 import com.alpha.lainovo.service.RegisterService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,9 +42,9 @@ public class RegisterController {
             @ApiResponse(description = "Verification failed", responseCode = "400")
     })
     @PostMapping("/verify")
-    public ResponseEntity<?> verify(@RequestParam String otp, HttpServletRequest request){
-        String email = (String) request.getSession().getAttribute("email");
-        boolean isVerified = registerService.verify(email, otp);
+    public ResponseEntity<?> verify(@RequestBody VerifyAccountDTO verifyAccountDTO, HttpServletRequest request){
+//        String email = (String) request.getSession().getAttribute("email");
+        boolean isVerified = registerService.verify(verifyAccountDTO.email(), verifyAccountDTO.otp());
         if (isVerified) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Message(1, "Verification successfull"));
