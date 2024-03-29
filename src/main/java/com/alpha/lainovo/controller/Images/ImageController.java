@@ -64,10 +64,10 @@ public class ImageController {
 
             // Kiểm tra xem thư mục đã tồn tại hay chưa
             String imagesDirectoryPath = "src/main/resources/static/images/";
-            String filePath="src/main/resources/static/images/"+fileName;
+            String filePath="src/main/resources/static/images/"+fileName.replaceAll("\\s+", "");
             try (FileOutputStream fos = new FileOutputStream(filePath)) {
                 fos.write(decodedBytes);
-                String url=cloud.uploadImage(filePath,"public_id","Lainovo/"+pubName.substring(0,15).trim()+pubName.substring(pubName.lastIndexOf(" ") + 1)+"/"+fileName);
+                String url=cloud.uploadImage(filePath,"public_id","Lainovo/"+pubName.substring(0,15).trim()+pubName.substring(pubName.lastIndexOf(" ") + 1)+"/"+fileName.replaceAll("\\s+", ""));
                 System.out.println(pubName.substring(pubName.lastIndexOf(" ") + 1));
                 RImageDTO image=new RImageDTO(url,id);
                 imageService.createImage(image);
