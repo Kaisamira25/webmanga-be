@@ -35,6 +35,14 @@ public class GetPublicationsController {
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publications));
     }
 
+    @GetMapping("/details")
+    @Operation(summary = "Find All Publications",responses = {
+            @ApiResponse(description = "success", responseCode = "200")})
+    public ResponseEntity<?> getAllPublicationsWithImage() {
+        List<PublicationsImageDTO> publications = publicationsService.getAllPublicationsWithImage();
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publications));
+    }
+
 
     @GetMapping("/{publicationsId}")
     @Operation(summary = "Find a Publications with the ID",responses = {
