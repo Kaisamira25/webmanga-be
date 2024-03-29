@@ -67,8 +67,8 @@ public class ImageController {
             String filePath="src/main/resources/static/images/"+fileName;
             try (FileOutputStream fos = new FileOutputStream(filePath)) {
                 fos.write(decodedBytes);
-                String url=cloud.uploadImage(filePath,"public_id","Lainovo/"+pubName.substring(0,15).trim()+"/"+fileName);
-                System.out.println(url);
+                String url=cloud.uploadImage(filePath,"public_id","Lainovo/"+pubName.substring(0,15).trim()+pubName.substring(pubName.lastIndexOf(" ") + 1)+"/"+fileName);
+                System.out.println(pubName.substring(pubName.lastIndexOf(" ") + 1));
                 RImageDTO image=new RImageDTO(url,id);
                 imageService.createImage(image);
                 File[] files = new File(imagesDirectoryPath).listFiles();
