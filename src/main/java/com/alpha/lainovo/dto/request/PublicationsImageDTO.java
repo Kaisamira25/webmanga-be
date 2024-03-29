@@ -21,5 +21,7 @@ public class PublicationsImageDTO {
     private Integer publicationYear;
     private String summary;
     private Date arrivalDay;
+    private String genre;
+    private String typeName;
     private String imageURL;
 }

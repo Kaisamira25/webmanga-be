@@ -1,12 +1,10 @@
 package com.alpha.lainovo.service;
 
 import com.alpha.lainovo.dto.request.PublicationsImageDTO;
-import com.alpha.lainovo.dto.request.PublicationsWithGenreTypeDTO;
 import com.alpha.lainovo.model.Publications;
 import com.alpha.lainovo.repository.PublicationsRepository;
 import com.alpha.lainovo.service.ServiceInterface.PublicationsInterface;
 import com.alpha.lainovo.utilities.time.Time;
-import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -15,8 +13,6 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,12 +28,6 @@ public class PublicationsService implements PublicationsInterface {
     @Transactional
     public List<PublicationsImageDTO> getAllPublicationsWithImage() {
         return publicationsRepo.getAllPublicationsWithImage();
-    }
-
-    // Get ALL Publications with Genre and Type
-    @Transactional
-    public List<PublicationsWithGenreTypeDTO> getAllPublicationsWithGenreType() {
-        return publicationsRepo.getAllPublicationsWithGenreType();
     }
 
     // Get ALL Publications BEST SELLER with Image

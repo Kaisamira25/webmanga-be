@@ -1,7 +1,6 @@
 package com.alpha.lainovo.controller.Publications;
 
 import com.alpha.lainovo.dto.request.PublicationsImageDTO;
-import com.alpha.lainovo.dto.request.PublicationsWithGenreTypeDTO;
 import com.alpha.lainovo.dto.response.Message;
 import com.alpha.lainovo.model.Publications;
 import com.alpha.lainovo.service.PublicationsService;
@@ -15,10 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -38,13 +35,6 @@ public class GetPublicationsController {
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publications));
     }
 
-    @GetMapping("/all/genre_type")
-    @Operation(summary = "Find All Publications",responses = {
-            @ApiResponse(description = "success", responseCode = "200")})
-    public ResponseEntity<?> getAllPublicationsWithGenreType() {
-        List<PublicationsWithGenreTypeDTO> publications = publicationsService.getAllPublicationsWithGenreType();
-        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publications));
-    }
 
     @GetMapping("/{publicationsId}")
     @Operation(summary = "Find a Publications with the ID",responses = {
