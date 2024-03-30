@@ -54,7 +54,6 @@ public class AuthService {
             customer.setRefreshToken(generateToken.generateRefreshToken(customUserDetails));
             update.update(customer.getCustomerId(), customer);
             String jwt = generateToken.generateAccessToken(customUserDetails);
-            request.getSession().setAttribute("email",loginDTO.email());
             Map<String, String> list = new HashMap<>();
             list.put("accessToken", jwt);
             list.put("refreshToken", customer.getRefreshToken());
@@ -78,7 +77,7 @@ public class AuthService {
         }else if (!customer.getIsVerify()){
             log.info("------> Login fail because this email verify == false");
             return 2;
-        }else if (!customer.getIsBlocked()){
+        }else if (customer.getIsBlocked()){
             log.info("------> Login fail because this account has been locked");
             return 3;
         }
