@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -32,14 +33,6 @@ public class GetPublicationsController {
             @ApiResponse(description = "success", responseCode = "200")})
     public ResponseEntity<?> getAllPublications() {
         List<Publications> publications = publicationsService.getAllPublications();
-        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publications));
-    }
-
-    @GetMapping("/details")
-    @Operation(summary = "Find All Publications",responses = {
-            @ApiResponse(description = "success", responseCode = "200")})
-    public ResponseEntity<?> getAllPublicationsWithImage() {
-        List<PublicationsImageDTO> publications = publicationsService.getAllPublicationsWithImage();
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publications));
     }
 

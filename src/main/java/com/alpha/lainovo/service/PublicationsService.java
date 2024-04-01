@@ -24,6 +24,10 @@ public class PublicationsService implements PublicationsInterface {
     private final PublicationsRepository publicationsRepo;
     private final SortService sortService;
 
+//    public List<PublicationsImageDTO> getPublicationWithGenreAndTypeById(Integer id) {
+//        return publicationsRepo.getPublicationsWithGenresAndTypeById(id);
+//    }
+
     // Get ALL Publications with Image
     @Transactional
     public List<PublicationsImageDTO> getAllPublicationsWithImage() {

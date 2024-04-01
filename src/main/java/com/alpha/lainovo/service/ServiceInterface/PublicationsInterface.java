@@ -22,4 +22,7 @@ public interface PublicationsInterface extends ICreateAndUpdateV2<Integer, Publi
     List<Publications> getAllPublications();
 
     List<Publications> getPublicationsbyName(String name);
+
+//    List<PublicationsImageDTO> getPublicationWithGenreAndTypeById(Integer id);
+
 }
