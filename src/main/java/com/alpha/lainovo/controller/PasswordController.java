@@ -83,8 +83,8 @@ public class PasswordController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Verification code does not exist", responseCode = "404"),
             @ApiResponse(description = "Maybe the password is not in the correct format", responseCode = "502") })
-    @GetMapping("/customer/passwordReset")
-    public ResponseEntity<?> passwordReset(@RequestParam("code") String code, @RequestHeader("password") String newPassword){
+    @PostMapping("/customer/passwordReset")
+    public ResponseEntity<?> passwordReset(@RequestParam("code") String code, @RequestBody String newPassword){
         Customer resetPasswordCode = customerInterface.findByPasswordResetToken(code);
         if (resetPasswordCode == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(1, "Code not found"));

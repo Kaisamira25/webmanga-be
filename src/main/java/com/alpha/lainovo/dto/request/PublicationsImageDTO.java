@@ -14,7 +14,7 @@ import java.util.Date;
 public class PublicationsImageDTO {
     private Integer publicationsId;
     private String publicationsName;
-    private Float unitPrice;
+    private Double unitPrice;
     private Integer stock;
     private String author;
     private String publisher;
