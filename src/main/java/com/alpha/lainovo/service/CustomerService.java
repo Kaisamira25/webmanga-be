@@ -117,10 +117,11 @@ public class CustomerService implements CustomerInterface,CreateAndUpdateInterfa
 
     @Transactional
     @Override
-    public boolean validateCodePassword(String code, String newPassword) {
-        if (checkString.isStringValid(newPassword) == true){
+    public boolean resetAndCreateNewPassword(String code, String newPassword) {
+        if (checkString.isStringValid(newPassword)){
             Customer customer = findByPasswordResetToken(code);
             customer.setPassword(encoder.encode(newPassword));
+            update(customer.getCustomerId(),customer);
             return true;
         }
         return false;

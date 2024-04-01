@@ -1,9 +1,11 @@
 package com.alpha.lainovo.controller;
 
 import com.alpha.lainovo.dto.request.ChangePasswordDTO;
+import com.alpha.lainovo.dto.request.ResetPasswordDTO;
 import com.alpha.lainovo.dto.response.Message;
 import com.alpha.lainovo.model.Customer;
 import com.alpha.lainovo.service.RefreshToken;
+import com.alpha.lainovo.service.ServiceInterface.CheckStringInterface;
 import com.alpha.lainovo.service.ServiceInterface.CustomerInterface;
 import com.alpha.lainovo.service.VerificationCodeManager;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -14,19 +16,25 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(allowCredentials = "true",origins = "http://localhost:5173/")
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 @Slf4j
 public class PasswordController {
     private final CustomerInterface customerInterface;
+    @Autowired
+    @Qualifier("CheckPassword")
+    private final CheckStringInterface checkPasswordFormat;
 
     private final RefreshToken refreshToken;
+
     @Qualifier("PasswordVerifyCode")
     private final VerificationCodeManager verificationCodeManager;
 
@@ -37,6 +45,7 @@ public class PasswordController {
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO,
                                             final HttpServletRequest request){
+        log.info("Change Password: {}",changePasswordDTO);
         int status = customerInterface.changePassword(changePasswordDTO, request);
 
         if (status == 0){
@@ -83,19 +92,34 @@ public class PasswordController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Verification code does not exist", responseCode = "404"),
             @ApiResponse(description = "Maybe the password is not in the correct format", responseCode = "502") })
-    @PostMapping("/customer/passwordReset")
-    public ResponseEntity<?> passwordReset(@RequestParam("code") String code, @RequestBody String newPassword){
+    @PostMapping("/customer/passwordResetCode")
+    public ResponseEntity<?> passwordReset(@RequestParam("code") String code){
         Customer resetPasswordCode = customerInterface.findByPasswordResetToken(code);
         if (resetPasswordCode == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(1, "Code not found"));
-        }
-        boolean validateCodePassword = customerInterface.validateCodePassword(code, newPassword);
-        if (validateCodePassword){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(new Message(1, "Password recovery successful"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(0, "Code not found"));
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
-                    .body(new Message(0, "Password retrieval failed, please try again later (Maybe the password is not in the correct format)"));
+            return ResponseEntity.status(HttpStatus.OK).body(new Message(1,"Correct code for password reset", resetPasswordCode.getEmail()));
+        }
+//        boolean validateCodePassword = customerInterface.validateCodePassword(code);
+//        if (validateCodePassword){
+//            return ResponseEntity.status(HttpStatus.OK)
+//                    .body(new Message(1, "Password recovery successful"));
+//        } else {
+//            return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+//                    .body(new Message(0, "Password retrieval failed, please try again later (Maybe the password is not in the correct format)"));
+//        }
+    }
+    @Operation(description = "New password", summary = "Type new password to set new password for account", responses = {
+            @ApiResponse(description = "success", responseCode = "200"),
+            @ApiResponse(description = "Maybe the password is not in the correct format", responseCode = "502") })
+    @PostMapping("/customer/passwordResetNewPassword")
+    public ResponseEntity<?> newPassword(@RequestBody ResetPasswordDTO resetPasswordDTO) {
+        log.info("New password: {}",resetPasswordDTO.newPassword());
+        boolean validateNewPassword = customerInterface.resetAndCreateNewPassword(resetPasswordDTO.code(),resetPasswordDTO.newPassword());
+        if (validateNewPassword) {
+            return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Change password success"));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0,"Wrong format"));
         }
     }
 }

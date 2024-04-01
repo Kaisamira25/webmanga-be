@@ -17,5 +17,5 @@ public interface CustomerInterface {
 
     Customer findByPasswordResetToken(String code);
 
-    boolean validateCodePassword(String code, String newPassword);
+    boolean resetAndCreateNewPassword(String code, String newPassword);
 }
