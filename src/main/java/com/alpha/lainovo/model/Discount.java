@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -44,4 +45,7 @@ public class Discount {
     @Column(name = "expiration_date")
     @Temporal(TemporalType.DATE)
     private Date expirationDate;
+
+    @OneToMany(mappedBy = "discount")
+    private List<Orders> orders;
 }

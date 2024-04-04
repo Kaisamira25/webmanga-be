@@ -87,4 +87,7 @@ public class Publications implements Serializable {
     )
     private Set<PromotionalGift> gifts = new HashSet<>();
 
+    @OneToMany(mappedBy = "publications")
+    private List<OrderItem> orderItem;
+
 }
