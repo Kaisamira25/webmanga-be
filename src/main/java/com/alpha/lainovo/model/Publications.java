@@ -27,7 +27,7 @@ public class Publications implements Serializable {
     private String publicationsName;
 
     @Column(name = "unit_price", columnDefinition = "float",  nullable = false)
-    private Float unitPrice;
+    private Double unitPrice;
 
     @Column(name = "stock", nullable = false)
     private Integer stock;
@@ -44,7 +44,7 @@ public class Publications implements Serializable {
     @Column(name = "summary", columnDefinition = "nvarchar(1000)", nullable = false)
     private String summary;
 
-    @Column(name = "arrival_day",columnDefinition = "date",nullable = false)
+    @Column(name = "arrival_day",nullable = false)
     private Date arrivalDay;
 
 

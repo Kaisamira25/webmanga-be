@@ -17,7 +17,6 @@ public class CheckPassword implements CheckStringInterface {
     public boolean isStringValid(String rawPassword) {
         Pattern pattern = Pattern.compile(regex_password);
         Matcher matcher = pattern.matcher(rawPassword);
-        log.info("CheckPassword: {}",rawPassword);
         return matcher.matches();
     }
 }

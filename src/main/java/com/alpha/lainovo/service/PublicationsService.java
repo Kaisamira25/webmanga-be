@@ -1,7 +1,13 @@
 package com.alpha.lainovo.service;
 
+import com.alpha.lainovo.dto.request.PublicationsDetailsDTO;
+import com.alpha.lainovo.dto.request.PublicationsHotPublicationsDTO;
 import com.alpha.lainovo.dto.request.PublicationsImageDTO;
+import com.alpha.lainovo.dto.request.PublicationsNewArrivalDTO;
+import com.alpha.lainovo.model.Cover;
+import com.alpha.lainovo.model.Genre;
 import com.alpha.lainovo.model.Publications;
+import com.alpha.lainovo.model.Type;
 import com.alpha.lainovo.repository.PublicationsRepository;
 import com.alpha.lainovo.service.ServiceInterface.PublicationsInterface;
 import com.alpha.lainovo.utilities.time.Time;
@@ -15,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -36,22 +43,29 @@ public class PublicationsService implements PublicationsInterface {
 
     // Get ALL Publications BEST SELLER with Image
     @Override
-    public List<PublicationsImageDTO> getBestSellerPublicationsWithImage() {
-        return publicationsRepo.getBestSellerPublicationsWithImage(PageRequest.of(0, 4));
+    public List<PublicationsHotPublicationsDTO> getBestSellerPublicationsWithImage() {
+        return publicationsRepo.getBestSellerPublicationsWithImage();
     }
 
     // Get ALL Publications NEW ARRIVAL with Image
     @Override
-    public List<PublicationsImageDTO> getNewArrivalPublicationsWithImage() {
-        return publicationsRepo.getNewArrivalPublicationsWithImage(PageRequest.of(0, 4));
+    public List<PublicationsNewArrivalDTO> getNewArrivalPublicationsWithImage() {
+        return publicationsRepo.getNewArrivalPublicationsWithImage();
     }
 
     // Get ALL Publications with Image and Paging
     @Override
-    public Page<Publications> getAllPagePublicationsWithImage(int page, int size, String sortField, String sortBy) {
-        Sort sort = sortService.sortBy(sortBy, sortField);
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return publicationsRepo.getPagePublicationsWithImage(pageable);
+    public Page<Publications> getAllPagePublicationsWithImage(int page, int size, String sortField, String sortBy, Integer genreId) {
+        if (genreId == null) {
+            Sort sort = sortService.sortBy(sortBy, sortField);
+            Pageable pageable = PageRequest.of(page, size, sort);
+            return publicationsRepo.getPagePublicationsWithImage(pageable);
+        } else {
+            Sort sort = sortService.sortBy(sortBy, sortField);
+            Pageable pageable = PageRequest.of(page, size, sort);
+            return publicationsRepo.getPagePublicationsWithImage(pageable, genreId);
+        }
+
     }
 
     @Override
@@ -71,6 +85,10 @@ public class PublicationsService implements PublicationsInterface {
         return publicationsRepo.getPublicationsByPublicationsNameContaining(name);
     }
 
+    @Override
+    public Publications getPublicationsDetailsById(Integer id) {
+        return publicationsRepo.findPublicationsDetailsById(id);
+    }
     @Cacheable(cacheNames = "Publications", key = "'#title'")
     @Override
     public Optional<Publications> findByName(String name) {
@@ -127,6 +145,15 @@ public class PublicationsService implements PublicationsInterface {
             return true;
         }
         return false;
+    }
+
+    // Chuyển đổi một publications Entity thành một publicationsDetailsDTO
+    public PublicationsDetailsDTO publicationsToPublicationDetailsDTO(Publications publications) {
+        List<String> cover = publications.getCovers().stream().map(Cover::getCoverType).collect(Collectors.toList());
+        List<String> genres = publications.getGenres().stream().map(Genre::getGenre).collect(Collectors.toList());
+        List<String> types = publications.getTypes().stream().map(Type::getTypeName).collect(Collectors.toList());
+        String imageURL = publications.getImages().isEmpty() ? null : publications.getImages().get(0).getImageURL();
+        return new PublicationsDetailsDTO(publications.getPublicationsID(), publications.getPublicationsName(), publications.getUnitPrice(), publications.getStock(), publications.getAuthor(), publications.getPublisher(), publications.getPublicationYear(), publications.getSummary(), imageURL, cover, genres, types);
     }
 
 

@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class PublicationsImageDTO {
     private String publicationsName;
-    private Float unitPrice;
+    private Double unitPrice;
     private Integer stock;
     private String author;
     private String publisher;
