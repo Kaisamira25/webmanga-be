@@ -125,4 +125,22 @@ public class CustomerService implements CustomerInterface,CreateAndUpdateInterfa
         }
         return false;
     }
+
+    @Override
+    public Customer getCustomerInfo(HttpServletRequest request) {
+        // Tìm khách hàng dựa trên customerId từ request
+        Integer customerId = getCustomerIdByRequestService.getCustomerIdByRequest(request);
+        Customer customer = findById(customerId);
+        if (customer == null) {
+            // Xử lý trường hợp không tìm thấy khách hàng
+            log.error("Customer not found with id: {}", customerId);
+            return null;
+        }
+
+        // Trả về thông tin của khách hàng
+        log.info(">>>>>>> CustomerService:getCustomerInfo | Get info for Customer with email: {}", customer.getEmail());
+        return customer;
+    }
+
+
 }

@@ -53,10 +53,4 @@ public class RegisterController {
                     .body(new Message(0, "Verification failed"));
         }
     }
-
-    @GetMapping("/get-email")
-    public ResponseEntity<String> getEmail(HttpServletRequest request) {
-        String email = (String) request.getSession().getAttribute("email");
-        return ResponseEntity.ok(email);
-    }
 }
