@@ -46,7 +46,11 @@ public class OrderController {
         orders.setFullname(Icus.findByEmail(orderDTO.getEmail()).getFullName());
         orders.setOrderStatus("Wait for confirmation!");
         orders.setOrderDay(new Date());
+        if (orders.getDiscount() != null) {
         orders.setDiscount(Idis.getByDiscountId(orderDTO.getDiscount()));
+        } else {
+            orders.setDiscount(null);
+        }
         orders.setOrderItem(null);
         Orders save=repoOrder.save(orders);
         System.out.println(save.getOrderID());
