@@ -1,10 +1,27 @@
 package com.alpha.lainovo.controller.Order;
 
+import com.alpha.lainovo.dto.request.OrderDTO;
+import com.alpha.lainovo.dto.request.OrderItemDTO;
+import com.alpha.lainovo.dto.response.Message;
+import com.alpha.lainovo.model.*;
+import com.alpha.lainovo.repository.OrdersItemRepository;
+import com.alpha.lainovo.repository.OrdersRepository;
+import com.alpha.lainovo.repository.PublicationsRepository;
+import com.alpha.lainovo.service.ServiceInterface.CustomerInterface;
+import com.alpha.lainovo.service.ServiceInterface.DiscountInterface;
+import com.alpha.lainovo.service.ServiceInterface.PublicationsInterface;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.lang.reflect.Field;
+import java.util.Date;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -12,6 +29,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class OrderController {
-
+    private final ModelMapper modelMapper;
+    private final CustomerInterface Icus;
+    private final DiscountInterface Idis;
+    private final OrdersRepository repoOrder;
+    private final PublicationsInterface Ipub;
+    private final OrdersItemRepository repoItem;
+    @Operation(summary = "Get Customer Info", description = "Get Customer Info", responses = {
+            @ApiResponse(description = "success", responseCode = "200"),
+            @ApiResponse(description = "Customer not found", responseCode = "404")})
+    @PostMapping()
+    public ResponseEntity<Message> addOrderAndDetail(@RequestBody OrderDTO orderDTO) {
+        System.out.println(orderDTO.getOrderItem().size());
+        Orders orders = modelMapper.map(orderDTO,Orders.class);
+        orders.setCustomer(Icus.findByEmail(orderDTO.getEmail()));
+        orders.setFullname(Icus.findByEmail(orderDTO.getEmail()).getFullName());
+        orders.setOrderStatus("Wait for confirmation!");
+        orders.setOrderDay(new Date());
+        orders.setDiscount(Idis.getByDiscountId(orderDTO.getDiscount()));
+        orders.setOrderItem(null);
+        Orders save=repoOrder.save(orders);
+        System.out.println(save.getOrderID());
+        for(int i=0;i<orderDTO.getOrderItem().size();i++){
+            OrderItem orderItem=new OrderItem();
+            orderItem.setPublications(Ipub.getByPublicationsId(orderDTO.getOrderItem().get(i).getId()));
+            orderItem.setOrders(save);
+            orderItem.setQuantity(orderDTO.getOrderItem().get(i).getQty());
+            repoItem.save(orderItem);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(0, "Order Adding Complete", save));
+    }
 
 }

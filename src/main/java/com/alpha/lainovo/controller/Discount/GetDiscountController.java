@@ -3,6 +3,7 @@ package com.alpha.lainovo.controller.Discount;
 import com.alpha.lainovo.dto.response.Message;
 import com.alpha.lainovo.model.Discount;
 import com.alpha.lainovo.model.Genre;
+import com.alpha.lainovo.repository.DiscountRepository;
 import com.alpha.lainovo.service.ServiceInterface.DiscountInterface;
 import com.alpha.lainovo.service.ServiceInterface.GenreInterface;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +23,7 @@ import java.util.List;
 public class GetDiscountController {
 
     private final DiscountInterface iDiscount;
+    private final DiscountRepository repoDis;
 
     @GetMapping("/all")
     @Operation(summary = "Find All Discount",responses = {
@@ -39,6 +41,20 @@ public class GetDiscountController {
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<Message> getDiscountId(@PathVariable("id") Integer id) {
         Discount discounts = iDiscount.getByDiscountId(id);
+        if (discounts != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", discounts));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, " Discount dose not exist"));
+
+    }
+    @GetMapping("/code/{id}")
+    @Operation(summary = "Find a Discount with the Code",responses = {
+            @ApiResponse(description = "success", responseCode = "200"),
+            @ApiResponse(description = "Discount not found", responseCode = "404")})
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<Message> getDiscountCode(@PathVariable("id") String id) {
+        System.out.println(id);
+        Discount discounts = iDiscount.getDiscountByCode(id);
         if (discounts != null) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", discounts));
         }

@@ -1,5 +1,6 @@
 package com.alpha.lainovo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +17,7 @@ public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_item_id",nullable = false)
+    @Column(name = "order_item_id")
     private Integer orderItemId;
 
     @ManyToOne

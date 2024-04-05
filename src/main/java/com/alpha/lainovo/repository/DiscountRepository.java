@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface DiscountRepository extends JpaRepository<Discount, Integer> {
     List<Discount> findDiscountsByDiscountNameContains(String discountName);
 
+    Discount findDiscountByDiscountCode(String code);
+
 }
