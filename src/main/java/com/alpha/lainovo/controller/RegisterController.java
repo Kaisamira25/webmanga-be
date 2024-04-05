@@ -47,7 +47,7 @@ public class RegisterController {
         boolean isVerified = registerService.verify(verifyAccountDTO.email(), verifyAccountDTO.otp());
         if (isVerified) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new Message(1, "Verification successfull"));
+                    .body(new Message(1, "Verification successfully"));
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new Message(0, "Verification failed"));
