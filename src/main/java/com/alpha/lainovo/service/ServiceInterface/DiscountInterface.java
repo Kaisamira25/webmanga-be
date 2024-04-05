@@ -13,4 +13,6 @@ public interface DiscountInterface extends ICreateAndUpdateV2<Integer, Discount>
     List<Discount> getAllDiscount();
 
     List<Discount> getDiscountListbyDiscountName(String discountName);
+
+    Discount getDiscountByCode(String code);
 }

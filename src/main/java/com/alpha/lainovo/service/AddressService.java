@@ -44,7 +44,7 @@ public class AddressService implements ICreateAndUpdateV2<Integer, Address>, Add
         Customer customer = customerInterface.findById(customerId);
         if (customer == null) {
             // Xử lý trường hợp không tìm thấy khách hàng
-            log.error("Không tìm thấy khách hàng với id: {}", customerId);
+            log.error("Customer not found with id: {}", customerId);
             return null;
         }
 
@@ -65,9 +65,6 @@ public class AddressService implements ICreateAndUpdateV2<Integer, Address>, Add
         // Tạo một đối tượng địa chỉ mới
         Address newAddress = new Address();
         newAddress.setPhoneNumber(addressDTO.phoneNumber());
-        newAddress.setCity(addressDTO.city());
-        newAddress.setWard(addressDTO.ward());
-        newAddress.setDistrict(addressDTO.district());
         newAddress.setAddress(addressDTO.address());
         // Gán khách hàng cho địa chỉ
         newAddress.setCustomer(customer);
@@ -96,9 +93,6 @@ public class AddressService implements ICreateAndUpdateV2<Integer, Address>, Add
         // Cập nhật thông tin địa chỉ
         Address address = customer.getAddresses();
         address.setPhoneNumber(addressDTO.phoneNumber());
-        address.setCity(addressDTO.city());
-        address.setWard(addressDTO.ward());
-        address.setDistrict(addressDTO.district());
         address.setAddress(addressDTO.address());
 
         // Lưu khách hàng đã được cập nhật

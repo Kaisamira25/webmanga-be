@@ -1,5 +1,6 @@
 package com.alpha.lainovo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -44,4 +46,8 @@ public class Discount {
     @Column(name = "expiration_date")
     @Temporal(TemporalType.DATE)
     private Date expirationDate;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "discount")
+    private List<Orders> orders;
 }

@@ -21,20 +21,10 @@ public class Address implements Serializable{
 	@Column(name = "addressID")
 	private Integer addressID;
 
-	@Column(name = "phone_number",columnDefinition = "nvarchar(15)",nullable = false,unique = true)
+	@Column(name = "phone_number",columnDefinition = "nvarchar(15)",nullable = false)
 	private String phoneNumber;
 
-
-	@Column(name = "city", columnDefinition = "nvarchar(100)")
-	private String city;
-
-	@Column(name = "district",columnDefinition = "nvarchar(100)")
-	private String district;
-
-	@Column(name = "ward", columnDefinition = "nvarchar(100)")
-	private String ward;;
-
-	@Column(name = "address",columnDefinition = "nvarchar(100)")
+	@Column(name = "address",columnDefinition = "nvarchar(500)")
 	private String address;
 
 	@JsonIgnore

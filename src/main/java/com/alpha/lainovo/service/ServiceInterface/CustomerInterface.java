@@ -17,5 +17,7 @@ public interface CustomerInterface {
 
     Customer findByPasswordResetToken(String code);
 
+    Customer getCustomerInfo(HttpServletRequest request);
+
     boolean resetAndCreateNewPassword(String code, String newPassword);
 }

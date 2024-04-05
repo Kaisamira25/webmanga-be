@@ -41,6 +41,11 @@ public class DiscountService implements DiscountInterface {
         return discountRepo.findDiscountsByDiscountNameContains(discountName);
     }
 
+    @Override
+    public Discount getDiscountByCode(String code) {
+        return discountRepo.findDiscountByDiscountCode(code);
+    }
+
 
     @Override
     public Object create(Discount discountDTO) {

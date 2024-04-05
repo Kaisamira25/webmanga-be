@@ -86,5 +86,8 @@ public class Publications implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "promotional_gift_id")
     )
     private Set<PromotionalGift> gifts = new HashSet<>();
+@JsonIgnore
+    @OneToMany(mappedBy = "publications")
+    private List<OrderItem> orderItem;
 
 }
