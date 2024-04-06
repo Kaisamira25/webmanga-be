@@ -57,9 +57,14 @@ public class CustomerAddressController {
 
         Address address = addressInterface.updateAddress(addressDTO,request);
         if (address != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Update address success",address));
+            if (addressDTO.phoneNumber() != null && !addressDTO.phoneNumber().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Update phone number success",address));
+            }
+            if (addressDTO.address() != null && !addressDTO.address().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Update address success",address));
+            }
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, "Update address fail",address));
-
     }
+
 }
