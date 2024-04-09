@@ -89,7 +89,7 @@ public class GetPublicationsController {
             @ApiResponse(description = "success", responseCode = "200"), })
     public ResponseEntity<?> getAllPagePublicationsWithImage(
             @RequestParam(defaultValue = "0", value = "page", required = false) int page,
-            @RequestParam(defaultValue = "9", value = "size", required = false) int size,
+            @RequestParam(defaultValue = "10", value = "size", required = false) int size,
             @RequestParam(defaultValue = "arrivalDay", value = "sortField", required = false) String sortField,
             @RequestParam(defaultValue = "desc", value = "sortBy", required = false) String sortBy,
             @RequestParam(required = false) Integer genreId) {

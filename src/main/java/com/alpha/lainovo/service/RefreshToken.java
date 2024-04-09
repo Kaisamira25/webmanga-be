@@ -45,6 +45,7 @@ public class RefreshToken {
             CustomUserDetails customUserDetails = new CustomUserDetails(customer.getCustomerId(),
                     customer.getEmail(),
                     customer.getPassword(),
+                    customer.getFullName(),
                     true,
                     Arrays.stream(customer.getRole().name().split(",")).
                             map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
