@@ -54,4 +54,5 @@ public class AdminInitializer implements ApplicationRunner {
             adminRepository.save(adminAccount);
         }
     }
+
 }
