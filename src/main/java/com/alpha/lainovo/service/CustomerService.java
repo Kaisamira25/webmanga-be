@@ -1,6 +1,5 @@
 package com.alpha.lainovo.service;
 
-import com.alpha.lainovo.config.ConfigGenerateCodeVerify;
 import com.alpha.lainovo.dto.request.ChangePasswordDTO;
 import com.alpha.lainovo.model.Customer;
 import com.alpha.lainovo.model.Email;
@@ -26,7 +25,7 @@ import java.util.Optional;
 @Slf4j
 public class CustomerService implements CustomerInterface,CreateAndUpdateInterface<Integer, Customer> {
     private final CustomerRepository customerRepository;
-    private final GetUserIdByRequestService getUserIdByRequestService;
+    private final GetCustomerIdByRequestService getCustomerIdByRequestService;
     private final PasswordEncoder encoder;
     private final SendMailTemplateService sendMailTemplateService;
     private final EmailInterface emailInterface;
@@ -71,7 +70,7 @@ public class CustomerService implements CustomerInterface,CreateAndUpdateInterfa
 
     @Override
     public int changePassword(ChangePasswordDTO changePasswordDTO, HttpServletRequest request) {
-        Integer id = getUserIdByRequestService.getUserIdByRequest(request);
+        Integer id = getCustomerIdByRequestService.getCustomerIdByRequest(request);
 
         Customer customer = customerRepository.findById(id).orElseThrow();
 
@@ -85,7 +84,7 @@ public class CustomerService implements CustomerInterface,CreateAndUpdateInterfa
                 return 1;
             }
             customer.setPassword(encoder.encode(changePasswordDTO.newPassword()));
-            update(customer.getUserid(), customer);
+            update(customer.getCustomerId(), customer);
             log.info("------> CustomerService: changePassword | change password successfully");
             return 2;
         }
@@ -96,7 +95,7 @@ public class CustomerService implements CustomerInterface,CreateAndUpdateInterfa
         Customer customer = findByEmail(emailCustomer);
         customer.setCustomerResetPasswordCode(code);
         customer.setCustomerResetPasswordCodeExpiration(verificationCodeManager.codeExpiration());
-        update(customer.getUserid(),customer);
+        update(customer.getCustomerId(),customer);
         Email email = new Email();
         email.setFrom(EMAIL_ROOT);
         email.setTo(customer.getEmail());
@@ -118,12 +117,31 @@ public class CustomerService implements CustomerInterface,CreateAndUpdateInterfa
 
     @Transactional
     @Override
-    public boolean validateCodePassword(String code, String newPassword) {
-        if (checkString.isStringValid(newPassword) == true){
+    public boolean resetAndCreateNewPassword(String code, String newPassword) {
+        if (checkString.isStringValid(newPassword)){
             Customer customer = findByPasswordResetToken(code);
             customer.setPassword(encoder.encode(newPassword));
+            update(customer.getCustomerId(),customer);
             return true;
         }
         return false;
     }
+
+    @Override
+    public Customer getCustomerInfo(HttpServletRequest request) {
+        // Tìm khách hàng dựa trên customerId từ request
+        Integer customerId = getCustomerIdByRequestService.getCustomerIdByRequest(request);
+        Customer customer = findById(customerId);
+        if (customer == null) {
+            // Xử lý trường hợp không tìm thấy khách hàng
+            log.error("Customer not found with id: {}", customerId);
+            return null;
+        }
+
+        // Trả về thông tin của khách hàng
+        log.info(">>>>>>> CustomerService:getCustomerInfo | Get info for Customer with email: {}", customer.getEmail());
+        return customer;
+    }
+
+
 }

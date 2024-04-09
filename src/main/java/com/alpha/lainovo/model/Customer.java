@@ -19,7 +19,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
-    private Integer userid;
+    private Integer customerId;
 
     @Column(name = "customer_email",unique = true,columnDefinition = "nvarchar(100)",nullable = false)
     private String email;
@@ -64,4 +64,6 @@ public class Customer {
     @Column(name = "role",columnDefinition = "varchar(30)")
     private CustomerRole role = CustomerRole.CUSTOMER;
 
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Address addresses;
 }

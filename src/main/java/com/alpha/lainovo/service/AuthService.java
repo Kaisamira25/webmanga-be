@@ -34,7 +34,7 @@ public class AuthService {
 
     private final PasswordEncoder encoder;
 
-    private final GetUserIdByRequestService getUserIdByRequestService;
+    private final GetCustomerIdByRequestService getCustomerIdByRequestService;
 
     @Value("${jwt.refreshtoken.expiration}")
     private long JWT_REFRESH_EXPIRATION;
@@ -50,11 +50,10 @@ public class AuthService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
             Customer customer = customerInterface.findByEmail(customUserDetails.getEmail());
-            customUserDetails.setUserId(customer.getUserid());
+            customUserDetails.setUserId(customer.getCustomerId());
             customer.setRefreshToken(generateToken.generateRefreshToken(customUserDetails));
-            update.update(customer.getUserid(), customer);
+            update.update(customer.getCustomerId(), customer);
             String jwt = generateToken.generateAccessToken(customUserDetails);
-            request.getSession().setAttribute("email",loginDTO.email());
             Map<String, String> list = new HashMap<>();
             list.put("accessToken", jwt);
             list.put("refreshToken", customer.getRefreshToken());
@@ -78,7 +77,7 @@ public class AuthService {
         }else if (!customer.getIsVerify()){
             log.info("------> Login fail because this email verify == false");
             return 2;
-        }else if (!customer.getIsBlocked()){
+        }else if (customer.getIsBlocked()){
             log.info("------> Login fail because this account has been locked");
             return 3;
         }
@@ -86,7 +85,7 @@ public class AuthService {
         return 4;
     }
     public void logout(HttpServletRequest request){
-        Integer userId = getUserIdByRequestService.getUserIdByRequest(request);
+        Integer userId = getCustomerIdByRequestService.getCustomerIdByRequest(request);
         Customer customer = customerInterface.findById(userId);
         customer.setRefreshToken("");
         update.update(userId, customer);
