@@ -13,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -33,7 +36,18 @@ public class AdminInitializer implements ApplicationRunner {
             adminAccount.setAddress("Admin");
             Role role = roleRepository.findByRoleName("ADMIN");
             if (role != null) {
-                adminAccount.setRole(role);
+                List<Role> roles = new ArrayList<>();
+                roles.add(role);
+                adminAccount.setRoles(roles);
+                // Add the admin to the role
+                List<Admin> admins = role.getAdmins();
+                if (admins == null) {
+                    admins = new ArrayList<>();
+                }
+                admins.add(adminAccount);
+                role.setAdmins(admins);
+                // Save the role
+                roleRepository.save(role);
             } else {
                 log.error("Not found role: {}",role);
             }
