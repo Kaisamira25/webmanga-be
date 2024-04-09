@@ -51,6 +51,7 @@ public class AuthService {
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
             Customer customer = customerInterface.findByEmail(customUserDetails.getEmail());
             customUserDetails.setUserId(customer.getCustomerId());
+            customUserDetails.setCustomerName(customer.getFullName());
             customer.setRefreshToken(generateToken.generateRefreshToken(customUserDetails));
             update.update(customer.getCustomerId(), customer);
             String jwt = generateToken.generateAccessToken(customUserDetails);

@@ -1,6 +1,6 @@
 package com.alpha.lainovo.utilities.customUserDetails;
 
-import com.alpha.lainovo.model.Customer;
+import com.alpha.lainovo.model.Admin;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,33 +8,34 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Setter
 @Getter
 @AllArgsConstructor
-public class CustomUserDetails implements UserDetails {
-    private Integer userId;
-    private String customerName;
-    private String email;
+public class CustomAdminDetails implements UserDetails {
+    private Integer adminId;
+    private String accountName;
+    private String fullName;
     private String password;
-    private boolean isVerify;
+    private String phoneNumber;
+    private boolean isBlocked;
     private List<GrantedAuthority> authorities;
 
-    public CustomUserDetails(Customer customer) {
-        this.email = customer.getEmail();
-        this.password = customer.getPassword();
-        this.customerName = customer.getFullName();
-        this.isVerify = customer.getIsVerify();
-        this.authorities = Arrays.stream(customer.getRole().name().split(","))
-                .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    public CustomAdminDetails(Admin admin) {
+        this.adminId = admin.getAdminId();
+        this.accountName = admin.getAccountName();
+        this.fullName = admin.getFullName();
+        this.password = admin.getPassword();
+        this.phoneNumber = admin.getPhone();
+        this.isBlocked = admin.isBlocked();
+        this.authorities = Collections.singletonList(new SimpleGrantedAuthority(admin.getRole().getRoleName()));
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
+        return authorities;
     }
 
     @Override
@@ -44,7 +45,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return accountName;
     }
 
     @Override
