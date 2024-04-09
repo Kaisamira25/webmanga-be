@@ -1,11 +1,17 @@
 package com.alpha.lainovo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +23,7 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer adminId;
 
-    @Column(name = "account_name",nullable = false)
+    @Column(name = "account_name",nullable = false, unique = true)
     private String accountName;
 
     @Column(name = "full_name",columnDefinition = "nvarchar(255)",nullable = false)
@@ -38,8 +44,8 @@ public class Admin {
     @Column(name = "user_address",nullable = false)
     private String address;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_id")
+    @ManyToOne()
+    @JoinColumn(name = "roleId")
     private Role role;
 
 }

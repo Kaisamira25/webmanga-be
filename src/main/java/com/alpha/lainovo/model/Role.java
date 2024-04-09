@@ -6,6 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Setter
 @Getter
 @AllArgsConstructor
@@ -18,9 +23,11 @@ public class Role {
     private Integer roleId;
     @Column(name = "role_name",columnDefinition = "varchar(50)",nullable = false)
     private String roleName;
-    @OneToOne(mappedBy = "role")
-    private Admin admin;
 
+//    @ManyToOne
+//    private Admin admin;
+    @OneToMany(mappedBy = "role")
+    private List<Admin> admin;
     public Role(String role) {
         this.roleName = role;
     }

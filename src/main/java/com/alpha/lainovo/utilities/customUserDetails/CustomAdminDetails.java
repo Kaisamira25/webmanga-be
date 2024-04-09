@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -32,6 +33,9 @@ public class CustomAdminDetails implements UserDetails {
         this.phoneNumber = admin.getPhone();
         this.isBlocked = admin.isBlocked();
         this.authorities = Collections.singletonList(new SimpleGrantedAuthority(admin.getRole().getRoleName()));
+//        this.authorities = admin.getRoles().stream()
+//                .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
+//                .collect(Collectors.toList());
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
