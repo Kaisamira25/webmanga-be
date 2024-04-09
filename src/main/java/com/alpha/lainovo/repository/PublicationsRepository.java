@@ -28,12 +28,12 @@ import java.util.Optional;
         Page<Publications> getPagePublicationsWithImage(Pageable pageable,@Param("genre") Integer genre);
         @Query("SELECT new com.alpha.lainovo.dto.request.PublicationsHotPublicationsDTO" +
                 "(p.publicationsID ,p.publicationsName,p.unitPrice,p.stock,p.author,p.publisher,p.publicationYear,p.summary,p.arrivalDay, i.imageURL) " +
-                "FROM Publications p JOIN p.images i ORDER BY p.stock ASC LIMIT 5")
+                "FROM Publications p JOIN p.images i ORDER BY p.stock ASC LIMIT 6")
         List<PublicationsHotPublicationsDTO> getBestSellerPublicationsWithImage();
 
         @Query("SELECT new com.alpha.lainovo.dto.request.PublicationsNewArrivalDTO" +
                 "(p.publicationsID ,p.publicationsName,p.unitPrice,p.stock,p.author,p.publisher,p.publicationYear,p.summary,p.arrivalDay, i.imageURL) " +
-                "FROM Publications p JOIN p.images i ORDER BY p.arrivalDay DESC LIMIT 5")
+                "FROM Publications p JOIN p.images i ORDER BY p.arrivalDay DESC LIMIT 6")
         List<PublicationsNewArrivalDTO> getNewArrivalPublicationsWithImage();
 
         @Query("SELECT new com.alpha.lainovo.dto.request.PublicationsImageDTO" +
