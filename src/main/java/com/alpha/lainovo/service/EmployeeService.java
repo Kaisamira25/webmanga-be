@@ -57,14 +57,14 @@ public class EmployeeService {
             admin.setPhone(employeeDTO.phoneNumber());
             admin.setAddress(employeeDTO.address());
             Role role = roleRepository.findByRoleName("EMPLOYEE");
-            List<Role> roles = new ArrayList<>();
-            roles.add(role);
-            admin.setRoles(roles);
-            // Add the admin to the role
-            List<Admin> admins = new ArrayList<>();
-            admins.add(admin);
-            role.setAdmins(admins);
-//            admin.setRole(role);
+//            List<Role> roles = new ArrayList<>();
+//            roles.add(role);
+//            admin.setRoles(roles);
+//            // Add the admin to the role
+//            List<Admin> admins = new ArrayList<>();
+//            admins.add(admin);
+//            role.setAdmins(admins);
+            admin.setRole(role);
             employeeInterface.createEmployee(admin);
             log.info("Create employee success: {}", admin.getAccountName());
             return 1; // Tạo thành công

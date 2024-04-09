@@ -44,15 +44,8 @@ public class Admin {
     @Column(name = "user_address",nullable = false)
     private String address;
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "role_id")
-//    private List<Role> roles;
-@JsonIgnore
-@ManyToMany(cascade = CascadeType.ALL)
-@JoinTable(
-        name = "admin_role",
-        joinColumns = @JoinColumn(name = "admin_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id"))
-private List<Role> roles;
+    @ManyToOne()
+    @JoinColumn(name = "roleId")
+    private Role role;
 
 }
