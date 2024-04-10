@@ -24,8 +24,6 @@ public class Role {
     @Column(name = "role_name",columnDefinition = "varchar(50)",nullable = false)
     private String roleName;
 
-//    @ManyToOne
-//    private Admin admin;
     @OneToMany(mappedBy = "role")
     private List<Admin> admin;
     public Role(String role) {

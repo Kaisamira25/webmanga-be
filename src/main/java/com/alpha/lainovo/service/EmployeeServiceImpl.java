@@ -69,19 +69,12 @@ public class EmployeeServiceImpl implements EmployeeInterface {
 
     @Override
     public void deleteEmployeeByAccountName(String accountName) {
-//        Admin admin = adminRepository.findAdminByAccountName(accountName);
-//        if (admin != null) {
-//            // Xóa mối quan hệ giữa Admin và Role tức là xóa ở trong bảng phụ
-//            for (Role role : admin.getRoles()) {
-//                role.getAdmins().remove(admin);
-//                roleRepository.save(role); // Lưu lại trong bảng role và cập nhật lại mối quan hệ dưới databasr
-//            }
-//            admin.getRoles().clear(); // Clear lại roles trong admin (tức là role của admin đó đã bị xóa)
-//            adminRepository.save(admin); // Lưu lại trong bảng admin và cập nhật lại mối quan hệ dưới databasr
-//            adminRepository.delete(admin); // Sau đó xóa account trong bảng admin
-//            log.info(">>>>>> EmployeeServiceImpl:deleteEmployeeByAccountName | Deleted an Employee with account name: {}", admin.getAccountName());
-//        } else {
-//            log.error(">>>>>>> EmployeeServiceImpl:deleteEmployeeByAccountName | No Employee found to delete with account name: {}", accountName);
-//        }
+        Admin admin = adminRepository.findAdminByAccountName(accountName);
+        if (admin != null) {
+            adminRepository.delete(admin);
+            log.info(">>>>>> EmployeeServiceImpl:deleteEmployeeByAccountName | Deleted an Employee with account name: {}", admin.getAccountName());
+        } else {
+            log.error(">>>>>>> EmployeeServiceImpl:deleteEmployeeByAccountName | No Employee found to delete with account name: {}", accountName);
+        }
     }
 }

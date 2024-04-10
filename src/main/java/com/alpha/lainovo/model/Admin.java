@@ -44,6 +44,7 @@ public class Admin {
     @Column(name = "user_address",nullable = false)
     private String address;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "roleId")
     private Role role;
