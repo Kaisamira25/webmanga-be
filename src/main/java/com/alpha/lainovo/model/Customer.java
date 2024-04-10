@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -66,4 +67,8 @@ public class Customer {
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private Address addresses;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+    private Set<Orders> ordersList=new HashSet<>();
 }
