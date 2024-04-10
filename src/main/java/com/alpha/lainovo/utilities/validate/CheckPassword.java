@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 @Primary
 @Slf4j
 public class CheckPassword implements CheckStringInterface {
-    private static final String regex_password = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!])(?=\\S+$).{8,20}$";
+    private static final String regex_password = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$";
     @Override
     public boolean isStringValid(String rawPassword) {
         Pattern pattern = Pattern.compile(regex_password);
