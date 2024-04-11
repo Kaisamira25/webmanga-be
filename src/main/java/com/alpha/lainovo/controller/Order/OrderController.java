@@ -72,7 +72,7 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(new Message(0, "Order Adding Complete", list));
     }
 
-    @GetMapping("/getAll/{id}")
+    @GetMapping("/getOrder/{id}")
     public ResponseEntity<Message> GetAllOrderbyCustomer(@PathVariable("id") Integer id){
         Customer customer=Icus.findById(id);
         List<Orders> list= Iorders.findbyCustomer(customer);
