@@ -98,13 +98,14 @@ public class EmployeeService {
 
     public Integer validate(EmployeeLoginDTO employeeLoginDTO) {
         Admin admin = employeeInterface.findAdminAccountByAccountName(employeeLoginDTO.accountName());
+        log.info("Admin {}", admin);
         if (admin == null) {
             log.info("Login: Account doesn't exist");
             return 0;
         } else if (encoder.matches(employeeLoginDTO.password(), admin.getPassword()) && !admin.isBlocked()) {
             log.info("Login: Login success: {}",admin.getAccountName());
             return 1;
-        } else if (!admin.isBlocked()) {
+        } else if (admin.isBlocked()) {
             log.info("Login: Account blocked");
             return 2;
         }
