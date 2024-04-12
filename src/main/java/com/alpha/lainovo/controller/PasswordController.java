@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(allowCredentials = "true",origins = "http://localhost:5173/")
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/customer")
 @RequiredArgsConstructor
 @Slf4j
 public class PasswordController {
@@ -62,7 +62,7 @@ public class PasswordController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Email does not exist", responseCode = "404")
     })
-    @PostMapping("/customer/forgotPassword")
+    @PostMapping("/forgotPassword")
     public ResponseEntity<?> forgotPassword(@RequestBody String email){
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -76,7 +76,6 @@ public class PasswordController {
                         .body(new Message(0,"Email not found"));
             }
             customer.setCustomerResetPasswordCode(verificationCodeManager.generateCode());
-            log.info("Customer: {}",verificationCodeManager.generateCode());
 
             customerInterface.resetPassword(customerEmail, customer.getCustomerResetPasswordCode());
             return ResponseEntity.status(HttpStatus.OK)
@@ -92,8 +91,9 @@ public class PasswordController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Verification code does not exist", responseCode = "404"),
             @ApiResponse(description = "Maybe the password is not in the correct format", responseCode = "502") })
-    @PostMapping("/customer/passwordResetCode")
+    @PostMapping("/passwordResetCode")
     public ResponseEntity<?> passwordReset(@RequestParam("code") String code){
+        log.info("Code: {}", code);
         Customer resetPasswordCode = customerInterface.findByPasswordResetToken(code);
         if (resetPasswordCode == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(0, "Code not found"));
@@ -112,7 +112,7 @@ public class PasswordController {
     @Operation(description = "New password", summary = "Type new password to set new password for account", responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Maybe the password is not in the correct format", responseCode = "502") })
-    @PostMapping("/customer/passwordResetNewPassword")
+    @PostMapping("/passwordResetNewPassword")
     public ResponseEntity<?> newPassword(@RequestBody ResetPasswordDTO resetPasswordDTO) {
         log.info("New password: {}",resetPasswordDTO.newPassword());
         boolean validateNewPassword = customerInterface.resetAndCreateNewPassword(resetPasswordDTO.code(),resetPasswordDTO.newPassword());

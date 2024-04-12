@@ -100,9 +100,9 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/employee/**").permitAll()
                         .requestMatchers(
                                 "/api/v1/auth/**",
-                                "/api/v1/customer/passwordReset",
-                                "/api/v1/customer/forgotPassword",
-                                "/api/v1/customer/change-password"
+                                "/api/v1/customer/**"
+//                                "/api/v1/customer/forgotPassword",
+//                                "/api/v1/customer/change-password"
                         ).permitAll())
                 .authenticationProvider(authenticationCustomerProvider())
                 .addFilterBefore(jwtAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class).build();
