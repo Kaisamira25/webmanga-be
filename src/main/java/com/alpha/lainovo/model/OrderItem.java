@@ -1,6 +1,7 @@
 package com.alpha.lainovo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class OrderItem {
     @Column(name = "order_item_id")
     private Integer orderItemId;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Orders orders;
