@@ -27,7 +27,7 @@ import java.util.List;
 @Slf4j
 public class GetPublicationsController {
 
-    private final PublicationsInterface PublicationsInterface;
+    private final PublicationsInterface publicationsInterface;
     private final PublicationsService publicationsService;
 
     @GetMapping("/all")
@@ -51,7 +51,7 @@ public class GetPublicationsController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "fail", responseCode = "400")})
     public ResponseEntity<?> getPublicationsDetailsWithId(@PathVariable("publicationsDetailsId") Integer id) {
-        Publications publications = PublicationsInterface.getPublicationsDetailsById(id);
+        Publications publications = publicationsInterface.getPublicationsDetailsById(id);
         PublicationsDetailsDTO publicationsDetailsDTO = publicationsService.publicationsToPublicationDetailsDTO(publications);
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successful",publicationsDetailsDTO));
     }
@@ -63,7 +63,7 @@ public class GetPublicationsController {
             @ApiResponse(description = "Publications not found", responseCode = "404")})
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<?> getPublicationsId(@PathVariable("publicationsId") Integer id) {
-        Publications publications = PublicationsInterface.getByPublicationsId(id);
+        Publications publications = publicationsInterface.getByPublicationsId(id);
         if (publications != null) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publications));
         }
@@ -77,7 +77,7 @@ public class GetPublicationsController {
     @GetMapping("/search/{name}")
     public ResponseEntity<?> getByPublicationsTitle(@PathVariable("name") String name) {
 
-        List<Publications> publications = PublicationsInterface.getPublicationsbyName(name);
+        List<Publications> publications = publicationsInterface.getPublicationsbyName(name);
         if (publications != null) {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, " successfully", publications));
         }
@@ -111,5 +111,15 @@ public class GetPublicationsController {
         List<PublicationsNewArrivalDTO> newArrivals = publicationsService.getNewArrivalPublicationsWithImage();
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", newArrivals));
     }
-
+    @Operation(summary = "Find a Publications with the given author name.",responses = {
+            @ApiResponse(description = "success", responseCode = "200"),
+            @ApiResponse(description = "Publications not found", responseCode = "404")})
+    @GetMapping("/author/name")
+    public ResponseEntity<?> getPublicationsWithAuthorName(@RequestParam("author") String author) {
+        List<Publications> publications = publicationsInterface.getPublicationsByAuthorName(author);
+        if (publications != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(new Message(1, " successfully", publications));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(0, "Publications dose not exist"));
+    }
 }

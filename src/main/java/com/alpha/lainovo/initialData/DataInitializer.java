@@ -39,7 +39,7 @@ public class DataInitializer implements CommandLineRunner {
             admin.setAccountName("admin");
             adminRepository.save(admin);
         } else {
-            log.error("Fail to initializer data for role table");
+            log.info("Already have data");
         }
     }
 }

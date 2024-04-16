@@ -41,8 +41,12 @@ import java.util.Optional;
                 "FROM Publications p JOIN p.images i JOIN p.genres g JOIN p.types t")
         List<PublicationsImageDTO> getAllPublicationsWithImage();
 
+//        @Query("SELECT new com.alpha.lainovo.dto.request.PublicationsImageDTO" +
+//                "(p.publicationsID ,p.publicationsName,p.unitPrice,p.stock,p.author,p.publisher,p.publicationYear,p.summary,p.arrivalDay, g.genre, t.typeName, i.imageURL) " +
+//                "FROM Publications p JOIN p.images i JOIN p.genres g JOIN p.types t where p.author = :name")
+//        List<PublicationsImageDTO> getPublicationsWithAuthorName(@Param("name") String name);
         @Query("SELECT p FROM Publications p WHERE p.publicationsID = :id")
         Publications findPublicationsDetailsById(@Param("id") Integer id);
         List<Publications> getPublicationsByPublicationsNameContaining(String publicationsName);
-
+        List<Publications> getPublicationsByAuthor(String authorName);  
         }

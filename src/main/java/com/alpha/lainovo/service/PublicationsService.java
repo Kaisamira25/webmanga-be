@@ -86,6 +86,12 @@ public class PublicationsService implements PublicationsInterface {
     }
 
     @Override
+    public List<Publications> getPublicationsByAuthorName(String authorName) {
+        return publicationsRepo.getPublicationsByAuthor(authorName);
+    }
+
+
+    @Override
     public Publications getPublicationsDetailsById(Integer id) {
         return publicationsRepo.findPublicationsDetailsById(id);
     }

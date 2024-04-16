@@ -12,19 +12,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PublicationsInterface extends ICreateAndUpdateV2<Integer, Publications>{
-
     boolean delete(Integer id);
-
     Optional<Publications> findByName(String name);
-
     Page<Publications> getAllPagePublicationsWithImage(int page, int size, String sortField, String sortBy, Integer genre);
     List<PublicationsHotPublicationsDTO> getBestSellerPublicationsWithImage();
     List<PublicationsNewArrivalDTO> getNewArrivalPublicationsWithImage();
-
     Publications getByPublicationsId(Integer id);
     List<Publications> getAllPublications();
-
     List<Publications> getPublicationsbyName(String name);
-
+    List<Publications> getPublicationsByAuthorName(String authorName);
     Publications getPublicationsDetailsById(Integer id);
 }

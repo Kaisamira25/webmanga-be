@@ -45,7 +45,6 @@ public class Orders {
     @Column(name="order_day")
     private Date orderDay;
 
-
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="customer_id")
