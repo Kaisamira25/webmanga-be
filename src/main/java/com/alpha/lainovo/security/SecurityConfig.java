@@ -1,8 +1,9 @@
 package com.alpha.lainovo.security;
 
+import com.alpha.lainovo.utilities.customUserDetails.CustomAdminDetails;
+import com.alpha.lainovo.utilities.customUserDetails.CustomAdminDetailsService;
 import com.alpha.lainovo.utilities.customUserDetails.CustomUserDetailsService;
 import com.alpha.lainovo.utilities.jwt.JwtAuthenticationFilter;
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,10 +12,8 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.BeanIds;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,12 +23,15 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig implements WebMvcConfigurer {
     private final CustomUserDetailsService customUserDetailsService;
+    private final CustomAdminDetailsService customAdminDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -40,15 +42,25 @@ public class SecurityConfig implements WebMvcConfigurer {
         return new JwtAuthenticationFilter();
     }
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationCustomerProvider(){
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(customUserDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
+    @Bean
+    public AuthenticationProvider authenticationAdminProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(customAdminDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
+    }
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+        List<AuthenticationProvider> providers = new ArrayList<>();
+        providers.add(authenticationCustomerProvider());
+        providers.add(authenticationAdminProvider());
+        return new ProviderManager(providers);
     }
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -84,14 +96,15 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/images/**",
                                 "/api/v1/customer/address",
                                 "/api/v1/customer/info",
-                                "/api/v1/**").permitAll()
+                                "/api/v1/admin/**," ,
+                                        "/api/v1/employee/**").permitAll()
                         .requestMatchers(
                                 "/api/v1/auth/**",
                                 "/api/v1/customer/passwordReset",
                                 "/api/v1/customer/forgotPassword",
                                 "/api/v1/customer/change-password"
                         ).permitAll())
-                .authenticationProvider(authenticationProvider())
+                .authenticationProvider(authenticationCustomerProvider())
                 .addFilterBefore(jwtAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class).build();
     }
 
