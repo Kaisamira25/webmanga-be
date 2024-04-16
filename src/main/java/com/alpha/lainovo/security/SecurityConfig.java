@@ -100,6 +100,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/employee/**").permitAll()
                         .requestMatchers(
                                 "/api/v1/auth/**",
+                                "/api/v1/order/**",
                                 "/api/v1/customer/**"
 
                         ).permitAll())
