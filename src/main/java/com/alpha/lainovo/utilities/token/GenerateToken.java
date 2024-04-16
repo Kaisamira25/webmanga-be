@@ -1,5 +1,6 @@
 package com.alpha.lainovo.utilities.token;
 
+import com.alpha.lainovo.utilities.customUserDetails.CustomAdminDetails;
 import com.alpha.lainovo.utilities.customUserDetails.CustomUserDetails;
 import com.alpha.lainovo.utilities.key.ReadKeys;
 import io.jsonwebtoken.Jwts;
@@ -29,6 +30,7 @@ public class GenerateToken {
                     .setHeaderParam("alg","RS256")
                     .claim("role",customUserDetails.getAuthorities())
                     .claim("customerId",customUserDetails.getCustomerId())
+                    .claim("customerName", customUserDetails.getCustomerName())
                     .setIssuedAt(now)
                     .setExpiration(dateExpiration)
                     .signWith(SignatureAlgorithm.RS256, ReadKeys.PRIVATE_KEY)
@@ -58,5 +60,45 @@ public class GenerateToken {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public String generateRefreshTokenForAdmin(CustomAdminDetails customAdminDetails) {
+        try {
+            Date now = new Date();
+            Date dateExpiration = new Date(now.getTime() + JWT_REFRESH_EXPIRATION);
+            log.info("Generate refresh token success for admin");
+            return Jwts.builder()
+                    .setHeaderParam("typ","JWT")
+                    .setHeaderParam("alg","RS256")
+                    .claim("role",customAdminDetails.getAuthorities())
+                    .claim("adminId",customAdminDetails.getAdminId())
+                    .setIssuedAt(now)
+                    .setExpiration(dateExpiration)
+                    .signWith(SignatureAlgorithm.RS256,ReadKeys.PRIVATE_KEY)
+                    .compact();
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public String generateAccessTokenForAdmin(CustomAdminDetails customAdminDetails){
+        try {
+            Date now = new Date();
+            Date dateExpiration = new Date(now.getTime() + JWT_EXPIRATION);
+
+            return Jwts.builder()
+                    .setHeaderParam("typ","JWT")
+                    .setHeaderParam("alg","RS256")
+                    .claim("role",customAdminDetails.getAuthorities())
+                    .claim("adminId",customAdminDetails.getAdminId())
+                    .setIssuedAt(now)
+                    .setExpiration(dateExpiration)
+                    .signWith(SignatureAlgorithm.RS256, ReadKeys.PRIVATE_KEY)
+                    .compact();
+        }catch (Exception e){
+            log.error("GenerateToken: generateAccessToken | Error: {}", e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
     }
 }

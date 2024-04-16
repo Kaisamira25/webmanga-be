@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
     private Integer customerId;
+    private String customerName;
     private String email;
     private String password;
     private boolean isVerify;
@@ -26,6 +27,7 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(Customer customer) {
         this.email = customer.getEmail();
         this.password = customer.getPassword();
+        this.customerName = customer.getFullName();
         this.isVerify = customer.getIsVerify();
         this.authorities = Arrays.stream(customer.getRole().name().split(","))
                 .map(SimpleGrantedAuthority::new).collect(Collectors.toList());

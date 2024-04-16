@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface CoverInterface extends ICreateAndUpdateV2<Integer, Cover> {
 
+
     boolean delete(Integer id);
     Cover getByCoverId(Integer id);
     List<Cover> getAllCover();
