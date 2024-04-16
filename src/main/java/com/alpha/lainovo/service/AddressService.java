@@ -92,8 +92,12 @@ public class AddressService implements ICreateAndUpdateV2<Integer, Address>, Add
 
         // Cập nhật thông tin địa chỉ
         Address address = customer.getAddresses();
-        address.setPhoneNumber(addressDTO.phoneNumber());
-        address.setAddress(addressDTO.address());
+        if (addressDTO.phoneNumber() != null && !addressDTO.phoneNumber().isEmpty()) {
+            address.setPhoneNumber(addressDTO.phoneNumber());
+        }
+        if (addressDTO.address() != null && !addressDTO.address().isEmpty()) {
+            address.setAddress(addressDTO.address());
+        }
 
         // Lưu khách hàng đã được cập nhật
         saveService.create(customer);

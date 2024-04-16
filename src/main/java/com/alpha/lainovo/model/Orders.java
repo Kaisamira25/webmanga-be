@@ -45,13 +45,12 @@ public class Orders {
     @Column(name="order_day")
     private Date orderDay;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+
+
+    @ManyToOne
     @JoinColumn(name="customer_id")
     private Customer customer;
 
-
-    @JsonIgnore
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL )
     private List<OrderItem> orderItem;
 

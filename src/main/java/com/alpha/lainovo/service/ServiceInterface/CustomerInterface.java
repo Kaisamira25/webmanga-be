@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface CustomerInterface {
     Customer findByEmail(String email);
 
-    Customer findById(Integer userId);
+    Customer findById(Integer customerId);
 
     Customer findByRefreshToken(String token);
 

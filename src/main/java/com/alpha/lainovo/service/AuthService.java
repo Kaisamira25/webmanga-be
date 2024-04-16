@@ -50,7 +50,7 @@ public class AuthService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
             Customer customer = customerInterface.findByEmail(customUserDetails.getEmail());
-            customUserDetails.setUserId(customer.getCustomerId());
+            customUserDetails.setCustomerId(customer.getCustomerId());
             customUserDetails.setCustomerName(customer.getFullName());
             customer.setRefreshToken(generateToken.generateRefreshToken(customUserDetails));
             update.update(customer.getCustomerId(), customer);
@@ -86,9 +86,9 @@ public class AuthService {
         return 4;
     }
     public void logout(HttpServletRequest request){
-        Integer userId = getCustomerIdByRequestService.getCustomerIdByRequest(request);
-        Customer customer = customerInterface.findById(userId);
+        Integer customerId = getCustomerIdByRequestService.getCustomerIdByRequest(request);
+        Customer customer = customerInterface.findById(customerId);
         customer.setRefreshToken("");
-        update.update(userId, customer);
+        update.update(customerId, customer);
     }
 }

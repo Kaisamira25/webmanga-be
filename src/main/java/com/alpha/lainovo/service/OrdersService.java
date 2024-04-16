@@ -1,6 +1,6 @@
 package com.alpha.lainovo.service;
 
-import com.alpha.lainovo.model.Image;
+import com.alpha.lainovo.model.Customer;
 import com.alpha.lainovo.model.Orders;
 import com.alpha.lainovo.repository.OrdersRepository;
 import com.alpha.lainovo.service.ServiceInterface.OrdersInterface;
@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Service
@@ -23,15 +22,18 @@ public class OrdersService implements OrdersInterface {
     }
 
     @Override
-    public Object create(Orders entity) {
+    public List<Orders> findbyCustomer(Customer customer) {
+        return repository.findOrdersByCustomer(customer);
+    }
+
+
+    @Override
+    public Object create(Integer entity) {
         return null;
     }
 
     @Override
-    public Orders update(Integer key, Orders entity) {
+    public Integer update(Orders key, Integer entity) {
         return null;
     }
-
-
-
 }
