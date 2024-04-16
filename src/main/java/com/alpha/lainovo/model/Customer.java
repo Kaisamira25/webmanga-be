@@ -69,6 +69,6 @@ public class Customer {
     private Address addresses;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer")
     private Set<Orders> ordersList=new HashSet<>();
 }
