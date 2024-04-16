@@ -58,9 +58,9 @@ public class CustomerService implements CustomerInterface,CreateAndUpdateInterfa
     }
 
     @Override
-    public Customer findById(Integer userId) {
-        Optional<Customer> user = customerRepository.findById(userId);
-        return user.get();
+    public Customer findById(Integer customerId) {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        return customer.get();
     }
 
     @Override
