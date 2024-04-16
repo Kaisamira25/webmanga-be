@@ -45,7 +45,9 @@ public class Orders {
     @Column(name="order_day")
     private Date orderDay;
 
-
+    @ManyToOne
+    @JoinColumn(name="guest_id")
+    private Guest guest;
 
     @ManyToOne
     @JoinColumn(name="customer_id")

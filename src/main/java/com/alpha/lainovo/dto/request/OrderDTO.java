@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO {
+    private String fullname;
     private Double totalPrice;
     private String phoneNumber;
     private String address;
@@ -24,5 +25,6 @@ public class OrderDTO {
     private boolean paymentStatus;
     private String email;
     private List<OrderItemDTO> orderItem;
+    private Boolean status;
 
 }

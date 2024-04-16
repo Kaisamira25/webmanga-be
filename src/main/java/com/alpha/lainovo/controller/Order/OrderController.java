@@ -4,6 +4,7 @@ import com.alpha.lainovo.dto.request.OrderDTO;
 import com.alpha.lainovo.dto.request.OrderItemDTO;
 import com.alpha.lainovo.dto.response.Message;
 import com.alpha.lainovo.model.*;
+import com.alpha.lainovo.repository.GuestRepository;
 import com.alpha.lainovo.repository.OrdersItemRepository;
 import com.alpha.lainovo.repository.OrdersRepository;
 import com.alpha.lainovo.repository.PublicationsRepository;
@@ -38,6 +39,7 @@ public class OrderController {
     private final PublicationsInterface Ipub;
     private final OrdersItemRepository repoItem;
     private final OrdersInterface Iorders;
+    private final GuestRepository GRepo;
     @Operation(summary = "Get Customer Info", description = "Get Customer Info", responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Customer not found", responseCode = "404")})
@@ -45,8 +47,18 @@ public class OrderController {
     public ResponseEntity<Message> addOrderAndDetail(@RequestBody OrderDTO orderDTO) {
         System.out.println(orderDTO.getOrderItem().size());
         Orders orders = modelMapper.map(orderDTO,Orders.class);
-        orders.setCustomer(Icus.findByEmail(orderDTO.getEmail()));
-        orders.setFullname(Icus.findByEmail(orderDTO.getEmail()).getFullName());
+        if(orderDTO.getStatus()){
+            orders.setCustomer(Icus.findByEmail(orderDTO.getEmail()));
+            orders.setFullname(orderDTO.getFullname());
+        }else{
+            Guest guest=new Guest();
+            guest.setFullName(orderDTO.getFullname());
+            guest.setEmail(orderDTO.getEmail());
+            guest.setPhoneNumber(orderDTO.getPhoneNumber());
+            guest.setAddresses(orderDTO.getAddress());
+            Guest guests=GRepo.save(guest);
+            orders.setGuest(guests);
+        }
         orders.setOrderStatus("Wait for confirmation!");
         orders.setOrderDay(new Date());
         if(orderDTO.getDiscount()!= null){
@@ -79,4 +91,23 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(new Message(0, "Order Adding Complete", list));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Message> GetAllOrderbyId(@PathVariable("id") Integer id){
+        Orders orders= Iorders.findbyId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(0, "Order Adding Complete", orders));
+    }
+    @PutMapping("/update")
+    public ResponseEntity<Message> updateOrder(@RequestBody Orders order){
+        for (OrderItem orderItem : order.getOrderItem()) {
+            orderItem.setOrders(order); // Cập nhật order_id cho orderItem
+        }
+        Orders orders=repoOrder.save(order);
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(0, "Order Adding Complete", order));
+    }
+    @GetMapping("/revenue")
+    public ResponseEntity<Message> getRevenue(){
+        List<Orders> list= Iorders.findbyStatus("Delivered!",true);
+        System.out.println(list.size());
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(0, "Order Adding Complete",list));
+    }
 }

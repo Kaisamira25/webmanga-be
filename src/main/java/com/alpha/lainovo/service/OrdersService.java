@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -18,12 +19,30 @@ public class OrdersService implements OrdersInterface {
 
     @Override
     public List<Orders> findAll() {
-        return repository.findAll();
+        List <Orders> list = repository.findAllOrderByOrderDay();
+        Iterator<Orders> iterator = list.iterator();
+        while(iterator.hasNext()) {
+            Orders o = iterator.next();
+            if (o.getOrderStatus().equals("Delivered!") && o.isPaymentStatus()) {
+                iterator.remove(); // Loại bỏ phần tử thỏa mãn điều kiện
+            }
+        }
+        return list;
     }
 
     @Override
     public List<Orders> findbyCustomer(Customer customer) {
         return repository.findOrdersByCustomer(customer);
+    }
+
+    @Override
+    public Orders findbyId(Integer id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Orders> findbyStatus(String status, boolean statusPay) {
+        return repository.findOrdersByOrderStatusAndPaymentStatus(status,statusPay);
     }
 
 
