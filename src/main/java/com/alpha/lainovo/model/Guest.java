@@ -22,15 +22,15 @@ public class Guest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "guest_id")
-    private Integer customerId;
+    private Integer guestId;
 
-    @Column(name = "phong_number",columnDefinition = "nvarchar(10)",nullable = false)
+    @Column(name = "phone_number",columnDefinition = "nvarchar(10)",nullable = false)
     private String phoneNumber;
 
-    @Column(name = "customer_email",columnDefinition = "nvarchar(100)",nullable = false)
+    @Column(name = "guest_email",columnDefinition = "nvarchar(100)",nullable = false)
     private String email;
 
-    @Column(name = "customer_fullname",columnDefinition = "nvarchar(50)",nullable = false)
+    @Column(name = "guest_fullname",columnDefinition = "nvarchar(50)",nullable = false)
     private String fullName;
 
     @Column(name = "addresses",columnDefinition = "nvarchar(500)",nullable = false)

@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO {
-    private String fullname;
+    private String fullName;
     private Double totalPrice;
     private String phoneNumber;
     private String address;

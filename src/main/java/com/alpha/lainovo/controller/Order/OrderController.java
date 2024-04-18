@@ -49,10 +49,10 @@ public class OrderController {
         Orders orders = modelMapper.map(orderDTO,Orders.class);
         if(orderDTO.getStatus()){
             orders.setCustomer(Icus.findByEmail(orderDTO.getEmail()));
-            orders.setFullname(orderDTO.getFullname());
+            orders.setFullname(orderDTO.getFullName());
         }else{
             Guest guest=new Guest();
-            guest.setFullName(orderDTO.getFullname());
+            guest.setFullName(orderDTO.getFullName());
             guest.setEmail(orderDTO.getEmail());
             guest.setPhoneNumber(orderDTO.getPhoneNumber());
             guest.setAddresses(orderDTO.getAddress());
