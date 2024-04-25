@@ -23,6 +23,7 @@ public class GetCustomerController {
     @GetMapping("/{id}")
     @Operation(summary = "Find Customer by Id",responses = {
             @ApiResponse(description = "success", responseCode = "200")})
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<?> getCustomerbyID(@PathVariable("id") Integer id) {
         Customer customer=icus.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", customer));
@@ -44,6 +45,7 @@ public class GetCustomerController {
     @Operation(summary = "Update Customer Status", responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Customer not found", responseCode = "404")})
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> updateCustomerStatus(@PathVariable("customerId") Integer customerId, @RequestBody RUpdateCustomerDTO rUpdateCustomerDTO) {
         Customer updatedStatusCustomer = icus.updateCustomerStatus(customerId, rUpdateCustomerDTO);
         if (updatedStatusCustomer != null) {
