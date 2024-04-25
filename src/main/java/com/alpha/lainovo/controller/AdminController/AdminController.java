@@ -5,6 +5,7 @@ import com.alpha.lainovo.dto.response.Message;
 import com.alpha.lainovo.service.EmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ public class AdminController {
                     @ApiResponse(description = "Invalid for the case", responseCode = "400")
             })
     @PostMapping("/login")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<?> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
         log.info("Login admin start");
         Integer checkAdminLogin = employeeService.validate(employeeLoginDTO);

@@ -33,6 +33,7 @@ public class GetPublicationsController {
     @GetMapping("/all")
     @Operation(summary = "Find All Publications",responses = {
             @ApiResponse(description = "success", responseCode = "200")})
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<?> getAllPublications() {
         List<Publications> publications = publicationsService.getAllPublications();
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publications));
@@ -41,6 +42,7 @@ public class GetPublicationsController {
     @GetMapping("/details")
     @Operation(summary = "Find All Publications",responses = {
             @ApiResponse(description = "success", responseCode = "200")})
+
     public ResponseEntity<?> getAllPublicationsWithImage() {
         List<PublicationsImageDTO> publications = publicationsService.getAllPublicationsWithImage();
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", publications));

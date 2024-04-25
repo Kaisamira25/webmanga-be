@@ -25,7 +25,6 @@ public class GetPromotionalGiftController {
     @GetMapping("/all")
     @Operation(summary = "Find All PromotionalGift",responses = {
             @ApiResponse(description = "success", responseCode = "200")})
-    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<Message> getAllListGift() {
         List<PromotionalGift> list = iGift.getAllGift();
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", list));

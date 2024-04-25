@@ -33,6 +33,7 @@ public class PublicationsTypeController {
     @Operation(summary = "Add a Type from a Publication", responses = {
             @ApiResponse(description = "success", responseCode = "200")})
     @PostMapping("/{publicationsId}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> addTypeToPublications(@PathVariable Integer publicationsId, @RequestBody List<Integer> types) {
         for(Integer type:types){
             publicationsTypeService.addTypeToPublications(publicationsId,type);
@@ -44,6 +45,7 @@ public class PublicationsTypeController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Publication or Type not found", responseCode = "400")})
     @DeleteMapping("/{publicationsId}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> removeGenreFromPublications(@PathVariable Integer publicationsId) {
         boolean status = publicationsTypeService.removeTypeFromPublications(publicationsId);
         if (status) {
@@ -56,6 +58,7 @@ public class PublicationsTypeController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Publication or Genre not found", responseCode = "400")})
     @GetMapping("/{publicationsId}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> getAllTypeByID(@PathVariable Integer publicationsId) {
         Set<Type> types = typeSer.getTypesByPublicationId(publicationsId);
         return ResponseEntity.status(HttpStatus.OK).body(new Message(0, "Successfully",types ));

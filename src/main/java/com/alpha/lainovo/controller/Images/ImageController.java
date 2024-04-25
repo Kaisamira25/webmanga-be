@@ -49,6 +49,7 @@ public class ImageController {
             @ApiResponse(description = "success", responseCode = "200")})
 //    @PostMapping("/{id}/publications", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PostMapping("/{id}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> createImageForPublications(@PathVariable("id") Integer id,@RequestBody List<String> images) {
         System.out.println(id);
         Publications publications = iPublications.getByPublicationsId(id);
@@ -98,6 +99,7 @@ public class ImageController {
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "successful",list));
     }
     @DeleteMapping("delImage/{id}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> delImageAll(@PathVariable Integer id) throws Exception {
         imageService.delImagebyPublication(id);
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "successful"));

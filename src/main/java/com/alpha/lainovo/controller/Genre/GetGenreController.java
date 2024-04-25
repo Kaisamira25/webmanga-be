@@ -24,7 +24,6 @@ public class GetGenreController {
     @GetMapping("/all")
     @Operation(summary = "Find All Genre",responses = {
             @ApiResponse(description = "success", responseCode = "200")})
-    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<Message> getAllListGenre() {
         List<Genre> list = iGenre.getAllGenre();
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", list));
@@ -34,7 +33,7 @@ public class GetGenreController {
     @Operation(summary = "Find a Genre with the ID",responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Genre not found", responseCode = "404")})
-    @SecurityRequirement(name = "bearerAuth")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> getGenreId(@PathVariable("id") Integer id) {
         Genre genres = iGenre.getByGenreId(id);
         if (genres != null) {

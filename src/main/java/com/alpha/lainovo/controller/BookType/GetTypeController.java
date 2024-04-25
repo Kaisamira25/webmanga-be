@@ -23,7 +23,6 @@ public class GetTypeController {
     @GetMapping("/all")
     @Operation(summary = "Find All Type",responses = {
             @ApiResponse(description = "success", responseCode = "200")})
-    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<Message> getAllListType() {
         List<Type> list = iType.getAllType();
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", list));

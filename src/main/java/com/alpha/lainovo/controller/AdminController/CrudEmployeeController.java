@@ -28,6 +28,7 @@ public class CrudEmployeeController {
     private final EmployeeServiceImpl employeeServiceImpl;
 
     @GetMapping("/all")
+    @SecurityRequirement(name="bearerAuth")
     @Operation(summary = "Find All Account",responses = {
             @ApiResponse(description = "success", responseCode = "200")})
     public ResponseEntity<?> getAllAccountEmployee() {
@@ -36,6 +37,7 @@ public class CrudEmployeeController {
     }
 
     @GetMapping("/search/{accountName}")
+    @SecurityRequirement(name="bearerAuth")
     @Operation(summary = "Find a Account with the accountName",responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Account not found", responseCode = "404")})
@@ -55,6 +57,7 @@ public class CrudEmployeeController {
             @ApiResponse(description = "Create failure because the request unauthorized", responseCode = "401")
     })
     @PostMapping("/create")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<?> createEmployee(@RequestBody EmployeeDTO employeeDTO) {
         Integer employeeCreate = employeeService.createAccountEmployee(employeeDTO);
         if (employeeCreate == 1) {
@@ -69,6 +72,7 @@ public class CrudEmployeeController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Employee not found", responseCode = "400")})
     @PutMapping("/update/{accountName}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<?> updateAccountEmployee(@PathVariable("accountName") String accountName, @RequestBody REmployeeUpdateAndDeleteDTO employeeDTO) {
         Admin employeeUpdate = employeeServiceImpl.updateEmployeeAccountName(accountName, employeeDTO);
         if (employeeUpdate != null) {
@@ -81,6 +85,7 @@ public class CrudEmployeeController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Employee not found", responseCode = "400")})
     @DeleteMapping("/delete/{accountName}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<?> deleteAccountEmployee(@PathVariable("accountName") String accountName) {
         Admin employeeDelete = employeeServiceImpl.findAdminAccountByAccountName(accountName);
         if (employeeDelete != null) {

@@ -28,7 +28,6 @@ public class GetDiscountController {
     @GetMapping("/all")
     @Operation(summary = "Find All Discount",responses = {
             @ApiResponse(description = "success", responseCode = "200")})
-    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<Message> getAllListGenre() {
         List<Discount> list = iDiscount.getAllDiscount();
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", list));

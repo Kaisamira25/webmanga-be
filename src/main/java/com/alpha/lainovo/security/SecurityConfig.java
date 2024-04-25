@@ -7,6 +7,7 @@ import com.alpha.lainovo.utilities.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -80,9 +81,38 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/swagger-ui/**",
+                        .requestMatchers(
+                                "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/api/v1/auth/**",
+                                "/api/v1/order/**"
+                        ).permitAll()
+
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/v1/publications/all",
+                                "/api/v1/publications/details",
+                                "/api/v1/publications/search/{name}",
+                                "/api/v1/publications/pagination",
+                                "/api/v1/publications/best-sellers",
+                                "/api/v1/publications/new-arrivals",
+                                "/api/v1/publications/author/name",
+                                "/api/v1/cover/all",
+                                "/api/v1/cover/search/{name}",
+                                "/api/v1/type/all",
+                                "/api/v1/type/search/{name}",
+                                "/api/v1/gift/all",
+                                "/api/v1/gift/search/{name}",
+                                "/api/v1/genre/all",
+                                "/api/v1/genre/search/{name}",
+                                "/api/v1/discount/all",
+                                "/api/v1/discount/search/{name}",
+                                "/api/v1/customer/address",
+                                "/api/v1/customer/**",
+                                "/api/v1/images/**"
+                        ).hasAnyAuthority("CUSTOMER")
+
+                        .requestMatchers(
+                                "/api/v1/admin/**",
                                 "/api/v1/publications/**",
                                 "/api/v1/cover/**",
                                 "/api/v1/type/**",
@@ -93,16 +123,12 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/publications_cover/**",
                                 "/api/v1/publications_gift/**",
                                 "/api/v1/publications_type/**",
-                                "/api/v1/images/**",
                                 "/api/v1/customer/address",
-                                "/api/v1/admin/**" ,
-                                "/api/v1/employee/**").permitAll()
-                        .requestMatchers(
-                                "/api/v1/auth/**",
-                                "/api/v1/order/**",
-                                "/api/v1/customer/**"
+                                "/api/v1/customer/**",
+                                "/api/v1/images/**",
+                                "/api/v1/employee/**"
+                        ).hasAnyAuthority("ADMIN","EMPLOYEE"))
 
-                        ).permitAll())
                 .authenticationProvider(authenticationCustomerProvider())
                 .addFilterBefore(jwtAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class).build();
     }

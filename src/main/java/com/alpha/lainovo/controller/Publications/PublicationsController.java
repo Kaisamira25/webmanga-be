@@ -34,6 +34,7 @@ public class PublicationsController {
 
     @Operation(summary = "Create a publications", responses = {
             @ApiResponse(description = "success", responseCode = "200"),})
+    @SecurityRequirement(name="bearerAuth")
     @PostMapping()
     public ResponseEntity<Message> createPublications(@RequestBody PublicationsDTO publicationsDTO) {
         Publications publications = modelMapper.map(publicationsDTO, Publications.class);
@@ -43,6 +44,7 @@ public class PublicationsController {
     @Operation(summary = "Update a Publications", description = "When the Publications is successfully updated, the response status code is 200; otherwise, it is 400, accompanied by a corresponding message.", responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Publications not found", responseCode = "400")})
+    @SecurityRequirement(name="bearerAuth")
     @PutMapping("/{id}")
     public ResponseEntity<Message> updatePublications(@PathVariable("id") Integer id, @RequestBody PublicationsDTO mangaDTO) {
         Publications publications = modelMapper.map(mangaDTO, Publications.class);
@@ -57,6 +59,7 @@ public class PublicationsController {
     @Operation(summary = "Delete a Publications", description = "When the Publications is successfully updated, the response status code is 200; otherwise, it is 400, accompanied by a corresponding message.", responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Publications not found", responseCode = "400")})
+    @SecurityRequirement(name="bearerAuth")
     @DeleteMapping("/{id}")
     public ResponseEntity<Message> deletePublications(@PathVariable("id") Integer id) {
 

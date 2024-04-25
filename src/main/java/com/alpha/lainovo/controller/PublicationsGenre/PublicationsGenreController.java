@@ -36,6 +36,7 @@ public class PublicationsGenreController {
     @Operation(summary = "Add a Genre from a Publication", responses = {
             @ApiResponse(description = "success", responseCode = "200")})
     @PostMapping("/{publicationsId}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> addGenreToPublications(@PathVariable Integer publicationsId, @RequestBody List<Integer> genres) {
         for(Integer genre:genres){
             publicationsGenreService.addGenreToPublications(publicationsId,genre);
@@ -47,6 +48,7 @@ public class PublicationsGenreController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Publication or Genre not found", responseCode = "400")})
     @DeleteMapping("/{publicationsId}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> removeGenreFromPublications(@PathVariable Integer publicationsId) {
         boolean status = publicationsGenreService.removeGenreFromPublications(publicationsId);
         if (status) {
@@ -59,6 +61,7 @@ public class PublicationsGenreController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Publication or Genre not found", responseCode = "400")})
     @GetMapping("/{publicationsId}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> getAllGenreByID(@PathVariable Integer publicationsId) {
         Set<Genre> genres = genreSer.getGenresByPublicationId(publicationsId);
         return ResponseEntity.status(HttpStatus.OK).body(new Message(0, "Successfully",genres ));

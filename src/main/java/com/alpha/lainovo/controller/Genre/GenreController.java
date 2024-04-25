@@ -26,6 +26,7 @@ public class GenreController {
 
     @Operation(summary = "Create a Genre", responses = {
             @ApiResponse(description = "success", responseCode = "200"),})
+    @SecurityRequirement(name="bearerAuth")
     @PostMapping("/create")
     public ResponseEntity<Message> createGenres(@RequestBody GenreDTO genresDTO) {
         Genre genres = modelMapper.map(genresDTO, Genre.class);
@@ -37,6 +38,7 @@ public class GenreController {
     @Operation(summary = "Update a Genre", description = "When the Genre is successfully updated, the response status code is 200; otherwise, it is 400, accompanied by a corresponding message.", responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Genre not found", responseCode = "400")})
+    @SecurityRequirement(name="bearerAuth")
     @PutMapping("/{id}")
     public ResponseEntity<Message> updateGenre(@PathVariable("id") Integer id, @RequestBody GenreDTO genresDTO) {
         Genre genres = modelMapper.map(genresDTO, Genre.class);
@@ -52,6 +54,7 @@ public class GenreController {
     @Operation(summary = "Delete a Genre", description = "When the Genre is successfully updated, the response status code is 200; otherwise, it is 400, accompanied by a corresponding message.", responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Genre not found", responseCode = "400")})
+    @SecurityRequirement(name="bearerAuth")
     @DeleteMapping("/{id}")
     public ResponseEntity<Message> deleteGenre(@PathVariable("id") Integer id) {
 

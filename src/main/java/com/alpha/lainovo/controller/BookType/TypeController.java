@@ -26,6 +26,7 @@ public class TypeController {
     @Operation(summary = "Create a Type", responses = {
             @ApiResponse(description = "success", responseCode = "200"),})
     @PostMapping()
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> createType(@RequestBody TypeDTO typeDTO) {
         Type type = modelMapper.map(typeDTO, Type.class);
         type = (Type) iType.create(type);
@@ -37,6 +38,7 @@ public class TypeController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Type not found", responseCode = "400")})
     @PutMapping("/{id}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> updateType(@PathVariable("id") Integer id, @RequestBody TypeDTO typeDTO) {
         Type type = modelMapper.map(typeDTO, Type.class);
         type = iType.update(id, type);
@@ -51,6 +53,7 @@ public class TypeController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Type not found", responseCode = "400")})
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> deleteType(@PathVariable("id") Integer id) {
         boolean status = iType.delete(id);
         if (status) {

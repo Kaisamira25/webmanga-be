@@ -33,6 +33,7 @@ public class PublicationsCoverController {
     @Operation(summary = "Add a Cover from a Publication", responses = {
             @ApiResponse(description = "success", responseCode = "200")})
     @PostMapping("/{publicationsId}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> addCoverToPublications(@PathVariable Integer publicationsId,  @RequestBody List<Integer> covers) {
         for(Integer cover:covers){
             publicationsCoverService.addCoverToPublications(publicationsId,cover);
@@ -44,6 +45,7 @@ public class PublicationsCoverController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Publication or Cover not found", responseCode = "400")})
     @DeleteMapping("/{publicationsId}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> removeCoverFromPublications(@PathVariable Integer publicationsId) {
         boolean status = publicationsCoverService.removeCoverFromPublications(publicationsId);
         if (status) {
@@ -56,6 +58,7 @@ public class PublicationsCoverController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Publication or Genre not found", responseCode = "400")})
     @GetMapping("/{publicationsId}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> getAllCoverByID(@PathVariable Integer publicationsId) {
         Set<Cover> covers = coverSer.getCoverByPublicationId(publicationsId);
         return ResponseEntity.status(HttpStatus.OK).body(new Message(0, "Successfully",covers ));

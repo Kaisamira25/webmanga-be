@@ -14,6 +14,7 @@ import com.alpha.lainovo.service.ServiceInterface.OrdersInterface;
 import com.alpha.lainovo.service.ServiceInterface.PublicationsInterface;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -96,7 +97,9 @@ public class OrderController {
         Orders orders= Iorders.findbyId(id);
         return ResponseEntity.status(HttpStatus.OK).body(new Message(0, "Order Adding Complete", orders));
     }
+
     @PutMapping("/update")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> updateOrder(@RequestBody Orders order){
         for (OrderItem orderItem : order.getOrderItem()) {
             orderItem.setOrders(order); // Cập nhật order_id cho orderItem

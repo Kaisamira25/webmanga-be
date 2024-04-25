@@ -32,6 +32,7 @@ public class PublicationsGiftController {
     @Operation(summary = "Add a Gift from a Publication", responses = {
             @ApiResponse(description = "success", responseCode = "200")})
     @PostMapping("/{publicationsId}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> addGiftToPublications(@PathVariable Integer publicationsId, @RequestBody List<Integer> gifts) {
         for(Integer gift:gifts){
             publicationsGiftService.addGiftToPublications(publicationsId,gift);
@@ -43,6 +44,7 @@ public class PublicationsGiftController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Publication or Gift not found", responseCode = "400")})
     @DeleteMapping("/{publicationsId}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> removeGiftFromPublications(@PathVariable Integer publicationsId) {
         boolean status = publicationsGiftService.removeGiftFromPublications(publicationsId);
         if (status) {
@@ -55,6 +57,7 @@ public class PublicationsGiftController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Publication or Genre not found", responseCode = "400")})
     @GetMapping("/{publicationsId}")
+    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> getAllGiftByID(@PathVariable Integer publicationsId) {
         Set<PromotionalGift> gifts = giftSer.getGiftByPublicationId(publicationsId);
         return ResponseEntity.status(HttpStatus.OK).body(new Message(0, "Successfully",gifts ));
