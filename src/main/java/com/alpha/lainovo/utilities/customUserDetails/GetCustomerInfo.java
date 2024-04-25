@@ -18,8 +18,20 @@ public class GetCustomerInfo {
                     .getBody();
             return claims.get("customerId", Integer.class);
         }catch (Exception e) {
-            log.error("GetCustomerIno: getCustomerId | error: {}",e.getMessage());
+            log.error("GetCustomerInfo: getCustomerId | error: {}",e.getMessage());
             e.printStackTrace();
+        }
+        return null;
+    }
+    public Integer getAdminId(String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(ReadKeys.PUBLIC_KEY)
+                    .parseClaimsJws(token)
+                    .getBody();
+            return claims.get("adminId", Integer.class);
+        } catch (Exception e) {
+            log.error("GetAdminInfo: getCustomerId | error: {}", e.getMessage());
         }
         return null;
     }

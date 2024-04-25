@@ -26,7 +26,7 @@ public class GenreController {
 
     @Operation(summary = "Create a Genre", responses = {
             @ApiResponse(description = "success", responseCode = "200"),})
-    @PostMapping()
+    @PostMapping("/create")
     public ResponseEntity<Message> createGenres(@RequestBody GenreDTO genresDTO) {
         Genre genres = modelMapper.map(genresDTO, Genre.class);
         genres = (Genre) iGenre.create(genres);

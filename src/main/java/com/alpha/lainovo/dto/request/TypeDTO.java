@@ -7,5 +7,5 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TypeDTO {
-    private String TypeName;
+    private String typeName;
 }
