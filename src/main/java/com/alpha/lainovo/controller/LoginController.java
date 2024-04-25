@@ -37,10 +37,10 @@ public class LoginController {
             return ResponseEntity.ok(new Message(1, "Login successfully", authService.login(loginDTO, request)));
         }else if (checkUserLogin == 2){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new Message(0, "Your email hasn't verify yet"));
+                    .body(new Message(0, "This account has been locked"));
         }else if (checkUserLogin == 3){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new Message(0, "This account has been locked"));
+                    .body(new Message(0, "Your email hasn't verify yet"));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new Message(0, "Invalid email or password"));

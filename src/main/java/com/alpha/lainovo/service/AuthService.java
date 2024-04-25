@@ -72,14 +72,14 @@ public class AuthService {
         if (customer == null) {
             log.info("------> Login: User does not exist");
             return 0;
-        } else if (encoder.matches(loginDTO.password(), customer.getPassword()) && customer.getIsVerify()){
+        } else if (encoder.matches(loginDTO.password(), customer.getPassword()) && customer.getIsVerify() && !customer.getIsBlocked()){
             log.info("------> Login successful with email: {}",loginDTO.email());
             return 1;
-        }else if (!customer.getIsVerify()){
-            log.info("------> Login fail because this email verify == false");
-            return 2;
         }else if (customer.getIsBlocked()){
             log.info("------> Login fail because this account has been locked");
+            return 2;
+        }else if (!customer.getIsVerify()){
+            log.info("------> Login fail because this email verify == false");
             return 3;
         }
         log.info("------> Login: exceptions: {}", customer.getEmail());

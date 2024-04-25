@@ -1,6 +1,7 @@
 package com.alpha.lainovo.service;
 
 import com.alpha.lainovo.dto.request.ChangePasswordDTO;
+import com.alpha.lainovo.dto.request.RUpdateCustomerDTO;
 import com.alpha.lainovo.model.Customer;
 import com.alpha.lainovo.model.Email;
 import com.alpha.lainovo.repository.CustomerRepository;
@@ -142,6 +143,18 @@ public class CustomerService implements CustomerInterface,CreateAndUpdateInterfa
         log.info(">>>>>>> CustomerService:getCustomerInfo | Get info for Customer with email: {}", customer.getEmail());
         return customer;
     }
-
+    @Override
+    public Customer updateCustomerStatus(Integer customerId, RUpdateCustomerDTO rUpdateCustomerDTO) {
+        Customer customer = findById(customerId);
+        if (customer != null) {
+            customer.setIsBlocked(rUpdateCustomerDTO.isBlocked());
+            customerRepository.save(customer);
+            log.info(">>>>>> CustomerService:updateCustomerStatus | Update Status Customer with Customer ID: {}", customer.getCustomerId());
+            return customer;
+        } else {
+            log.error("Customer not found with id: {}", customerId);
+            return null;
+        }
+    }
 
 }

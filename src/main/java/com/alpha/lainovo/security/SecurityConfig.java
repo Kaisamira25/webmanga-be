@@ -95,7 +95,6 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/publications_type/**",
                                 "/api/v1/images/**",
                                 "/api/v1/customer/address",
-                                "/api/v1/customer/info",
                                 "/api/v1/admin/**" ,
                                 "/api/v1/employee/**").permitAll()
                         .requestMatchers(
