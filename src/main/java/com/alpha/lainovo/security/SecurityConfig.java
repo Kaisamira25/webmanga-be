@@ -85,7 +85,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/api/v1/auth/**",
-                                "/api/v1/order/**"
+                                "/api/v1/order/**",
+                                "/api/v1/customer/address"
                         ).permitAll()
 
                         .requestMatchers(HttpMethod.GET,
@@ -106,7 +107,6 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/genre/search/{name}",
                                 "/api/v1/discount/all",
                                 "/api/v1/discount/search/{name}",
-                                "/api/v1/customer/address",
                                 "/api/v1/customer/info",
                                 "/api/v1/images/**"
                         ).hasAnyAuthority("CUSTOMER")
@@ -123,7 +123,6 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/publications_cover/**",
                                 "/api/v1/publications_gift/**",
                                 "/api/v1/publications_type/**",
-                                "/api/v1/customer/address",
                                 "/api/v1/customer/**",
                                 "/api/v1/images/**",
                                 "/api/v1/employee/**"
