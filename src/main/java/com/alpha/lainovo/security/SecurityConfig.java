@@ -117,7 +117,13 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/customer/**",
                                 "/api/v1/employee/**",
                                 "/api/v1/customer/address",
-                                "/api/v1/discount/**"
+                                "/api/v1/discount/**",
+                                "/api/v1/publications/**",
+                                "/api/v1/cover/**",
+                                "/api/v1/type/**",
+                                "/api/v1/gift/**",
+                                "/api/v1/genre/**",
+                                "/api/v1/images/**"
                         ).hasAnyAuthority("ADMIN","EMPLOYEE"))
                 .authenticationProvider(authenticationCustomerProvider())
                 .addFilterBefore(jwtAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class).build();

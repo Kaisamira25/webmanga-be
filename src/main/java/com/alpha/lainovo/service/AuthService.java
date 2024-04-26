@@ -58,7 +58,6 @@ public class AuthService {
             Map<String, String> list = new HashMap<>();
             list.put("accessToken", jwt);
             list.put("refreshToken", customer.getRefreshToken());
-
             cookieService.add("refresh-token", customer.getRefreshToken(), (int) JWT_REFRESH_EXPIRATION);
             log.info("------> Login success");
             return list;
