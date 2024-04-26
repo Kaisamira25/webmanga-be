@@ -87,8 +87,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/v3/api-docs/**",
                                 "/api/v1/auth/**",
                                 "/api/v1/order/**",
-                                "/api/v1/admin/**",
-                                "/api/v1/discount/**"
+                                "/api/v1/admin/**"
                         ).permitAll()
 
                         .requestMatchers(HttpMethod.POST,
@@ -106,10 +105,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         ).permitAll()
 
                         .requestMatchers(
-                                "/api/v1/customer/**"
-                        ).hasAnyAuthority("CUSTOMER")
-
-                        .requestMatchers(
+                                "/api/v1/customer/**",
                                 "/api/v1/customer/address"
                         ).hasAnyAuthority("CUSTOMER")
 
@@ -120,8 +116,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/publications_type/**",
                                 "/api/v1/customer/**",
                                 "/api/v1/employee/**",
-                                "/api/v1/discount/**",
-                                "/api/v1/customer/address"
+                                "/api/v1/customer/address",
+                                "/api/v1/discount/**"
                         ).hasAnyAuthority("ADMIN","EMPLOYEE"))
                 .authenticationProvider(authenticationCustomerProvider())
                 .addFilterBefore(jwtAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class).build();
