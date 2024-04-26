@@ -26,7 +26,7 @@ public class CoverController {
 
     @Operation(summary = "Create a Cover", responses = {
             @ApiResponse(description = "success", responseCode = "200"),})
-    @SecurityRequirement(name="bearerAuth")
+
     @PostMapping()
     public ResponseEntity<Message> createCover(@RequestBody CoverDTO coverDTO) {
         Cover cover = modelMapper.map(coverDTO, Cover.class);
@@ -38,7 +38,7 @@ public class CoverController {
     @Operation(summary = "Update a Cover", description = "When the Cover is successfully updated, the response status code is 200; otherwise, it is 400, accompanied by a corresponding message.", responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Cover not found", responseCode = "400")})
-    @SecurityRequirement(name="bearerAuth")
+
     @PutMapping("/{id}")
     public ResponseEntity<Message> updateCover(@PathVariable("id") Integer id, @RequestBody CoverDTO coverDTO) {
         Cover cover = modelMapper.map(coverDTO, Cover.class);
@@ -54,7 +54,7 @@ public class CoverController {
     @Operation(summary = "Delete a Cover", description = "When the Cover is successfully updated, the response status code is 200; otherwise, it is 400, accompanied by a corresponding message.", responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Cover not found", responseCode = "400")})
-    @SecurityRequirement(name="bearerAuth")
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Message> deleteCover(@PathVariable("id") Integer id) {
         boolean status = iCover.delete(id);

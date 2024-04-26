@@ -34,7 +34,6 @@ public class GetPromotionalGiftController {
     @Operation(summary = "Find a PromotionalGift with the ID",responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "PromotionalGift not found", responseCode = "404")})
-    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<Message> getGiftId(@PathVariable("id") Integer id) {
         PromotionalGift gift = iGift.getByGiftId(id);
         if (gift != null) {

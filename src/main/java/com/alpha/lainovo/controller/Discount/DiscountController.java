@@ -33,7 +33,7 @@ public class DiscountController {
 
     @Operation(summary = "Create a Discount", responses = {
             @ApiResponse(description = "success", responseCode = "200"),})
-    @SecurityRequirement(name="bearerAuth")
+
     @PostMapping()
     public ResponseEntity<Message> createDiscounts(@RequestBody DiscountDTO discountDTO) {
         Discount discounts = modelMapper.map(discountDTO, Discount.class);
@@ -46,7 +46,7 @@ public class DiscountController {
     @Operation(summary = "Update a Discount", description = "When the Discount is successfully updated, the response status code is 200; otherwise, it is 400, accompanied by a corresponding message.", responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Discount not found", responseCode = "400")})
-    @SecurityRequirement(name="bearerAuth")
+
     @PutMapping("/{id}")
     public ResponseEntity<Message> updateDiscount(@PathVariable("id") Integer id, @RequestBody DiscountDTO discountDTODTO) {
         Discount discounts = modelMapper.map(discountDTODTO, Discount.class);
@@ -66,7 +66,7 @@ public class DiscountController {
     @Operation(summary = "Delete a Discount", description = "When the Discount is successfully updated, the response status code is 200; otherwise, it is 400, accompanied by a corresponding message.", responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Discount not found", responseCode = "400")})
-    @SecurityRequirement(name="bearerAuth")
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Message> deleteDiscount(@PathVariable("id") Integer id) {
         boolean status = iDiscount.delete(id);
@@ -79,7 +79,7 @@ public class DiscountController {
 
     @Operation(summary = "Check and deactivate expired discounts", responses = {
             @ApiResponse(description = "success", responseCode = "200"),})
-    @SecurityRequirement(name="bearerAuth")
+
     @PostMapping("/check-expired")
     public ResponseEntity<Message> checkAndDeactivateExpiredDiscounts() {
         discountService.deactivateExpiredDiscounts(); // Thêm dòng này

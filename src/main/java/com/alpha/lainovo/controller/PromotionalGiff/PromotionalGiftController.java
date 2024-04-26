@@ -29,7 +29,7 @@ public class PromotionalGiftController {
     @Operation(summary = "PromotionalGift a Genres", responses = {
             @ApiResponse(description = "success", responseCode = "200"),})
     @PostMapping()
-    @SecurityRequirement(name="bearerAuth")
+
     public ResponseEntity<Message> createGift(@RequestBody PromotionalGiftDTO giftDTO) {
         PromotionalGift gift = modelMapper.map(giftDTO, PromotionalGift.class);
         gift = (PromotionalGift) iGift.create(gift);
@@ -41,7 +41,7 @@ public class PromotionalGiftController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "PromotionalGift not found", responseCode = "400")})
     @PutMapping("/{id}")
-    @SecurityRequirement(name="bearerAuth")
+
     public ResponseEntity<Message> updateGift(@PathVariable("id") Integer id, @RequestBody PromotionalGiftDTO giftDTO) {
         PromotionalGift gift = modelMapper.map(giftDTO, PromotionalGift.class);
         gift = iGift.update(id, gift);
@@ -57,7 +57,7 @@ public class PromotionalGiftController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "PromotionalGift not found", responseCode = "400")})
     @DeleteMapping("/{id}")
-    @SecurityRequirement(name="bearerAuth")
+
     public ResponseEntity<Message> deleteGift(@RequestBody List<Integer> id) {
         for(Integer i:id){
             boolean status = iGift.delete(i);

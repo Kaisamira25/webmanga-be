@@ -33,7 +33,6 @@ public class GetCoverController {
     @Operation(summary = "Find a Cover with the ID",responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Cover not found", responseCode = "404")})
-    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<Message> getByCoverId(@PathVariable("id") Integer id) {
         Cover cover = iCover.getByCoverId(id);
         if (cover != null) {

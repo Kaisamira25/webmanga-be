@@ -32,7 +32,6 @@ public class GetTypeController {
     @Operation(summary = "Find a Type with the ID",responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Type not found", responseCode = "404")})
-    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<Message> getByTypeId(@PathVariable("id") Integer id) {
         Type type = iType.getByTypeId(id);
         if (type != null) {

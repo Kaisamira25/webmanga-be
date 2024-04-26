@@ -14,7 +14,9 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -74,7 +76,6 @@ public class SecurityConfig implements WebMvcConfigurer {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -86,51 +87,41 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/v3/api-docs/**",
                                 "/api/v1/auth/**",
                                 "/api/v1/order/**",
+                                "/api/v1/admin/**"
+                        ).permitAll()
+
+                        .requestMatchers(HttpMethod.POST,
                                 "/api/v1/customer/address"
                         ).permitAll()
 
                         .requestMatchers(HttpMethod.GET,
-                                "/api/v1/publications/all",
-                                "/api/v1/publications/details",
-                                "/api/v1/publications/search/{name}",
-                                "/api/v1/publications/pagination",
-                                "/api/v1/publications/best-sellers",
-                                "/api/v1/publications/new-arrivals",
-                                "/api/v1/publications/author/name",
-                                "/api/v1/cover/all",
-                                "/api/v1/cover/search/{name}",
-                                "/api/v1/type/all",
-                                "/api/v1/type/search/{name}",
-                                "/api/v1/gift/all",
-                                "/api/v1/gift/search/{name}",
-                                "/api/v1/genre/all",
-                                "/api/v1/genre/search/{name}",
-                                "/api/v1/discount/all",
-                                "/api/v1/discount/search/{name}",
-                                "/api/v1/customer/info",
-                                "/api/v1/images/**"
-                        ).hasAnyAuthority("CUSTOMER")
-
-                        .requestMatchers(
-                                "/api/v1/admin/**",
                                 "/api/v1/publications/**",
                                 "/api/v1/cover/**",
                                 "/api/v1/type/**",
                                 "/api/v1/gift/**",
                                 "/api/v1/genre/**",
                                 "/api/v1/discount/**",
+                                "/api/v1/images/**"
+                        ).permitAll()
+
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/v1/customer/info"
+                        ).hasAnyAuthority("CUSTOMER")
+
+                        .requestMatchers(
+                                "/api/v1/customer/address"
+                        ).hasAnyAuthority("CUSTOMER")
+
+                        .requestMatchers(
                                 "/api/v1/publications_genre/**",
                                 "/api/v1/publications_cover/**",
                                 "/api/v1/publications_gift/**",
                                 "/api/v1/publications_type/**",
                                 "/api/v1/customer/**",
-                                "/api/v1/images/**",
-                                "/api/v1/employee/**"
+                                "/api/v1/employee/**",
+                                "/api/v1/customer/address"
                         ).hasAnyAuthority("ADMIN","EMPLOYEE"))
-
                 .authenticationProvider(authenticationCustomerProvider())
                 .addFilterBefore(jwtAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class).build();
     }
-
-
 }

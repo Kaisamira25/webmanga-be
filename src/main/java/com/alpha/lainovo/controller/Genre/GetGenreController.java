@@ -33,7 +33,6 @@ public class GetGenreController {
     @Operation(summary = "Find a Genre with the ID",responses = {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "Genre not found", responseCode = "404")})
-    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Message> getGenreId(@PathVariable("id") Integer id) {
         Genre genres = iGenre.getByGenreId(id);
         if (genres != null) {

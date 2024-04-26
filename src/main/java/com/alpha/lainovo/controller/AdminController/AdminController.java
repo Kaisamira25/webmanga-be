@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/v1/admin/")
+@RequestMapping("/api/v1/admin")
+@SecurityRequirement(name="bearerAuth")
 public class AdminController {
     private final EmployeeService employeeService;
     @Operation(description = "Successful login return an accessToken and refreshToken",
@@ -29,7 +30,6 @@ public class AdminController {
                     @ApiResponse(description = "Invalid for the case", responseCode = "400")
             })
     @PostMapping("/login")
-    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<?> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
         log.info("Login admin start");
         Integer checkAdminLogin = employeeService.validate(employeeLoginDTO);
