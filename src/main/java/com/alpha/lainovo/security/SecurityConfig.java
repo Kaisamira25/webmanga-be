@@ -87,7 +87,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/v3/api-docs/**",
                                 "/api/v1/auth/**",
                                 "/api/v1/order/**",
-                                "/api/v1/admin/**"
+                                "/api/v1/admin/**",
+                                "/api/v1/discount/**"
                         ).permitAll()
 
                         .requestMatchers(HttpMethod.POST,
@@ -104,8 +105,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/images/**"
                         ).permitAll()
 
-                        .requestMatchers(HttpMethod.GET,
-                                "/api/v1/customer/info"
+                        .requestMatchers(
+                                "/api/v1/customer/**"
                         ).hasAnyAuthority("CUSTOMER")
 
                         .requestMatchers(
@@ -119,6 +120,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/publications_type/**",
                                 "/api/v1/customer/**",
                                 "/api/v1/employee/**",
+                                "/api/v1/discount/**",
                                 "/api/v1/customer/address"
                         ).hasAnyAuthority("ADMIN","EMPLOYEE"))
                 .authenticationProvider(authenticationCustomerProvider())
