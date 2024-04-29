@@ -46,11 +46,11 @@ public class Orders {
     private Date orderDay;
 
     @ManyToOne
-    @JoinColumn(name="guest_id")
-    private Guest guest;
+    @JoinColumn(name="guest_id",nullable = true)
+    private Guest guests;
 
     @ManyToOne
-    @JoinColumn(name="customer_id")
+    @JoinColumn(name="customer_id",nullable = true)
     private Customer customer;
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL )
@@ -59,4 +59,5 @@ public class Orders {
     @ManyToOne
     @JoinColumn(name="discount_id",nullable = true)
     private Discount discount;
+
 }

@@ -24,7 +24,7 @@ public class Guest {
     @Column(name = "guest_id")
     private Integer customerId;
 
-    @Column(name = "phong_number",columnDefinition = "nvarchar(10)",nullable = false)
+    @Column(name = "phone_number",columnDefinition = "nvarchar(10)",nullable = false)
     private String phoneNumber;
 
     @Column(name = "customer_email",columnDefinition = "nvarchar(100)",nullable = false)
@@ -37,6 +37,6 @@ public class Guest {
     private String addresses;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "guest")
+    @OneToMany(mappedBy = "guests")
     private Set<Orders> ordersList=new HashSet<>();
 }
