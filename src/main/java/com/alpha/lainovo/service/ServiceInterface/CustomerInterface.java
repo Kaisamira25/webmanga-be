@@ -5,6 +5,8 @@ import com.alpha.lainovo.dto.request.RUpdateCustomerDTO;
 import com.alpha.lainovo.model.Customer;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.List;
+
 public interface CustomerInterface {
     Customer findByEmail(String email);
 
@@ -20,6 +22,6 @@ public interface CustomerInterface {
 
     Customer getCustomerInfo(HttpServletRequest request);
     Customer updateCustomerStatus(Integer customerId, RUpdateCustomerDTO rUpdateCustomerDTO);
-
+    List<Customer> getAllCustomer();
     boolean resetAndCreateNewPassword(String code, String newPassword);
 }

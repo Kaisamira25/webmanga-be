@@ -56,7 +56,7 @@ public class EmployeeServiceImpl implements EmployeeInterface {
         Admin admin = adminRepository.findAdminByAccountName(accountName);
         if (admin != null) {
             admin.setFullName(rEmployeeDTO.fullName());
-            admin.setPhone(rEmployeeDTO.phoneNumber());
+            admin.setPhone(rEmployeeDTO.phone());
             admin.setAddress(rEmployeeDTO.address());
             admin.setBlocked(rEmployeeDTO.isBlocked());
             adminRepository.save(admin);

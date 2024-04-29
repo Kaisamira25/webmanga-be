@@ -24,71 +24,71 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Optional;
 
-@Slf4j
-//@RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    @Autowired
-    private AdminRepository adminRepository;
-    @Autowired
-    private CustomerRepository customerRepository;
-    @Autowired
-    private GetCustomerInfo getCustomerInfo;
-    @Autowired
-    private ValidateToken validateToken;
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-    @Autowired
-    private CustomAdminDetailsService customAdminDetailsService;
-    public static String getAccessTokenFromRequestAuthorization(HttpServletRequest request){
-        String bearerToken = request.getHeader("Authorization");
-        // Check Authorization JWT
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("bearer ")){
-            return bearerToken.substring(7);
+    @Slf4j
+    //@RequiredArgsConstructor
+    public class JwtAuthenticationFilter extends OncePerRequestFilter {
+        @Autowired
+        private AdminRepository adminRepository;
+        @Autowired
+        private CustomerRepository customerRepository;
+        @Autowired
+        private GetCustomerInfo getCustomerInfo;
+        @Autowired
+        private ValidateToken validateToken;
+        @Autowired
+        private CustomUserDetailsService customUserDetailsService;
+        @Autowired
+        private CustomAdminDetailsService customAdminDetailsService;
+        public static String getAccessTokenFromRequestAuthorization(HttpServletRequest request){
+            String bearerToken = request.getHeader("Authorization");
+            // Check Authorization JWT
+            if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("bearer ")){
+                return bearerToken.substring(7);
+            }
+            return null;
         }
-        return null;
-    }
-    public static String getRefreshTokenFromCookie(HttpServletRequest request){
-        String token = request.getHeader("refreshToken");
-
-        if (token != null){
-            return token;
+        public static String getRefreshTokenFromCookie(HttpServletRequest request){
+            String token = request.getHeader("refreshToken");
+    
+            if (token != null){
+                return token;
+            }
+            return null;
         }
-        return null;
-    }
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        log.info("JwtAuthenticationFilter: doFilterInternal | Start");
-        try {
-            String jwt = getAccessTokenFromRequestAuthorization(request);
-            if (StringUtils.hasText(jwt) && validateToken.validateToken(jwt)){
-                log.info("Validate token: {}",validateToken.validateToken(jwt));
-                Integer customerId = getCustomerInfo.getCustomerId(jwt);
-                Integer adminId = getCustomerInfo.getAdminId(jwt);
-                log.info("customerId: {}",customerId);
-                log.info("adminId: {}",adminId);
-
-                if (customerId == null) {
-                    Optional<Admin> admin = adminRepository.findById(adminId);
-                    if (admin.isPresent()){
-                        UserDetails adminDetails = customAdminDetailsService.loadUserByUsername(admin.get().getAccountName());
-                        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(adminDetails, null, adminDetails.getAuthorities());
-                        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    }
-                } else {
-                    Optional<Customer> customer = customerRepository.findById(customerId);
-                    if (customer.isPresent()){
-                        UserDetails userDetails = customUserDetailsService.loadUserByUsername(customer.get().getEmail());
-                        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        @Override
+        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+            log.info("JwtAuthenticationFilter: doFilterInternal | Start");
+            try {
+                String jwt = getAccessTokenFromRequestAuthorization(request);
+                if (StringUtils.hasText(jwt) && validateToken.validateToken(jwt)){
+                    log.info("Validate token: {}",validateToken.validateToken(jwt));
+                    Integer customerId = getCustomerInfo.getCustomerId(jwt);
+                    Integer adminId = getCustomerInfo.getAdminId(jwt);
+                    log.info("customerId: {}",customerId);
+                    log.info("adminId: {}",adminId);
+    
+                    if (customerId == null) {
+                        Optional<Admin> admin = adminRepository.findById(adminId);
+                        if (admin.isPresent()){
+                            UserDetails adminDetails = customAdminDetailsService.loadUserByUsername(admin.get().getAccountName());
+                            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(adminDetails, null, adminDetails.getAuthorities());
+                            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                        }
+                    } else {
+                        Optional<Customer> customer = customerRepository.findById(customerId);
+                        if (customer.isPresent()){
+                            UserDetails userDetails = customUserDetailsService.loadUserByUsername(customer.get().getEmail());
+                            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                        }
                     }
                 }
+            }catch (Exception e){
+                log.error("JwtAuthenticationFilter: doFilterInternal | Error: {}",e.getMessage());
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            log.error("JwtAuthenticationFilter: doFilterInternal | Error: {}",e.getMessage());
-            e.printStackTrace();
+            filterChain.doFilter(request,response);
         }
-        filterChain.doFilter(request,response);
     }
-}

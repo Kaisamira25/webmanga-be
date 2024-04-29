@@ -13,19 +13,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/customer")
-@SecurityRequirement(name = "bearerAuth")
 public class GetCustomerController {
     private final CustomerInterface icus;
-    @GetMapping("/{id}")
+    @GetMapping("/{customerId}")
     @Operation(summary = "Find Customer by Id",responses = {
             @ApiResponse(description = "success", responseCode = "200")})
-    public ResponseEntity<?> getCustomerbyID(@PathVariable("id") Integer id) {
-        Customer customer=icus.findById(id);
+    public ResponseEntity<?> getCustomerbyID(@PathVariable("customerId") Integer customerId) {
+        Customer customer=icus.findById(customerId);
         return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", customer));
+    }
+
+    @GetMapping("/all")
+    @Operation(summary = "Find all Customers",responses = {
+            @ApiResponse(description = "success", responseCode = "200")})
+    @SecurityRequirement(name="bearerAuth")
+    public ResponseEntity<?> getAllCustomers() {
+        List<Customer> customers = icus.getAllCustomer();
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", customers));
     }
 
     @Operation(summary = "Get Customer Info", description = "Get Customer Info", responses = {

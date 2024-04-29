@@ -3,6 +3,7 @@ package com.alpha.lainovo.controller.CustomerAddress;
 import com.alpha.lainovo.dto.request.RCustomerAddressDTO;
 import com.alpha.lainovo.dto.response.Message;
 import com.alpha.lainovo.model.Address;
+import com.alpha.lainovo.model.Customer;
 import com.alpha.lainovo.service.ServiceInterface.AddressInterface;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +24,26 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerAddressController {
 
     private  final AddressInterface addressInterface;
+    @GetMapping("/all")
+    @Operation(summary = "Find all Address",responses = {
+            @ApiResponse(description = "success", responseCode = "200")})
+    public ResponseEntity<?> getAllAddress() {
+        List<Address> Address = addressInterface.getAllAddress();
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", Address));
+    }
+
+
+    @Operation(summary = "Get Address By Id", description = "Get Address By Id", responses = {
+            @ApiResponse(description = "success", responseCode = "200"),
+            @ApiResponse(description = "Customer not found", responseCode = "404")})
+    @GetMapping("/{customerId}")
+    public ResponseEntity<Message> getAddressByCustomer(@PathVariable int customerId) {
+        Address address = addressInterface.getAddressByCustomerId(customerId);
+        if (address != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Get address success", address));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(0, "Customer not found", null));
+    }
 
     @Operation(summary = "Get Address By Customer", description = "Get Address By Customer", responses = {
             @ApiResponse(description = "success", responseCode = "200"),

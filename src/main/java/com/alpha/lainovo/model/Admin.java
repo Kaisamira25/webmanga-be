@@ -39,7 +39,7 @@ public class Admin {
     private String refreshToken;
 
     @Column(name = "is_blocked")
-    private boolean isBlocked = false;
+    private boolean isBlocked;
 
     @Column(name = "user_address",nullable = false)
     private String address;

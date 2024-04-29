@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -35,6 +37,23 @@ public class AddressService implements ICreateAndUpdateV2<Integer, Address>, Add
     public Address update(Integer key, Address entity) {
 
         return addressRepo.save(entity);
+    }
+
+    @Override
+    public List<Address> getAllAddress() {
+        return addressRepo.findAll();
+    }
+
+    @Override
+    public Address getAddressByCustomerId(Integer customerId) {
+        Customer customer = customerInterface.findById(customerId);
+        if (customer == null) {
+            log.error("Customer not found with id: {}", customerId);
+            return null;
+        }
+
+        log.info(">>>>>>> AddressService: getAddressByCustomerId | Get address for Customer with email: {}", customer.getEmail());
+        return customer.getAddresses();
     }
 
     @Override

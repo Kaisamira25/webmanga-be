@@ -87,12 +87,17 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/v3/api-docs/**",
                                 "/api/v1/auth/**",
                                 "/api/v1/order/**",
-                                "/api/v1/admin/**"
+                                "/api/v1/admin/**",
+                                "/api/v1/customer/**"
                         ).permitAll()
 
                         .requestMatchers(HttpMethod.POST,
                                 "/api/v1/customer/address"
                         ).permitAll()
+
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/v1/customer/address/**"
+                        ).hasAnyAuthority("CUSTOMER")
 
                         .requestMatchers(HttpMethod.GET,
                                 "/api/v1/publications/**",
@@ -104,9 +109,9 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/images/**"
                         ).permitAll()
 
-                        .requestMatchers(
-                                "/api/v1/customer/**",
-                                "/api/v1/customer/address"
+                        .requestMatchers(HttpMethod.GET,
+//                                "/api/v1/customer/**",
+                                "/api/v1/customer/address/**"
                         ).hasAnyAuthority("CUSTOMER")
 
                         .requestMatchers(
@@ -114,17 +119,19 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/publications_cover/**",
                                 "/api/v1/publications_gift/**",
                                 "/api/v1/publications_type/**",
-                                "/api/v1/customer/**",
-                                "/api/v1/employee/**",
-                                "/api/v1/customer/address",
                                 "/api/v1/discount/**",
                                 "/api/v1/publications/**",
                                 "/api/v1/cover/**",
                                 "/api/v1/type/**",
                                 "/api/v1/gift/**",
                                 "/api/v1/genre/**",
-                                "/api/v1/images/**"
-                        ).hasAnyAuthority("ADMIN","EMPLOYEE"))
+                                "/api/v1/images/**",
+                                "/api/v1/customer/address/**"
+                        ).hasAnyAuthority("ADMIN")
+
+                        .requestMatchers(
+                                "/api/v1/employee/**"
+                        ).hasAnyAuthority("ADMIN"))
                 .authenticationProvider(authenticationCustomerProvider())
                 .addFilterBefore(jwtAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class).build();
     }

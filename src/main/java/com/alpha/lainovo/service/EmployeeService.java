@@ -54,8 +54,9 @@ public class EmployeeService {
             admin.setAccountName(employeeDTO.accountName());
             admin.setFullName(employeeDTO.fullName());
             admin.setPassword(encoder.encode(employeeDTO.password()));
-            admin.setPhone(employeeDTO.phoneNumber());
+            admin.setPhone(employeeDTO.phone());
             admin.setAddress(employeeDTO.address());
+            admin.setBlocked(false);
             Role role = roleRepository.findByRoleName("EMPLOYEE");
 //            List<Role> roles = new ArrayList<>();
 //            roles.add(role);
