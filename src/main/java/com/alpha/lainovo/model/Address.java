@@ -26,7 +26,8 @@ public class Address implements Serializable{
 
 	@Column(name = "address",columnDefinition = "nvarchar(500)")
 	private String address;
-		
+
+	@JsonIgnore
 	@OneToOne()
 	@JoinColumn(name = "customer_id")
 	private Customer customer;

@@ -101,10 +101,25 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/type/**",
                                 "/api/v1/gift/**",
                                 "/api/v1/genre/**",
-                                "/api/v1/images/**",
-                                "/api/v1/customer/address/**",
-                                "/api/v1/customer/**"
+                                "/api/v1/images/**"
                         ).permitAll()
+
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/v1/customer/**",
+                                "/api/v1/customer/address/**"
+                        ).hasAnyAuthority("CUSTOMER", "ADMIN", "EMPLOYEE")
+
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/v1/customer/**"
+                        ).hasAnyAuthority("ADMIN", "EMPLOYEE")
+
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/v1/customer/address/**"
+                        ).permitAll()
+
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/v1/customer/address/**"
+                        ).hasAnyAuthority("CUSTOMER")
 
                         .requestMatchers(
                                 "/api/v1/employee/**"
