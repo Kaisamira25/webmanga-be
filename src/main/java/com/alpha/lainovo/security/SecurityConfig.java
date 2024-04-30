@@ -97,7 +97,6 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/gift/**",
                                 "/api/v1/genre/**",
                                 "/api/v1/images/**",
-
                                 "/api/v1/discount/**",
                                 "/api/v1/publications/**",
                                 "/api/v1/cover/**",
@@ -108,14 +107,20 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/order/**"
                         ).permitAll()
 
-                        .requestMatchers(HttpMethod.PUT,
-                                "/api/v1/customer/**"
-                        ).hasAnyAuthority("ADMIN", "EMPLOYEE")
-
                         .requestMatchers(HttpMethod.POST,
                                 "/api/v1/order/**",
                                 "/api/v1/customer/address/**"
                         ).permitAll()
+
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/v1/customer/forgotPassword",
+                                "/api/v1/customer/passwordResetCode",
+                                "/api/v1/customer/passwordResetNewPassword"
+                        ).hasAnyAuthority("CUSTOMER")
+
+                        .requestMatchers(HttpMethod.PATCH,
+                                "/api/v1/customer/change-password"
+                        ).hasAnyAuthority("CUSTOMER")
 
                         .requestMatchers(HttpMethod.PUT,
                                 "/api/v1/customer/address/**"
@@ -125,6 +130,10 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/customer/**",
                                 "/api/v1/customer/address/**"
                         ).hasAnyAuthority("CUSTOMER", "ADMIN", "EMPLOYEE")
+
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/v1/customer/**"
+                        ).hasAnyAuthority("ADMIN", "EMPLOYEE")
 
                         .requestMatchers(
                                 "/api/v1/publications_genre/**",

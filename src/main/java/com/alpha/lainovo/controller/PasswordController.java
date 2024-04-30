@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/customer")
 @RequiredArgsConstructor
 @Slf4j
+@SecurityRequirement(name = "bearerAuth")
 public class PasswordController {
     private final CustomerInterface customerInterface;
     @Autowired
@@ -41,7 +42,7 @@ public class PasswordController {
     @Operation(description = "Change password", summary = "Change password", responses = {
             @ApiResponse(description = "Success", responseCode = "200"),
             @ApiResponse(description = "Invalid password", responseCode = "400") })
-    @PatchMapping("/customer/change-password")
+    @PatchMapping("/change-password")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO,
                                             final HttpServletRequest request){
