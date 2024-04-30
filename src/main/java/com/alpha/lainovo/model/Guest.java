@@ -37,6 +37,6 @@ public class Guest {
     private String addresses;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "guest")
+    @OneToMany(mappedBy = "guests")
     private Set<Orders> ordersList=new HashSet<>();
 }

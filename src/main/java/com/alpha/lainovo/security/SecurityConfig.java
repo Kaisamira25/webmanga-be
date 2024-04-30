@@ -86,7 +86,6 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/api/v1/auth/**",
-                                "/api/v1/order/**",
                                 "/api/v1/admin/**"
                         ).permitAll()
 
@@ -105,7 +104,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/type/**",
                                 "/api/v1/gift/**",
                                 "/api/v1/genre/**",
-                                "/api/v1/images/**"
+                                "/api/v1/images/**",
+                                "/api/v1/order/**"
                         ).permitAll()
 
                         .requestMatchers(HttpMethod.PUT,
@@ -113,6 +113,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         ).hasAnyAuthority("ADMIN", "EMPLOYEE")
 
                         .requestMatchers(HttpMethod.POST,
+                                "/api/v1/order/**",
                                 "/api/v1/customer/address/**"
                         ).permitAll()
 
@@ -140,7 +141,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/type/**",
                                 "/api/v1/gift/**",
                                 "/api/v1/genre/**",
-                                "/api/v1/images/**"
+                                "/api/v1/images/**",
+                                "/api/v1/order/**"
                         ).hasAnyAuthority("ADMIN", "EMPLOYEE")
 
                         .requestMatchers(
