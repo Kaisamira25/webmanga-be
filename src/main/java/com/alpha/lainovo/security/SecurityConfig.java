@@ -90,11 +90,15 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/admin/**"
                         ).permitAll()
 
-                        .requestMatchers(
-                                "/api/v1/publications_genre/**",
-                                "/api/v1/publications_cover/**",
-                                "/api/v1/publications_gift/**",
-                                "/api/v1/publications_type/**",
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/v1/discount/**",
+                                "/api/v1/publications/**",
+                                "/api/v1/cover/**",
+                                "/api/v1/type/**",
+                                "/api/v1/gift/**",
+                                "/api/v1/genre/**",
+                                "/api/v1/images/**",
+
                                 "/api/v1/discount/**",
                                 "/api/v1/publications/**",
                                 "/api/v1/cover/**",
@@ -103,11 +107,6 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/genre/**",
                                 "/api/v1/images/**"
                         ).permitAll()
-
-                        .requestMatchers(HttpMethod.GET,
-                                "/api/v1/customer/**",
-                                "/api/v1/customer/address/**"
-                        ).hasAnyAuthority("CUSTOMER", "ADMIN", "EMPLOYEE")
 
                         .requestMatchers(HttpMethod.PUT,
                                 "/api/v1/customer/**"
@@ -120,6 +119,29 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers(HttpMethod.PUT,
                                 "/api/v1/customer/address/**"
                         ).hasAnyAuthority("CUSTOMER")
+
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/v1/customer/**",
+                                "/api/v1/customer/address/**"
+                        ).hasAnyAuthority("CUSTOMER", "ADMIN", "EMPLOYEE")
+
+                        .requestMatchers(
+                                "/api/v1/publications_genre/**",
+                                "/api/v1/publications_cover/**",
+                                "/api/v1/publications_gift/**",
+                                "/api/v1/publications_type/**",
+                                "/api/v1/publications_genre/**",
+                                "/api/v1/publications_cover/**",
+                                "/api/v1/publications_gift/**",
+                                "/api/v1/publications_type/**",
+                                "/api/v1/discount/**",
+                                "/api/v1/publications/**",
+                                "/api/v1/cover/**",
+                                "/api/v1/type/**",
+                                "/api/v1/gift/**",
+                                "/api/v1/genre/**",
+                                "/api/v1/images/**"
+                        ).hasAnyAuthority("ADMIN", "EMPLOYEE")
 
                         .requestMatchers(
                                 "/api/v1/employee/**"
