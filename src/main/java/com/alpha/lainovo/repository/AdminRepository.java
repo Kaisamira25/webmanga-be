@@ -19,6 +19,6 @@ public interface AdminRepository extends JpaRepository<Admin, Integer> {
 
     @Query("SELECT new com.alpha.lainovo.dto.request.RAdminRoleDTO" +
             "(a.accountName, a.fullName, a.phone, a.isBlocked, a.address, r.roleName) " +
-            "FROM Admin a JOIN a.role r WHERE a.accountName = :accountName")
+            "FROM Admin a JOIN a.role r WHERE a.accountName LIKE %:accountName%")
     List<RAdminRoleDTO> getAccountByAccountName (String accountName);
 }

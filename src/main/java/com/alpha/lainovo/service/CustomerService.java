@@ -1,6 +1,7 @@
 package com.alpha.lainovo.service;
 
 import com.alpha.lainovo.dto.request.ChangePasswordDTO;
+import com.alpha.lainovo.dto.request.RCustomerDTO;
 import com.alpha.lainovo.dto.request.RUpdateCustomerDTO;
 import com.alpha.lainovo.model.Customer;
 import com.alpha.lainovo.model.Email;
@@ -132,6 +133,11 @@ public class CustomerService implements CustomerInterface,CreateAndUpdateInterfa
     @Override
     public List<Customer> getAllCustomer() {
         return customerRepository.findAll();
+    }
+
+    @Transactional
+    public List<RCustomerDTO> getCustomerByEmail(String email) {
+        return customerRepository.getCustomerByEmail(email);
     }
 
     @Override

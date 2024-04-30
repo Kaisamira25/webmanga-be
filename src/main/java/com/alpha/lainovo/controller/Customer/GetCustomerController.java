@@ -1,8 +1,10 @@
 package com.alpha.lainovo.controller.Customer;
 
+import com.alpha.lainovo.dto.request.RCustomerDTO;
 import com.alpha.lainovo.dto.request.RUpdateCustomerDTO;
 import com.alpha.lainovo.dto.response.Message;
 import com.alpha.lainovo.model.Customer;
+import com.alpha.lainovo.service.CustomerService;
 import com.alpha.lainovo.service.ServiceInterface.CustomerInterface;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,6 +23,7 @@ import java.util.List;
 @RequestMapping("/api/v1/customer")
 public class GetCustomerController {
     private final CustomerInterface icus;
+    private final CustomerService customerService;
     @GetMapping("/{customerId}")
     @Operation(summary = "Find Customer by Id",responses = {
             @ApiResponse(description = "success", responseCode = "200")})
@@ -61,6 +64,19 @@ public class GetCustomerController {
             return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Update customer status success", updatedStatusCustomer));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Message(0, "Updated fail, Customer not found"));
+    }
+
+    @GetMapping("/search/{email}")
+    @Operation(summary = "Find a Customer with the email",responses = {
+            @ApiResponse(description = "success", responseCode = "200"),
+            @ApiResponse(description = "Customer not found", responseCode = "404")})
+    @SecurityRequirement(name="bearerAuth")
+    public ResponseEntity<?> getCustomerByEmail(@PathVariable("email") String email) {
+        List<RCustomerDTO> customer = customerService.getCustomerByEmail(email);
+        if (customer != null && !customer.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(new Message(1, "Successfully", customer));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message(0, " Customer does not exist"));
     }
 
 }
