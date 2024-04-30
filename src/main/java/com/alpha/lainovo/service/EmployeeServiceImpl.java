@@ -5,6 +5,7 @@ import com.alpha.lainovo.dto.request.PublicationsImageDTO;
 import com.alpha.lainovo.dto.request.RAdminRoleDTO;
 import com.alpha.lainovo.dto.request.REmployeeUpdateAndDeleteDTO;
 import com.alpha.lainovo.model.Admin;
+import com.alpha.lainovo.model.Customer;
 import com.alpha.lainovo.model.Role;
 import com.alpha.lainovo.repository.AdminRepository;
 import com.alpha.lainovo.repository.RoleRepository;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -76,5 +78,11 @@ public class EmployeeServiceImpl implements EmployeeInterface {
         } else {
             log.error(">>>>>>> EmployeeServiceImpl:deleteEmployeeByAccountName | No Employee found to delete with account name: {}", accountName);
         }
+    }
+
+    @Override
+    public Admin findById(Integer adminId) {
+        Optional<Admin> admin = adminRepository.findById(adminId);
+        return admin.get();
     }
 }
