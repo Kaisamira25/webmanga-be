@@ -87,32 +87,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/v3/api-docs/**",
                                 "/api/v1/auth/**",
                                 "/api/v1/order/**",
-                                "/api/v1/admin/**",
-                                "/api/v1/customer/**"
+                                "/api/v1/admin/**"
                         ).permitAll()
-
-                        .requestMatchers(HttpMethod.POST,
-                                "/api/v1/customer/address"
-                        ).permitAll()
-
-                        .requestMatchers(HttpMethod.PUT,
-                                "/api/v1/customer/address/**"
-                        ).hasAnyAuthority("CUSTOMER")
-
-                        .requestMatchers(HttpMethod.GET,
-                                "/api/v1/publications/**",
-                                "/api/v1/cover/**",
-                                "/api/v1/type/**",
-                                "/api/v1/gift/**",
-                                "/api/v1/genre/**",
-                                "/api/v1/discount/**",
-                                "/api/v1/images/**"
-                        ).permitAll()
-
-                        .requestMatchers(HttpMethod.GET,
-//                                "/api/v1/customer/**",
-                                "/api/v1/customer/address/**"
-                        ).hasAnyAuthority("CUSTOMER")
 
                         .requestMatchers(
                                 "/api/v1/publications_genre/**",
@@ -126,8 +102,9 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/gift/**",
                                 "/api/v1/genre/**",
                                 "/api/v1/images/**",
-                                "/api/v1/customer/address/**"
-                        ).hasAnyAuthority("ADMIN")
+                                "/api/v1/customer/address/**",
+                                "/api/v1/customer/**"
+                        ).permitAll()
 
                         .requestMatchers(
                                 "/api/v1/employee/**"
