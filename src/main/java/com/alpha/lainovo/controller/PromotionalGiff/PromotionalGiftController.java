@@ -57,11 +57,8 @@ public class PromotionalGiftController {
             @ApiResponse(description = "success", responseCode = "200"),
             @ApiResponse(description = "PromotionalGift not found", responseCode = "400")})
     @DeleteMapping("/{id}")
-
-    public ResponseEntity<Message> deleteGift(@RequestBody List<Integer> id) {
-        for(Integer i:id){
-            boolean status = iGift.delete(i);
-        }
+    public ResponseEntity<Message> deleteGift(@PathVariable Integer id) {
+        iGift.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body(new Message(0, "delete sucessfull"));
 
     }
