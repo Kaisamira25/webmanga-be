@@ -81,6 +81,9 @@ public class OrderController {
             orderItem.setPublications(Ipub.getByPublicationsId(orderDTO.getOrderItem().get(i).getId()));
             orderItem.setOrders(save);
             orderItem.setQuantity(orderDTO.getOrderItem().get(i).getQty());
+            Publications publications = Ipub.getByPublicationsId(orderDTO.getOrderItem().get(i).getId());
+            publications.setStock(publications.getStock() - orderDTO.getOrderItem().get(i).getQty());
+            Ipub.update(publications.getPublicationsID(),publications);
             repoItem.save(orderItem);
         }
         return ResponseEntity.status(HttpStatus.OK).body(new Message(0, "Order Adding Complete", save));
