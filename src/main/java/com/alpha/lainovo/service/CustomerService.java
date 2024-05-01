@@ -5,6 +5,7 @@ import com.alpha.lainovo.dto.request.RCustomerDTO;
 import com.alpha.lainovo.dto.request.RUpdateCustomerDTO;
 import com.alpha.lainovo.model.Customer;
 import com.alpha.lainovo.model.Email;
+import com.alpha.lainovo.model.Publications;
 import com.alpha.lainovo.repository.CustomerRepository;
 import com.alpha.lainovo.service.ServiceInterface.CheckStringInterface;
 import com.alpha.lainovo.service.ServiceInterface.CreateAndUpdateInterface;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -135,10 +137,25 @@ public class CustomerService implements CustomerInterface,CreateAndUpdateInterfa
         return customerRepository.findAll();
     }
 
+    @Override
+    public List<Customer> getCustomerByEmailContaining(String email) {
+        return customerRepository.getCustomerByEmailContaining(email);
+    }
+
     @Transactional
     public List<RCustomerDTO> getCustomerByEmail(String email) {
-        return customerRepository.getCustomerByEmail(email);
+        List<RCustomerDTO> customers = customerRepository.getCustomerByEmail(email);
+        List<RCustomerDTO> updatedCustomers = new ArrayList<>();
+
+        for (RCustomerDTO customer : customers) {
+            String phoneNumber = customer.phoneNumber() != null ? customer.phoneNumber() : "Not phone number yet";
+            String address = customer.address() != null ? customer.address() : "Not address yet";
+            updatedCustomers.add(new RCustomerDTO(customer.fullName(), customer.email(), phoneNumber, address, customer.isBlocked()));
+        }
+
+        return updatedCustomers;
     }
+
 
     @Override
     public Customer getCustomerInfo(HttpServletRequest request) {
@@ -167,6 +184,14 @@ public class CustomerService implements CustomerInterface,CreateAndUpdateInterfa
             log.error("Customer not found with id: {}", customerId);
             return null;
         }
+    }
+
+    public boolean verifyPassword(String email, String password) {
+        Customer customer = customerRepository.findByEmail(email);
+        if (customer != null) {
+            return password.equals(customer.getPassword());
+        }
+        return false;
     }
 
 }

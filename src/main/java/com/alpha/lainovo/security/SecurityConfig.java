@@ -87,6 +87,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/v3/api-docs/**",
                                 "/api/v1/auth/**",
                                 "/api/v1/admin/**"
+
                         ).permitAll()
 
                         .requestMatchers(HttpMethod.GET,
@@ -114,6 +115,10 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/customer/passwordResetCode",
                                 "/api/v1/customer/passwordResetNewPassword"
                         ).permitAll()
+
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/v1/customer/verifyPassword"
+                        ).hasAnyAuthority("CUSTOMER")
 
                         .requestMatchers(HttpMethod.PATCH,
                                 "/api/v1/customer/change-password"

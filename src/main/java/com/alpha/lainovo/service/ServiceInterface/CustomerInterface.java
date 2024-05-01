@@ -23,5 +23,6 @@ public interface CustomerInterface {
     Customer getCustomerInfo(HttpServletRequest request);
     Customer updateCustomerStatus(Integer customerId, RUpdateCustomerDTO rUpdateCustomerDTO);
     List<Customer> getAllCustomer();
+    List<Customer> getCustomerByEmailContaining(String email);
     boolean resetAndCreateNewPassword(String code, String newPassword);
 }
