@@ -19,4 +19,6 @@ public interface EmployeeInterface {
 
 
     Admin findAdminAccountByAccountName(String accountName);
+
+    Admin findById(Integer adminId);
 }

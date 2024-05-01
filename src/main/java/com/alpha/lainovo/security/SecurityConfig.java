@@ -148,7 +148,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/api/v1/gift/**",
                                 "/api/v1/genre/**",
                                 "/api/v1/images/**",
-                                "/api/v1/order/**"
+                                "/api/v1/order/**",
+                                "api/v1/admin/logout"
                         ).hasAnyAuthority("ADMIN", "EMPLOYEE")
 
                         .requestMatchers(

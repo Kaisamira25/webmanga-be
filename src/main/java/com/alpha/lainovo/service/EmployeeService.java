@@ -3,12 +3,15 @@ package com.alpha.lainovo.service;
 import com.alpha.lainovo.dto.request.EmployeeDTO;
 import com.alpha.lainovo.dto.request.EmployeeLoginDTO;
 import com.alpha.lainovo.model.Admin;
+import com.alpha.lainovo.model.Customer;
 import com.alpha.lainovo.model.Role;
 import com.alpha.lainovo.repository.RoleRepository;
 import com.alpha.lainovo.service.ServiceInterface.CheckStringInterface;
+import com.alpha.lainovo.service.ServiceInterface.CreateAndUpdateInterface;
 import com.alpha.lainovo.service.ServiceInterface.EmployeeInterface;
 import com.alpha.lainovo.utilities.customUserDetails.CustomAdminDetails;
 import com.alpha.lainovo.utilities.token.GenerateToken;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,7 @@ import java.util.Map;
 public class EmployeeService {
     private final RoleRepository roleRepository;
     private final EmployeeInterface employeeInterface;
+    private final GetAdminIdByRequestService getAdminIdByRequestService;
     @Autowired
     @Qualifier("CheckPassword")
     private final CheckStringInterface checkPasswordFormat;
@@ -112,5 +116,11 @@ public class EmployeeService {
         }
         log.info("Login: Exception: {}", admin.getAccountName());
         return 3;
+    }
+    public void logout(HttpServletRequest request) {
+        Integer adminId = getAdminIdByRequestService.getAdminIdByRequest(request);
+        Admin admin = employeeInterface.findById(adminId);
+        admin.setRefreshToken("");
+        employeeInterface.updateEmployee(adminId, admin);
     }
 }
