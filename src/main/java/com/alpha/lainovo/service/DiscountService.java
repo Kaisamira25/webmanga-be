@@ -93,7 +93,7 @@ public class DiscountService implements DiscountInterface {
         return false;
     }
 
-    @Scheduled(cron = "0 30 13 * * ?") // Chạy vào mỗi ngày lúc 12 giờ đêm
+    @Scheduled(cron = "0 0 0-11 * * ?") // Chạy vào mỗi ngày lúc 12 giờ đêm
     // (cron = "giây phút giờ * * ?")
     public void deactivateExpiredDiscounts() {
         Date now = new Date();
